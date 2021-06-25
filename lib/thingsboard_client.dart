@@ -1,5 +1,5 @@
 /// Dart implementation of ThingsBoard API client.
-library thingsboard_client;
+library thingsboard_pe_client;
 
 export 'src/thingsboard_client_base.dart';
 export 'src/model/model.dart';

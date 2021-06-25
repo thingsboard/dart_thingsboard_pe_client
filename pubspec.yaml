@@ -1,5 +1,5 @@
-name: thingsboard_client
-description: Dart implementation of ThingsBoard API client.
+name: thingsboard_pe_client
+description: Dart implementation of ThingsBoard PE API client.
 version: 1.0.0
 homepage: https://thingsboard.io
 

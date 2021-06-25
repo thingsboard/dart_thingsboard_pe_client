@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:thingsboard_client/thingsboard_client.dart';
+import 'package:thingsboard_pe_client/thingsboard_client.dart';
 import 'example_utils.dart';
 
 const thingsBoardApiEndpoint = 'http://localhost:8080';

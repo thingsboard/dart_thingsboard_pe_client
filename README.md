@@ -1,4 +1,4 @@
-ThingsBoard API client library for Dart developers.
+ThingsBoard PE API client library for Dart developers.
 
 ## Usage
 
@@ -9,7 +9,7 @@ import 'package:thingsboard_client/thingsboard_client.dart';
 
 main() async {
     try {
-      var tbClient = ThingsboardClient('https://demo.thingsboard.io');
+      var tbClient = ThingsboardClient('https://thingsboard.cloud');
       await tbClient.login(LoginRequest('tenant@thingsboard.org', 'tenant'));
 
       print('isAuthenticated=${tbClient.isAuthenticated()}');
@@ -32,4 +32,4 @@ main() async {
 
 Please file feature requests and bugs at the [issue tracker][tracker].
 
-[tracker]: https://github.com/thingsboard/dart_thingsboard_client/issues
+[tracker]: https://github.com/thingsboard/dart_thingsboard_pe_client/issues
