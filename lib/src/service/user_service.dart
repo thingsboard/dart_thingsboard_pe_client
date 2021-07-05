@@ -96,6 +96,32 @@ class UserService {
     return _tbClient.compute(parseUserPageData, response.data!);
   }
 
+  Future<PageData<User>> getAllCustomerUsers(PageLink pageLink,  {RequestConfig? requestConfig}) async {
+    var queryParams = pageLink.toQueryParameters();
+    var response = await _tbClient.get<Map<String, dynamic>>('/api/customer/users', queryParameters: queryParams,
+        options: defaultHttpOptionsFromConfig(requestConfig));
+    return _tbClient.compute(parseUserPageData, response.data!);
+  }
+
+  Future<PageData<User>> getUserUsers(PageLink pageLink,  {RequestConfig? requestConfig}) async {
+    var response = await _tbClient.get<Map<String, dynamic>>('/api/user/users', queryParameters: pageLink.toQueryParameters(),
+        options: defaultHttpOptionsFromConfig(requestConfig));
+    return _tbClient.compute(parseUserPageData, response.data!);
+  }
+
+  Future<List<User>> getUsersByIds(List<String> userIds, {RequestConfig? requestConfig}) async {
+    var response = await _tbClient.get<List<dynamic>>('/api/users', queryParameters: {'userIds': userIds.join(',')},
+        options: defaultHttpOptionsFromConfig(requestConfig));
+    return response.data!.map((e) => User.fromJson(e)).toList();
+  }
+
+  Future<PageData<User>> getUsersByEntityGroupId(String entityGroupId, PageLink pageLink,  {RequestConfig? requestConfig}) async {
+    var queryParams = pageLink.toQueryParameters();
+    var response = await _tbClient.get<Map<String, dynamic>>('/api/entityGroup/$entityGroupId/users', queryParameters: queryParams,
+        options: defaultHttpOptionsFromConfig(requestConfig));
+    return _tbClient.compute(parseUserPageData, response.data!);
+  }
+
   Future<void> setUserCredentialsEnabled(String userId, {bool? userCredentialsEnabled, RequestConfig? requestConfig}) async {
     var queryParams = <String, dynamic>{};
     if (userCredentialsEnabled != null) {

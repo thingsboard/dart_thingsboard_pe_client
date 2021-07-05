@@ -1,0 +1,68 @@
+import 'dart:convert';
+import 'package:dio/dio.dart';
+import '../model/login_models.dart';
+
+import '../model/signup_models.dart';
+import '../http/http_utils.dart';
+import '../thingsboard_client_base.dart';
+
+class SignupService {
+  final ThingsboardClient _tbClient;
+
+  factory SignupService(ThingsboardClient tbClient) {
+    return SignupService._internal(tbClient);
+  }
+
+  SignupService._internal(this._tbClient);
+
+  Future<SignUpResult> signup(SignUpRequest signUpRequest, {RequestConfig? requestConfig}) async {
+    var options = defaultHttpOptionsFromConfig(requestConfig);
+    options.responseType = ResponseType.plain;
+    var response = await _tbClient.post<String>('/api/noauth/signup', data: jsonEncode(signUpRequest),
+        options: options);
+    return signUpResultFromString(response.data!);
+  }
+
+  Future<LoginResponse?> acceptPrivacyPolicy({RequestConfig? requestConfig}) async {
+    return nullIfNotFound(
+          (RequestConfig requestConfig) async {
+            var response = await _tbClient.post<Map<String, dynamic>>('/api/signup/acceptPrivacyPolicy',
+                options: defaultHttpOptionsFromConfig(requestConfig));
+        return response.data != null ? LoginResponse.fromJson(response.data!) : null;
+      },
+      requestConfig: requestConfig,
+    );
+  }
+
+  Future<bool> privacyPolicyAccepted({RequestConfig? requestConfig}) async {
+    var response = await _tbClient.get<bool>('/api/signup/privacyPolicyAccepted',
+        options: defaultHttpOptionsFromConfig(requestConfig));
+    return response.data!;
+  }
+
+  Future<void> resendEmailActivation(String email, {RequestConfig? requestConfig}) async {
+    await _tbClient.post('/api/noauth/resendEmailActivation', queryParameters: {'email': email},
+        options: defaultHttpOptionsFromConfig(requestConfig));
+  }
+
+  Future<Response<String>> activateEmail(String emailCode, {RequestConfig? requestConfig}) async {
+        var options = defaultHttpOptionsFromConfig(requestConfig);
+        options.responseType = ResponseType.plain;
+        var response = await _tbClient.get<String>('/api/noauth/activateEmail',
+            queryParameters: {'emailCode': emailCode},
+            options: options);
+        return response;
+  }
+
+  Future<LoginResponse?> activateUserByEmailCode(String emailCode, {RequestConfig? requestConfig}) async {
+    return nullIfNotFound(
+          (RequestConfig requestConfig) async {
+            var response = await _tbClient.post<Map<String, dynamic>>('/api/noauth/activateByEmailCode',
+                queryParameters: {'emailCode': emailCode},
+                options: defaultHttpOptionsFromConfig(requestConfig));
+        return response.data != null ? LoginResponse.fromJson(response.data!) : null;
+      },
+      requestConfig: requestConfig,
+    );
+  }
+}

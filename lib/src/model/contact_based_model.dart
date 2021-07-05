@@ -1,6 +1,11 @@
+import 'customer_models.dart';
+import 'entity_type_models.dart';
+import 'tenant_models.dart';
+
 import 'additional_info_based.dart';
 import 'has_name.dart';
 import 'id/has_uuid.dart';
+import 'id/ids.dart';
 
 abstract class ContactBased<T extends HasUuid> extends AdditionalInfoBased<T> with HasName {
 
@@ -14,6 +19,15 @@ abstract class ContactBased<T extends HasUuid> extends AdditionalInfoBased<T> wi
   String? email;
 
   ContactBased();
+
+  factory ContactBased.contactBasedFromJson(Map<String, dynamic> json) {
+    var id = EntityId.fromJson(json['id']);
+    if (id.entityType == EntityType.TENANT) {
+      return Tenant.fromJson(json) as ContactBased<T>;
+    } else {
+      return Customer.fromJson(json) as ContactBased<T>;
+    }
+  }
 
   ContactBased.fromJson(Map<String, dynamic> json):
         country = json['country'],

@@ -1,7 +1,7 @@
+import 'entity_type_models.dart';
+import 'group_entity.dart';
+import 'id/has_uuid.dart';
 import 'relation_models.dart';
-import 'has_customer_id.dart';
-import 'has_name.dart';
-import 'has_tenant_id.dart';
 import 'id/customer_id.dart';
 import 'id/entity_id.dart';
 import 'id/entity_view_id.dart';
@@ -56,7 +56,7 @@ class TelemetryEntityView {
 
 }
 
-class EntityView extends AdditionalInfoBased<EntityViewId> with HasName, HasTenantId, HasCustomerId {
+class EntityView extends AdditionalInfoBased<EntityViewId> implements GroupEntity<EntityViewId> {
 
   TenantId? tenantId;
   CustomerId? customerId;
@@ -118,6 +118,25 @@ class EntityView extends AdditionalInfoBased<EntityViewId> with HasName, HasTena
   }
 
   @override
+  EntityType getEntityType() {
+    return EntityType.ENTITY_VIEW;
+  }
+
+  @override
+  EntityId? getOwnerId() {
+    return customerId != null && !customerId!.isNullUid() ? customerId : tenantId;
+  }
+
+  @override
+  void setOwnerId(EntityId entityId) {
+    if (entityId.entityType == EntityType.CUSTOMER) {
+      customerId = CustomerId(entityId.id!);
+    } else {
+      customerId = CustomerId(nullUuid);
+    }
+  }
+
+  @override
   String toString() {
     return 'EntityView{${entityViewString()}}';
   }
@@ -125,22 +144,6 @@ class EntityView extends AdditionalInfoBased<EntityViewId> with HasName, HasTena
   String entityViewString([String? toStringBody]) {
     return '${additionalInfoBasedString('tenantId: $tenantId, customerId: $customerId, entityId: $entityId, name: $name, type: $type, '
         'keys: $keys, startTimeMs: $startTimeMs, endTimeMs: $endTimeMs${toStringBody != null ? ', ' + toStringBody : ''}')}';
-  }
-
-}
-
-class EntityViewInfo extends EntityView {
-  String? customerTitle;
-  bool? customerIsPublic;
-
-  EntityViewInfo.fromJson(Map<String, dynamic> json):
-        customerTitle = json['customerTitle'],
-        customerIsPublic = json['customerIsPublic'],
-        super.fromJson(json);
-
-  @override
-  String toString() {
-    return 'EntityViewInfo{${entityViewString('customerTitle: $customerTitle, customerIsPublic: $customerIsPublic')}}';
   }
 
 }

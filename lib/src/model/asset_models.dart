@@ -1,13 +1,14 @@
+import 'entity_type_models.dart';
+import 'id/entity_id.dart';
+import 'id/has_uuid.dart';
+import 'group_entity.dart';
 import 'relation_models.dart';
 import 'additional_info_based.dart';
-import 'has_customer_id.dart';
-import 'has_name.dart';
-import 'has_tenant_id.dart';
 import 'id/asset_id.dart';
 import 'id/customer_id.dart';
 import 'id/tenant_id.dart';
 
-class Asset extends AdditionalInfoBased<AssetId> with HasName, HasTenantId, HasCustomerId {
+class Asset extends AdditionalInfoBased<AssetId> implements GroupEntity<AssetId> {
 
   TenantId? tenantId;
   CustomerId? customerId;
@@ -58,6 +59,25 @@ class Asset extends AdditionalInfoBased<AssetId> with HasName, HasTenantId, HasC
   }
 
   @override
+  EntityType getEntityType() {
+    return EntityType.ASSET;
+  }
+
+  @override
+  EntityId? getOwnerId() {
+    return customerId != null && !customerId!.isNullUid() ? customerId : tenantId;
+  }
+
+  @override
+  void setOwnerId(EntityId entityId) {
+    if (entityId.entityType == EntityType.CUSTOMER) {
+      customerId = CustomerId(entityId.id!);
+    } else {
+      customerId = CustomerId(nullUuid);
+    }
+  }
+
+  @override
   String toString() {
     return 'Asset{${assetString()}}';
   }
@@ -65,22 +85,6 @@ class Asset extends AdditionalInfoBased<AssetId> with HasName, HasTenantId, HasC
   String assetString([String? toStringBody]) {
     return '${additionalInfoBasedString('tenantId: $tenantId, customerId: $customerId, name: $name, type: $type, '
         'label: $label${toStringBody != null ? ', ' + toStringBody : ''}')}';
-  }
-
-}
-
-class AssetInfo extends Asset {
-  String? customerTitle;
-  bool? customerIsPublic;
-
-  AssetInfo.fromJson(Map<String, dynamic> json):
-        customerTitle = json['customerTitle'],
-        customerIsPublic = json['customerIsPublic'],
-        super.fromJson(json);
-
-  @override
-  String toString() {
-    return 'AssetInfo{${assetString('customerTitle: $customerTitle, customerIsPublic: $customerIsPublic')}}';
   }
 
 }

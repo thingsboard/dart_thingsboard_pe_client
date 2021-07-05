@@ -1,7 +1,10 @@
+import '../model/id/entity_id.dart';
+import '../model/entity_type_models.dart';
+import '../model/page/page_link.dart';
+import '../http/http_utils.dart';
 import '../model/audit_log_models.dart';
 import '../model/page/page_data.dart';
-
-import '../../thingsboard_client.dart';
+import '../thingsboard_client_base.dart';
 
 PageData<AuditLog> parseAuditLogPageData(Map<String, dynamic> json) {
   return PageData.fromJson(json, (json) => AuditLog.fromJson(json));

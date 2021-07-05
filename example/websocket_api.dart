@@ -38,7 +38,7 @@ Future<void> simpleAttributesSubscriptionExample() async {
   device.additionalInfo = {'description': 'My test device!'};
   var savedDevice = await tbClient.getDeviceService().saveDevice(device);
   print('savedDevice: $savedDevice');
-  var foundDevice = await tbClient.getDeviceService().getDeviceInfo(savedDevice.id!.id!);
+  var foundDevice = await tbClient.getDeviceService().getDevice(savedDevice.id!.id!);
   print('foundDevice: $foundDevice');
 
   var telemetryService = tbClient.getTelemetryService();
@@ -78,7 +78,7 @@ Future<void> entityDataQuerySubscriptionExample() async {
   device.additionalInfo = {'description': 'My test device!'};
   var savedDevice = await tbClient.getDeviceService().saveDevice(device);
   print('savedDevice: $savedDevice');
-  var foundDevice = await tbClient.getDeviceService().getDeviceInfo(savedDevice.id!.id!);
+  var foundDevice = await tbClient.getDeviceService().getDevice(savedDevice.id!.id!);
   print('foundDevice: $foundDevice');
 
   var entityFilter = SingleEntityFilter(singleEntity: foundDevice!.id!);

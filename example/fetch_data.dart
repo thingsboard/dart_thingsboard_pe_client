@@ -54,30 +54,36 @@ Future<void> onUserLoaded() async {
       if (tbClient.isSystemAdmin()) {
         await fetchSettingsExample();
         await fetchTenantsExample();
+        await fetchWhiteLabelingParamsExample();
       } else if (tbClient.isTenantAdmin()) {
         await fetchUsersExample();
         await fetchDeviceProfilesExample();
         await fetchDeviceProfileInfosExample();
-        await fetchTenantAssetsExample();
-        await fetchTenantDevicesExample();
-        await fetchCustomersExample();
+        await fetchUserAssetsExample();
+        await fetchUserDevicesExample();
+        await fetchUserCustomersExample();
         await fetchDashboardParametersExample();
-        await fetchTenantDashboardsExample();
+        await fetchUserDashboardsExample();
         await fetchAlarmsExample();
         await countEntitiesExample();
         await queryEntitiesExample();
         await fetchAuditLogsExample();
         await fetchResourcesExample();
         await fetchOtaPackagesExample();
+        await fetchRolesExample();
+        await fetchWhiteLabelingParamsExample();
       } else if (tbClient.isCustomerUser()) {
         await fetchUsersExample();
         await fetchDeviceProfileInfosExample();
-        await fetchCustomerAssetsExample();
-        await fetchCustomerDevicesExample();
-        await fetchCustomerDashboardsExample();
+        await fetchUserAssetsExample();
+        await fetchUserDevicesExample();
+        await fetchUserCustomersExample();
+        await fetchUserDashboardsExample();
         await fetchAlarmsExample();
         await countEntitiesExample();
         await queryEntitiesExample();
+        await fetchRolesExample();
+        await fetchWhiteLabelingParamsExample();
       }
       await tbClient.logout(requestConfig: RequestConfig(ignoreLoading: true, ignoreErrors: true));
     } else {
@@ -168,7 +174,7 @@ Future<void> fetchUsersExample() async {
   var pageLink = PageLink(10);
   PageData<User> users;
   do {
-    users = await tbClient.getUserService().getUsers(pageLink);
+    users = await tbClient.getUserService().getUserUsers(pageLink);
     print('users: $users');
     pageLink = pageLink.nextPageLink();
   } while(users.hasNext);
@@ -176,32 +182,32 @@ Future<void> fetchUsersExample() async {
   print('**********************************************************************');
 }
 
-Future<void> fetchTenantAssetsExample() async {
+Future<void> fetchUserAssetsExample() async {
 
   print('**********************************************************************');
-  print('*                  FETCH TENANT ASSETS EXAMPLE                       *');
+  print('*                  FETCH USER ASSETS EXAMPLE                         *');
   print('**********************************************************************');
 
   var pageLink = PageLink(10);
-  PageData<AssetInfo> assets;
+  PageData<Asset> assets;
   do {
-    assets = await tbClient.getAssetService().getTenantAssetInfos(pageLink);
+    assets = await tbClient.getAssetService().getUserAssets(pageLink);
     print('assets: $assets');
     pageLink = pageLink.nextPageLink();
   } while(assets.hasNext);
   print('**********************************************************************');
 }
 
-Future<void> fetchTenantDevicesExample() async {
+Future<void> fetchUserDevicesExample() async {
 
   print('**********************************************************************');
-  print('*                 FETCH TENANT DEVICES EXAMPLE                        *');
+  print('*                 FETCH USER DEVICES EXAMPLE                         *');
   print('**********************************************************************');
 
   var pageLink = PageLink(10);
-  PageData<DeviceInfo> devices;
+  PageData<Device> devices;
   do {
-    devices = await tbClient.getDeviceService().getTenantDeviceInfos(pageLink);
+    devices = await tbClient.getDeviceService().getUserDevices(pageLink);
     print('devices: $devices');
     pageLink = pageLink.nextPageLink();
   } while(devices.hasNext);
@@ -241,31 +247,31 @@ Future<void> fetchDeviceProfileInfosExample() async {
   print('**********************************************************************');
 }
 
-Future<void> fetchCustomersExample() async {
+Future<void> fetchUserCustomersExample() async {
 
   print('**********************************************************************');
-  print('*                 FETCH CUSTOMERS EXAMPLE                            *');
+  print('*                 FETCH USER CUSTOMERS EXAMPLE                       *');
   print('**********************************************************************');
 
   var pageLink = PageLink(10);
   PageData<Customer> customers;
   do {
-    customers = await tbClient.getCustomerService().getCustomers(pageLink);
+    customers = await tbClient.getCustomerService().getUserCustomers(pageLink);
     print('customers: $customers');
     pageLink = pageLink.nextPageLink();
   } while(customers.hasNext);
   print('**********************************************************************');
 }
 
-Future<void> fetchTenantDashboardsExample() async {
+Future<void> fetchUserDashboardsExample() async {
   print('**********************************************************************');
-  print('*                 FETCH TENANT DASHBOARDS EXAMPLE                    *');
+  print('*                 FETCH USER DASHBOARDS EXAMPLE                      *');
   print('**********************************************************************');
 
   var pageLink = PageLink(10);
   PageData<DashboardInfo> dashboards;
   do {
-    dashboards = await tbClient.getDashboardService().getTenantDashboards(pageLink);
+    dashboards = await tbClient.getDashboardService().getUserDashboards(pageLink);
     print('dashboards: $dashboards');
     pageLink = pageLink.nextPageLink();
   } while(dashboards.hasNext);
@@ -446,46 +452,29 @@ Future<void> fetchOtaPackagesExample() async {
   print('**********************************************************************');
 }
 
-Future<void> fetchCustomerAssetsExample() async {
+Future<void> fetchRolesExample() async {
   print('**********************************************************************');
-  print('*               FETCH CUSTOMER ASSETS EXAMPLE                        *');
-  print('**********************************************************************');
-
-  var pageLink = PageLink(10);
-  PageData<AssetInfo> assets;
-  do {
-    assets = await tbClient.getAssetService().getCustomerAssetInfos(tbClient.getAuthUser()!.customerId, pageLink);
-    print('assets: $assets');
-    pageLink = pageLink.nextPageLink();
-  } while(assets.hasNext);
-  print('**********************************************************************');
-}
-
-Future<void> fetchCustomerDevicesExample() async {
-  print('**********************************************************************');
-  print('*               FETCH CUSTOMER DEVICES EXAMPLE                       *');
+  print('*                       FETCH ROLES EXAMPLE                          *');
   print('**********************************************************************');
 
   var pageLink = PageLink(10);
-  PageData<DeviceInfo> devices;
+  PageData<Role> roles;
   do {
-    devices = await tbClient.getDeviceService().getCustomerDeviceInfos(tbClient.getAuthUser()!.customerId, pageLink);
-    print('devices: $devices');
+    roles = await tbClient.getRoleService().getRoles(pageLink);
+    print('roles: $roles');
     pageLink = pageLink.nextPageLink();
-  } while(devices.hasNext);
+  } while(roles.hasNext);
   print('**********************************************************************');
 }
 
-Future<void> fetchCustomerDashboardsExample() async {
+Future<void> fetchWhiteLabelingParamsExample() async {
   print('**********************************************************************');
-  print('*               FETCH CUSTOMER DASHBOARDS EXAMPLE                    *');
+  print('*               FETCH WHITE-LABELING PARAMS EXAMPLE                  *');
   print('**********************************************************************');
-  var pageLink = PageLink(10);
-  PageData<DashboardInfo> dashboards;
-  do {
-    dashboards = await tbClient.getDashboardService().getCustomerDashboards(tbClient.getAuthUser()!.customerId, pageLink);
-    print('dashboards: $dashboards');
-    pageLink = pageLink.nextPageLink();
-  } while(dashboards.hasNext);
+
+  var whiteLabelingParams = await tbClient.getWhiteLabelingService().getWhiteLabelParams();
+  print('whiteLabelingParams: $whiteLabelingParams');
+
   print('**********************************************************************');
 }
+

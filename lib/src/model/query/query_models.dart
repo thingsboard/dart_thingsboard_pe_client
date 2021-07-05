@@ -8,9 +8,14 @@ import '../telemetry_models.dart';
 
 enum EntityFilterType {
   SINGLE_ENTITY,
+  ENTITY_GROUP,
   ENTITY_LIST,
   ENTITY_NAME,
   ENTITY_TYPE,
+  ENTITY_GROUP_LIST,
+  ENTITY_GROUP_NAME,
+  ENTITIES_BY_GROUP_NAME,
+  STATE_ENTITY_OWNER,
   ASSET_TYPE,
   DEVICE_TYPE,
   ENTITY_VIEW_TYPE,
@@ -25,9 +30,14 @@ enum EntityFilterType {
 
 const Map<EntityFilterType, String> entityFilterTypeToStringMap = {
   EntityFilterType.SINGLE_ENTITY: 'singleEntity',
+  EntityFilterType.ENTITY_GROUP: 'entityGroup',
   EntityFilterType.ENTITY_LIST: 'entityList',
   EntityFilterType.ENTITY_NAME: 'entityName',
   EntityFilterType.ENTITY_TYPE: 'entityType',
+  EntityFilterType.ENTITY_GROUP_LIST: 'entityGroupList',
+  EntityFilterType.ENTITY_GROUP_NAME: 'entityGroupName',
+  EntityFilterType.ENTITIES_BY_GROUP_NAME: 'entitiesByGroupName',
+  EntityFilterType.STATE_ENTITY_OWNER: 'stateEntityOwner',
   EntityFilterType.ASSET_TYPE: 'assetType',
   EntityFilterType.DEVICE_TYPE: 'deviceType',
   EntityFilterType.ENTITY_VIEW_TYPE: 'entityViewType',
@@ -83,6 +93,31 @@ class SingleEntityFilter extends EntityFilter {
   @override
   String toString() {
     return 'SingleEntityFilter{singleEntity: $singleEntity}';
+  }
+}
+
+class EntityGroupFilter extends EntityFilter {
+  EntityType entityType;
+  String entityGroup;
+
+  EntityGroupFilter({required this.entityType, required this.entityGroup});
+
+  @override
+  EntityFilterType getType() {
+    return EntityFilterType.ENTITY_GROUP;
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    var json = super.toJson();
+    json['entityType'] = entityType.toShortString();
+    json['entityGroup'] = entityGroup;
+    return json;
+  }
+
+  @override
+  String toString() {
+    return 'EntityGroupFilter{entityType: $entityType, entityGroup: $entityGroup}';
   }
 }
 
@@ -156,6 +191,106 @@ class EntityTypeFilter extends EntityFilter {
   @override
   String toString() {
     return 'EntityTypeFilter{entityType: $entityType}';
+  }
+}
+
+class EntityGroupListFilter extends EntityFilter {
+  EntityType groupType;
+  List<String> entityGroupList;
+
+  EntityGroupListFilter({required this.groupType, required this.entityGroupList});
+
+  @override
+  EntityFilterType getType() {
+    return EntityFilterType.ENTITY_GROUP_LIST;
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    var json = super.toJson();
+    json['groupType'] = groupType.toShortString();
+    json['entityGroupList'] = entityGroupList;
+    return json;
+  }
+
+  @override
+  String toString() {
+    return 'EntityGroupListFilter{groupType: $groupType, entityGroupList: $entityGroupList}';
+  }
+}
+
+class EntityGroupNameFilter extends EntityFilter {
+  EntityType groupType;
+  String entityGroupNameFilter;
+
+  EntityGroupNameFilter({required this.groupType, required this.entityGroupNameFilter});
+
+  @override
+  EntityFilterType getType() {
+    return EntityFilterType.ENTITY_GROUP_NAME;
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    var json = super.toJson();
+    json['groupType'] = groupType.toShortString();
+    json['entityGroupNameFilter'] = entityGroupNameFilter;
+    return json;
+  }
+
+  @override
+  String toString() {
+    return 'EntityGroupNameFilter{groupType: $groupType, entityGroupNameFilter: $entityGroupNameFilter}';
+  }
+}
+
+class EntitiesByGroupNameFilter extends EntityFilter {
+  EntityType groupType;
+  EntityId ownerId;
+  String entityGroupNameFilter;
+
+  EntitiesByGroupNameFilter({required this.groupType, required this.ownerId, required this.entityGroupNameFilter});
+
+  @override
+  EntityFilterType getType() {
+    return EntityFilterType.ENTITIES_BY_GROUP_NAME;
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    var json = super.toJson();
+    json['groupType'] = groupType.toShortString();
+    json['ownerId'] = ownerId.toJson();
+    json['entityGroupNameFilter'] = entityGroupNameFilter;
+    return json;
+  }
+
+  @override
+  String toString() {
+    return 'EntitiesByGroupNameFilter{groupType: $groupType, ownerId: $ownerId, entityGroupNameFilter: $entityGroupNameFilter}';
+  }
+}
+
+class StateEntityOwnerFilter extends EntityFilter {
+  EntityId singleEntity;
+
+  StateEntityOwnerFilter({required this.singleEntity});
+
+  @override
+  EntityFilterType getType() {
+    return EntityFilterType.STATE_ENTITY_OWNER;
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    var json = super.toJson();
+    json['singleEntity'] = singleEntity.toJson();
+    return json;
+  }
+
+  @override
+  String toString() {
+    return 'StateEntityOwnerFilter{singleEntity: $singleEntity}';
   }
 }
 

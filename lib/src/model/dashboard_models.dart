@@ -2,14 +2,18 @@ import 'dart:math';
 
 import 'customer_models.dart';
 import 'base_data.dart';
+import 'entity_type_models.dart';
+import 'group_entity.dart';
+import 'id/customer_id.dart';
+import 'id/entity_id.dart';
+import 'id/has_uuid.dart';
 import 'id/tenant_id.dart';
-import 'has_name.dart';
-import 'has_tenant_id.dart';
 import 'id/dashboard_id.dart';
 
-class DashboardInfo extends BaseData<DashboardId> with HasName, HasTenantId {
+class DashboardInfo extends BaseData<DashboardId> implements GroupEntity<DashboardId> {
 
   TenantId? tenantId;
+  CustomerId? customerId;
   String title;
   String? image;
   Set<ShortCustomerInfo> assignedCustomers;
@@ -18,6 +22,7 @@ class DashboardInfo extends BaseData<DashboardId> with HasName, HasTenantId {
 
   DashboardInfo.fromJson(Map<String, dynamic> json):
         tenantId = TenantId.fromJson(json['tenantId']),
+        customerId = json['customerId'] != null ? CustomerId.fromJson(json['customerId']) : null,
         title = json['title'],
         image = json['image'],
         assignedCustomers = json['assignedCustomers'] != null ?
@@ -29,6 +34,9 @@ class DashboardInfo extends BaseData<DashboardId> with HasName, HasTenantId {
     var json = super.toJson();
     if (tenantId != null) {
       json['tenantId'] = tenantId!.toJson();
+    }
+    if (customerId != null) {
+      json['customerId'] = customerId!.toJson();
     }
     json['title'] = title;
     if (image != null) {
@@ -49,12 +57,36 @@ class DashboardInfo extends BaseData<DashboardId> with HasName, HasTenantId {
   }
 
   @override
+  CustomerId? getCustomerId() {
+    return customerId;
+  }
+
+  @override
+  EntityType getEntityType() {
+    return EntityType.DASHBOARD;
+  }
+
+  @override
+  EntityId? getOwnerId() {
+    return customerId != null && !customerId!.isNullUid() ? customerId : tenantId;
+  }
+
+  @override
+  void setOwnerId(EntityId entityId) {
+    if (entityId.entityType == EntityType.CUSTOMER) {
+      customerId = CustomerId(entityId.id!);
+    } else {
+      customerId = CustomerId(nullUuid);
+    }
+  }
+
+  @override
   String toString() {
     return 'DashboardInfo{${dashboardInfoString()}}';
   }
 
   String dashboardInfoString([String? toStringBody]) {
-    return '${baseDataString('tenantId: $tenantId, title: $title, image: ${image != null ? '['+image!.substring(0, min(30, image!.length)) + '...]' : 'null'}, assignedCustomers: $assignedCustomers${toStringBody != null ? ', ' + toStringBody : ''}')}';
+    return '${baseDataString('tenantId: $tenantId, customerId: $customerId, title: $title, image: ${image != null ? '['+image!.substring(0, min(30, image!.length)) + '...]' : 'null'}${toStringBody != null ? ', ' + toStringBody : ''}')}';
   }
 }
 

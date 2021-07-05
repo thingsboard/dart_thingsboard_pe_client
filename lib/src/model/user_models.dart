@@ -1,5 +1,9 @@
 import 'additional_info_based.dart';
+import 'entity_type_models.dart';
+import 'group_entity.dart';
 import 'id/customer_id.dart';
+import 'id/entity_id.dart';
+import 'id/has_uuid.dart';
 import 'id/tenant_id.dart';
 
 import 'authority_enum.dart';
@@ -55,7 +59,7 @@ class AuthUser {
   }
 }
 
-class User extends AdditionalInfoBased<UserId> with HasName, HasTenantId, HasCustomerId {
+class User extends AdditionalInfoBased<UserId> implements GroupEntity<UserId> {
 
   TenantId? tenantId;
   CustomerId? customerId;
@@ -110,6 +114,24 @@ class User extends AdditionalInfoBased<UserId> with HasName, HasTenantId, HasCus
     return customerId;
   }
 
+  @override
+  EntityType getEntityType() {
+    return EntityType.USER;
+  }
+
+  @override
+  EntityId? getOwnerId() {
+    return customerId != null && !customerId!.isNullUid() ? customerId : tenantId;
+  }
+
+  @override
+  void setOwnerId(EntityId entityId) {
+    if (entityId.entityType == EntityType.CUSTOMER) {
+      customerId = CustomerId(entityId.id!);
+    } else {
+      customerId = CustomerId(nullUuid);
+    }
+  }
 
   bool isSystemAdmin() {
     return authority == Authority.SYS_ADMIN;

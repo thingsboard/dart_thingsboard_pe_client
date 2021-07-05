@@ -57,6 +57,22 @@ class ThingsboardClient {
   ResourceService? _resourceService;
   OtaPackageService? _otaPackageService;
   TelemetryWebsocketService? _telemetryWebsocketService;
+  BlobEntityService? _blobEntityService;
+  ConverterService? _converterService;
+  CustomMenuService? _customMenuService;
+  CustomTranslationService? _customTranslationService;
+  EntityGroupService? _entityGroupService;
+  GroupPermissionService? _groupPermissionService;
+  RoleService? _roleService;
+  IntegrationService? _integrationService;
+  OwnerService? _ownerService;
+  ReportService? _reportService;
+  RuleEngineService? _ruleEngineService;
+  SchedulerEventService? _schedulerEventService;
+  SelfRegistrationService? _selfRegistrationService;
+  SignupService? _signupService;
+  UserPermissionsService? _userPermissionsService;
+  WhiteLabelingService? _whiteLabelingService;
 
   factory ThingsboardClient(String apiEndpoint, {TbStorage? storage, UserLoadedCallback? onUserLoaded,
                                                  ErrorCallback? onError, LoadStartedCallback? onLoadStarted,
@@ -465,6 +481,86 @@ class ThingsboardClient {
   TelemetryService getTelemetryService() {
     _telemetryWebsocketService ??= TelemetryWebsocketService(this, _apiEndpoint);
     return _telemetryWebsocketService!;
+  }
+
+  BlobEntityService getBlobEntityService() {
+    _blobEntityService ??= BlobEntityService(this);
+    return _blobEntityService!;
+  }
+
+  ConverterService getConverterService() {
+    _converterService ??= ConverterService(this);
+    return _converterService!;
+  }
+
+  CustomMenuService getCustomMenuService() {
+    _customMenuService ??= CustomMenuService(this);
+    return _customMenuService!;
+  }
+
+  CustomTranslationService getCustomTranslationService() {
+    _customTranslationService ??= CustomTranslationService(this);
+    return _customTranslationService!;
+  }
+
+  EntityGroupService getEntityGroupService() {
+    _entityGroupService ??= EntityGroupService(this);
+    return _entityGroupService!;
+  }
+
+  GroupPermissionService getGroupPermissionService() {
+    _groupPermissionService ??= GroupPermissionService(this);
+    return _groupPermissionService!;
+  }
+
+  RoleService getRoleService() {
+    _roleService ??= RoleService(this);
+    return _roleService!;
+  }
+
+  IntegrationService getIntegrationService() {
+    _integrationService ??= IntegrationService(this);
+    return _integrationService!;
+  }
+
+  OwnerService getOwnerService() {
+    _ownerService ??= OwnerService(this);
+    return _ownerService!;
+  }
+
+  ReportService getReportService() {
+    _reportService ??= ReportService(this);
+    return _reportService!;
+  }
+
+  RuleEngineService getRuleEngineService() {
+    _ruleEngineService ??= RuleEngineService(this);
+    return _ruleEngineService!;
+  }
+
+  SchedulerEventService getSchedulerEventService() {
+    _schedulerEventService ??= SchedulerEventService(this);
+    return _schedulerEventService!;
+  }
+
+  SelfRegistrationService getSelfRegistrationService() {
+    _selfRegistrationService ??= SelfRegistrationService(this);
+    return _selfRegistrationService!;
+  }
+
+  SignupService getSignupService() {
+    _signupService ??= SignupService(this);
+    return _signupService!;
+  }
+
+  UserPermissionsService getUserPermissionsService() {
+    _userPermissionsService ??= UserPermissionsService(this);
+    return _userPermissionsService!;
+  }
+
+  WhiteLabelingService getWhiteLabelingService() {
+    _whiteLabelingService ??= WhiteLabelingService(this);
+    return _whiteLabelingService!;
   }
 
 }

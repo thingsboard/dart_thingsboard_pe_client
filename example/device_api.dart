@@ -34,7 +34,7 @@ Future<void> deviceApiExample() async {
   device.additionalInfo = {'description': 'My test device!'};
   var savedDevice = await tbClient.getDeviceService().saveDevice(device);
   print('savedDevice: $savedDevice');
-  var foundDevice = await tbClient.getDeviceService().getDeviceInfo(savedDevice.id!.id!);
+  var foundDevice = await tbClient.getDeviceService().getDevice(savedDevice.id!.id!);
   print('foundDevice: $foundDevice');
   var res = await tbClient.getAttributeService().saveEntityAttributesV2(foundDevice!.id!, AttributeScope.SHARED_SCOPE.toShortString(), {
     'targetTemperature': 22.4,
@@ -45,7 +45,7 @@ Future<void> deviceApiExample() async {
   print('Found device attributes: $attributes');
 
   await tbClient.getDeviceService().deleteDevice(savedDevice.id!.id!);
-  foundDevice = await tbClient.getDeviceService().getDeviceInfo(savedDevice.id!.id!);
+  foundDevice = await tbClient.getDeviceService().getDevice(savedDevice.id!.id!);
   print('foundDevice: $foundDevice');
   print('**********************************************************************');
 }

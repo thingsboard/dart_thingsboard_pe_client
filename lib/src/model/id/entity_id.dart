@@ -1,3 +1,10 @@
+import 'blob_entity_id.dart';
+import 'converter_id.dart';
+import 'entity_group_id.dart';
+import 'group_permission_id.dart';
+import 'integration_id.dart';
+import 'role_id.dart';
+import 'scheduler_event_id.dart';
 import 'ota_package_id.dart';
 import 'alarm_id.dart';
 import 'api_usage_state_id.dart';
@@ -74,6 +81,20 @@ abstract class EntityId extends HasUuid {
         return TbResourceId(uuid);
       case EntityType.OTA_PACKAGE:
         return OtaPackageId(uuid);
+      case EntityType.ENTITY_GROUP:
+        return EntityGroupId(uuid);
+      case EntityType.CONVERTER:
+        return ConverterId(uuid);
+      case EntityType.INTEGRATION:
+        return IntegrationId(uuid);
+      case EntityType.SCHEDULER_EVENT:
+        return SchedulerEventId(uuid);
+      case EntityType.BLOB_ENTITY:
+        return BlobEntityId(uuid);
+      case EntityType.ROLE:
+        return RoleId(uuid);
+      case EntityType.GROUP_PERMISSION:
+        return GroupPermissionId(uuid);
     }
   }
 

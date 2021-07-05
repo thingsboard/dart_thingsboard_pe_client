@@ -1,16 +1,17 @@
 import 'base_data.dart';
+import 'entity_type_models.dart';
+import 'group_entity.dart';
 import 'id/edge_event_id.dart';
+import 'id/entity_id.dart';
+import 'id/has_uuid.dart';
 import 'relation_models.dart';
-import 'has_customer_id.dart';
-import 'has_name.dart';
-import 'has_tenant_id.dart';
 import 'id/customer_id.dart';
 import 'id/edge_id.dart';
 import 'additional_info_based.dart';
 import 'id/rule_chain_id.dart';
 import 'id/tenant_id.dart';
 
-class Edge extends AdditionalInfoBased<EdgeId> with HasName, HasTenantId, HasCustomerId {
+class Edge extends AdditionalInfoBased<EdgeId> implements GroupEntity<EdgeId> {
 
   TenantId? tenantId;
   CustomerId? customerId;
@@ -74,6 +75,25 @@ class Edge extends AdditionalInfoBased<EdgeId> with HasName, HasTenantId, HasCus
   }
 
   @override
+  EntityType getEntityType() {
+    return EntityType.EDGE;
+  }
+
+  @override
+  EntityId? getOwnerId() {
+    return customerId != null && !customerId!.isNullUid() ? customerId : tenantId;
+  }
+
+  @override
+  void setOwnerId(EntityId entityId) {
+    if (entityId.entityType == EntityType.CUSTOMER) {
+      customerId = CustomerId(entityId.id!);
+    } else {
+      customerId = CustomerId(nullUuid);
+    }
+  }
+
+  @override
   String toString() {
     return 'Edge{${edgeString()}}';
   }
@@ -82,22 +102,6 @@ class Edge extends AdditionalInfoBased<EdgeId> with HasName, HasTenantId, HasCus
     return '${additionalInfoBasedString('tenantId: $tenantId, customerId: $customerId, name: $name, type: $type, '
         'label: $label, routingKey: $routingKey, secret: $secret, edgeLicenseKey: $edgeLicenseKey, '
         'cloudEndpoint: $cloudEndpoint${toStringBody != null ? ', ' + toStringBody : ''}')}';
-  }
-
-}
-
-class EdgeInfo extends Edge {
-  String? customerTitle;
-  bool? customerIsPublic;
-
-  EdgeInfo.fromJson(Map<String, dynamic> json):
-        customerTitle = json['customerTitle'],
-        customerIsPublic = json['customerIsPublic'],
-        super.fromJson(json);
-
-  @override
-  String toString() {
-    return 'EdgeInfo{${edgeString('customerTitle: $customerTitle, customerIsPublic: $customerIsPublic')}}';
   }
 
 }
@@ -134,8 +138,6 @@ enum EdgeEventActionType {
   ATTRIBUTES_DELETED,
   TIMESERIES_UPDATED,
   CREDENTIALS_UPDATED,
-  ASSIGNED_TO_CUSTOMER,
-  UNASSIGNED_FROM_CUSTOMER,
   RELATION_ADD_OR_UPDATE,
   RELATION_DELETED,
   RPC_CALL,
@@ -144,7 +146,11 @@ enum EdgeEventActionType {
   ASSIGNED_TO_EDGE,
   UNASSIGNED_FROM_EDGE,
   CREDENTIALS_REQUEST,
-  ENTITY_MERGE_REQUEST
+  ENTITY_MERGE_REQUEST,
+  ADDED_TO_ENTITY_GROUP,
+  REMOVED_FROM_ENTITY_GROUP,
+  CHANGE_OWNER,
+  RELATIONS_DELETED
 }
 
 EdgeEventActionType edgeEventActionTypeFromString(String value) {
@@ -173,7 +179,14 @@ enum EdgeEventType {
   TENANT,
   WIDGETS_BUNDLE,
   WIDGET_TYPE,
-  ADMIN_SETTINGS
+  ENTITY_GROUP,
+  SCHEDULER_EVENT,
+  WHITE_LABELING,
+  LOGIN_WHITE_LABELING,
+  CUSTOM_TRANSLATION,
+  ADMIN_SETTINGS,
+  ROLE,
+  GROUP_PERMISSION
 }
 
 EdgeEventType edgeEventTypeFromString(String value) {

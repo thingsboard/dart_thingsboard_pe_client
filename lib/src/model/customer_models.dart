@@ -1,18 +1,22 @@
-import 'has_customer_id.dart';
-import 'has_tenant_id.dart';
+import 'entity_type_models.dart';
+import 'group_entity.dart';
 import 'id/customer_id.dart';
+import 'id/entity_id.dart';
+import 'id/has_uuid.dart';
 import 'id/tenant_id.dart';
 import 'contact_based_model.dart';
 
-class Customer extends ContactBased<CustomerId> with HasTenantId, HasCustomerId {
+class Customer extends ContactBased<CustomerId> implements GroupEntity<CustomerId> {
 
   TenantId? tenantId;
+  CustomerId? parentCustomerId;
   String title;
 
   Customer(this.title);
 
   Customer.fromJson(Map<String, dynamic> json):
         tenantId = TenantId.fromJson(json['tenantId']),
+        parentCustomerId = json['parentCustomerId'] != null ? CustomerId.fromJson(json['parentCustomerId']) : null,
         title = json['title'],
         super.fromJson(json);
 
@@ -21,6 +25,9 @@ class Customer extends ContactBased<CustomerId> with HasTenantId, HasCustomerId 
     var json = super.toJson();
     if (tenantId != null) {
       json['tenantId'] = tenantId!.toJson();
+    }
+    if (parentCustomerId != null) {
+      json['parentCustomerId'] = parentCustomerId!.toJson();
     }
     json['title'] = title;
     return json;
@@ -38,12 +45,33 @@ class Customer extends ContactBased<CustomerId> with HasTenantId, HasCustomerId 
 
   @override
   CustomerId? getCustomerId() {
-    return id;
+    return parentCustomerId;
   }
 
   @override
+  EntityType getEntityType() {
+    return EntityType.CUSTOMER;
+  }
+
+  @override
+  EntityId? getOwnerId() {
+    return parentCustomerId != null && !parentCustomerId!.isNullUid() ? parentCustomerId : tenantId;
+  }
+
+  @override
+  void setOwnerId(EntityId entityId) {
+    if (entityId.entityType == EntityType.CUSTOMER) {
+      parentCustomerId = CustomerId(entityId.id!);
+    } else {
+      parentCustomerId = CustomerId(nullUuid);
+    }
+  }
+
+  bool isSubCustomer() => parentCustomerId != null && !parentCustomerId!.isNullUid();
+
+  @override
   String toString() {
-    return 'Customer{${contactBasedString('tenantId: $tenantId, title: $title')}}';
+    return 'Customer{${contactBasedString('tenantId: $tenantId, parentCustomerId: $parentCustomerId, title: $title')}}';
   }
 
 }

@@ -6,10 +6,6 @@ import '../thingsboard_client_base.dart';
 import '../http/http_utils.dart';
 import '../model/model.dart';
 
-PageData<EdgeInfo> parseEdgeInfoPageData(Map<String, dynamic> json) {
-  return PageData.fromJson(json, (json) => EdgeInfo.fromJson(json));
-}
-
 PageData<Edge> parseEdgePageData(Map<String, dynamic> json) {
   return PageData.fromJson(json, (json) => Edge.fromJson(json));
 }
@@ -44,17 +40,6 @@ class EdgeService {
     );
   }
 
-  Future<EdgeInfo?> getEdgeInfo(String edgeId, {RequestConfig? requestConfig}) async {
-    return nullIfNotFound(
-          (RequestConfig requestConfig) async {
-        var response = await _tbClient.get<Map<String, dynamic>>('/api/edge/info/$edgeId',
-            options: defaultHttpOptionsFromConfig(requestConfig));
-        return response.data != null ? EdgeInfo.fromJson(response.data!) : null;
-      },
-      requestConfig: requestConfig,
-    );
-  }
-
   Future<Edge> saveEdge(Edge edge, {RequestConfig? requestConfig}) async {
     var response = await _tbClient.post<Map<String, dynamic>>('/api/edge', data: jsonEncode(edge),
         options: defaultHttpOptionsFromConfig(requestConfig));
@@ -73,64 +58,12 @@ class EdgeService {
     return _tbClient.compute(parseEdgePageData, response.data!);
   }
 
-  Future<Edge?> assignEdgeToCustomer(String customerId, String edgeId, {RequestConfig? requestConfig}) async {
-    return nullIfNotFound(
-          (RequestConfig requestConfig) async {
-        var response = await _tbClient.post<Map<String, dynamic>>('/api/customer/$customerId/edge/$edgeId',
-            options: defaultHttpOptionsFromConfig(requestConfig));
-        return response.data != null ? Edge.fromJson(response.data!) : null;
-      },
-      requestConfig: requestConfig,
-    );
-  }
-
-  Future<Edge?> unassignEdgeFromCustomer(String edgeId, {RequestConfig? requestConfig}) async {
-    return nullIfNotFound(
-          (RequestConfig requestConfig) async {
-        var response = await _tbClient.delete<Map<String, dynamic>>('/api/customer/edge/$edgeId',
-            options: defaultHttpOptionsFromConfig(requestConfig));
-        return response.data != null ? Edge.fromJson(response.data!) : null;
-      },
-      requestConfig: requestConfig,
-    );
-  }
-
-  Future<Edge?> assignAssetToPublicCustomer(String edgeId, {RequestConfig? requestConfig}) async {
-    return nullIfNotFound(
-          (RequestConfig requestConfig) async {
-        var response = await _tbClient.post<Map<String, dynamic>>('/api/customer/public/edge/$edgeId',
-            options: defaultHttpOptionsFromConfig(requestConfig));
-        return response.data != null ? Edge.fromJson(response.data!) : null;
-      },
-      requestConfig: requestConfig,
-    );
-  }
-
   Future<PageData<Edge>> getTenantEdges(PageLink pageLink,  {String type = '', RequestConfig? requestConfig}) async {
     var queryParams = pageLink.toQueryParameters();
     queryParams['type'] = type;
     var response = await _tbClient.get<Map<String, dynamic>>('/api/tenant/edges', queryParameters: queryParams,
         options: defaultHttpOptionsFromConfig(requestConfig));
     return _tbClient.compute(parseEdgePageData, response.data!);
-  }
-
-  Future<PageData<EdgeInfo>> getTenantEdgeInfos(PageLink pageLink,  {String type = '', RequestConfig? requestConfig}) async {
-    var queryParams = pageLink.toQueryParameters();
-    queryParams['type'] = type;
-    var response = await _tbClient.get<Map<String, dynamic>>('/api/tenant/edgeInfos', queryParameters: queryParams,
-        options: defaultHttpOptionsFromConfig(requestConfig));
-    return _tbClient.compute(parseEdgeInfoPageData, response.data!);
-  }
-
-  Future<Edge?> getTenantEdge(String edgeName, {RequestConfig? requestConfig}) async {
-    return nullIfNotFound(
-          (RequestConfig requestConfig) async {
-        var response = await _tbClient.get<Map<String, dynamic>>('/api/tenant/edges', queryParameters: {'edgeName': edgeName},
-            options: defaultHttpOptionsFromConfig(requestConfig));
-        return response.data != null ? Edge.fromJson(response.data!) : null;
-      },
-      requestConfig: requestConfig,
-    );
   }
 
   Future<Edge?> setRootRuleChain(String edgeId, String ruleChainId, {RequestConfig? requestConfig}) async {
@@ -142,22 +75,6 @@ class EdgeService {
       },
       requestConfig: requestConfig,
     );
-  }
-
-  Future<PageData<Edge>> getCustomerEdges(String customerId, PageLink pageLink,  {String type = '', RequestConfig? requestConfig}) async {
-    var queryParams = pageLink.toQueryParameters();
-    queryParams['type'] = type;
-    var response = await _tbClient.get<Map<String, dynamic>>('/api/customer/$customerId/edges', queryParameters: queryParams,
-        options: defaultHttpOptionsFromConfig(requestConfig));
-    return _tbClient.compute(parseEdgePageData, response.data!);
-  }
-
-  Future<PageData<EdgeInfo>> getCustomerEdgeInfos(String customerId, PageLink pageLink,  {String type = '', RequestConfig? requestConfig}) async {
-    var queryParams = pageLink.toQueryParameters();
-    queryParams['type'] = type;
-    var response = await _tbClient.get<Map<String, dynamic>>('/api/customer/$customerId/edgeInfos', queryParameters: queryParams,
-        options: defaultHttpOptionsFromConfig(requestConfig));
-    return _tbClient.compute(parseEdgeInfoPageData, response.data!);
   }
 
   Future<List<Edge>> getEdgesByIds(List<String> edgeIds, {RequestConfig? requestConfig}) async {

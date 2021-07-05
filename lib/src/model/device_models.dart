@@ -1,5 +1,8 @@
 import 'dart:math';
 
+import 'entity_type_models.dart';
+import 'group_entity.dart';
+import 'id/has_uuid.dart';
 import 'relation_models.dart';
 import 'id/device_credentials_id.dart';
 import 'entity_models.dart';
@@ -11,7 +14,6 @@ import 'id/ota_package_id.dart';
 import 'additional_info_based.dart';
 import 'base_data.dart';
 import 'has_name.dart';
-import 'has_customer_id.dart';
 import 'has_tenant_id.dart';
 import 'id/customer_id.dart';
 import 'id/device_id.dart';
@@ -745,7 +747,7 @@ class DeviceData {
   }
 }
 
-class Device extends AdditionalInfoBased<DeviceId> with HasName, HasTenantId, HasCustomerId, HasOtaPackage {
+class Device extends AdditionalInfoBased<DeviceId> implements GroupEntity<DeviceId>, HasOtaPackage {
 
   TenantId? tenantId;
   CustomerId? customerId;
@@ -824,6 +826,25 @@ class Device extends AdditionalInfoBased<DeviceId> with HasName, HasTenantId, Ha
   }
 
   @override
+  EntityType getEntityType() {
+    return EntityType.DEVICE;
+  }
+
+  @override
+  EntityId? getOwnerId() {
+    return customerId != null && !customerId!.isNullUid() ? customerId : tenantId;
+  }
+
+  @override
+  void setOwnerId(EntityId entityId) {
+    if (entityId.entityType == EntityType.CUSTOMER) {
+      customerId = CustomerId(entityId.id!);
+    } else {
+      customerId = CustomerId(nullUuid);
+    }
+  }
+
+  @override
   String toString() {
     return 'Device{${deviceString()}}';
   }
@@ -831,24 +852,6 @@ class Device extends AdditionalInfoBased<DeviceId> with HasName, HasTenantId, Ha
   String deviceString([String? toStringBody]) {
     return '${additionalInfoBasedString('tenantId: $tenantId, customerId: $customerId, name: $name, type: $type, '
         'label: $label, deviceProfileId: $deviceProfileId, firmwareId: $firmwareId, softwareId: $softwareId, deviceData: $deviceData${toStringBody != null ? ', ' + toStringBody : ''}')}';
-  }
-}
-
-class DeviceInfo extends Device {
-  String? customerTitle;
-  bool? customerIsPublic;
-  String? deviceProfileName;
-
-  DeviceInfo.fromJson(Map<String, dynamic> json):
-        customerTitle = json['customerTitle'],
-        customerIsPublic = json['customerIsPublic'],
-        deviceProfileName = json['deviceProfileName'],
-        super.fromJson(json);
-
-
-  @override
-  String toString() {
-    return 'DeviceInfo{${deviceString('deviceProfileName: $deviceProfileName, customerTitle: $customerTitle, customerIsPublic: $customerIsPublic')}}';
   }
 }
 

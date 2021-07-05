@@ -21,6 +21,8 @@ abstract class HasUuid {
     }
   }
 
+  bool isNullUid() => nullUuid == id;
+
   Map<String, dynamic> toJson() {
     return {
       'id': id

@@ -84,4 +84,16 @@ class CustomerService {
         options: defaultHttpOptionsFromConfig(requestConfig));
   }
 
+  Future<PageData<Customer>> getUserCustomers(PageLink pageLink,  {RequestConfig? requestConfig}) async {
+    var response = await _tbClient.get<Map<String, dynamic>>('/api/user/customers', queryParameters: pageLink.toQueryParameters(),
+        options: defaultHttpOptionsFromConfig(requestConfig));
+    return _tbClient.compute(parseCustomerPageData, response.data!);
+  }
+
+  Future<PageData<Customer>> getCustomersByEntityGroupId(String entityGroupId, PageLink pageLink,  {RequestConfig? requestConfig}) async {
+    var response = await _tbClient.get<Map<String, dynamic>>('/api/entityGroup/$entityGroupId/customers', queryParameters: pageLink.toQueryParameters(),
+        options: defaultHttpOptionsFromConfig(requestConfig));
+    return _tbClient.compute(parseCustomerPageData, response.data!);
+  }
+
 }

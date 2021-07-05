@@ -68,4 +68,11 @@ class TenantService {
     return _tbClient.compute(parseTenantInfoPageData, response.data!);
   }
 
+  Future<List<Tenant>> getTenantsByIds(List<String> tenantIds, {RequestConfig? requestConfig}) async {
+    var response = await _tbClient.get<List<dynamic>>('/api/tenants', queryParameters: {'tenantIds': tenantIds.join(',')},
+        options: defaultHttpOptionsFromConfig(requestConfig));
+    return response.data!.map((e) => Tenant.fromJson(e)).toList();
+  }
+
+
 }
