@@ -39,6 +39,7 @@ export 'widgets_bundle_model.dart';
 export 'widget_models.dart';
 export 'edge_models.dart';
 export 'resource_models.dart';
+export 'rpc_models.dart';
 export 'blob_entity_models.dart';
 export 'converter_models.dart';
 export 'custom_menu_models.dart';

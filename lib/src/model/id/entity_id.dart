@@ -23,6 +23,7 @@ import 'widgets_bundle_id.dart';
 import 'customer_id.dart';
 import 'device_id.dart';
 import 'tenant_id.dart';
+import 'rpc_id.dart';
 
 import '../entity_type_models.dart';
 import './has_uuid.dart';
@@ -81,6 +82,8 @@ abstract class EntityId extends HasUuid {
         return TbResourceId(uuid);
       case EntityType.OTA_PACKAGE:
         return OtaPackageId(uuid);
+      case EntityType.RPC:
+        return RpcId(uuid);
       case EntityType.ENTITY_GROUP:
         return EntityGroupId(uuid);
       case EntityType.CONVERTER:

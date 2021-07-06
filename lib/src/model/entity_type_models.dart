@@ -25,7 +25,8 @@ enum EntityType {
   GROUP_PERMISSION,
   API_USAGE_STATE,
   TB_RESOURCE,
-  OTA_PACKAGE
+  OTA_PACKAGE,
+  RPC
 }
 
 EntityType entityTypeFromString(String value) {

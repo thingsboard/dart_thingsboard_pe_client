@@ -25,6 +25,7 @@ export 'admin_settings_id.dart';
 export 'component_descriptor_id.dart';
 export 'oauth2_client_registration_template_id.dart';
 export 'edge_event_id.dart';
+export 'rpc_id.dart';
 export 'blob_entity_id.dart';
 export 'converter_id.dart';
 export 'entity_group_id.dart';
