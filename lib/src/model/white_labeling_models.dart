@@ -71,10 +71,10 @@ class PaletteSettings {
   Map<String, dynamic> toJson() {
     var json = <String, dynamic>{};
     if (primaryPalette != null) {
-      json['primaryPalette'] = primaryPalette;
+      json['primaryPalette'] = primaryPalette!.toJson();
     }
     if (accentPalette != null) {
-      json['accentPalette'] = accentPalette;
+      json['accentPalette'] = accentPalette!.toJson();
     }
     return json;
   }
