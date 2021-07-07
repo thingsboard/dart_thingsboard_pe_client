@@ -100,8 +100,8 @@ class WhiteLabelingParams {
   String? platformVersion;
   String? customCss;
 
-  WhiteLabelingParams({this.logoImageUrl, this.logoImageHeight, this.appTitle,
-    this.favicon, this.paletteSettings, this.helpLinkBaseUrl, this.enableHelpLinks,
+  WhiteLabelingParams({this.logoImageUrl, this.logoImageChecksum, this.logoImageHeight, this.appTitle,
+    this.favicon, this.faviconChecksum, this.paletteSettings, this.helpLinkBaseUrl, this.enableHelpLinks,
     this.showNameVersion, this.platformName, this.platformVersion, this.customCss});
 
   WhiteLabelingParams.fromJson(Map<String, dynamic> json):
@@ -187,9 +187,11 @@ class LoginWhiteLabelingParams extends WhiteLabelingParams {
       this.prohibitDifferentUrl,
       this.showNameBottom,
       String? logoImageUrl,
+      String? logoImageChecksum,
       int? logoImageHeight,
       String? appTitle,
       Favicon? favicon,
+      String? faviconChecksum,
       PaletteSettings? paletteSettings,
       bool? showNameVersion,
       String? platformName,
@@ -197,9 +199,11 @@ class LoginWhiteLabelingParams extends WhiteLabelingParams {
       String? customCss})
       : super(
             logoImageUrl: logoImageUrl,
+            logoImageChecksum: logoImageChecksum,
             logoImageHeight: logoImageHeight,
             appTitle: appTitle,
             favicon: favicon,
+            faviconChecksum: faviconChecksum,
             paletteSettings: paletteSettings,
             showNameVersion: showNameVersion,
             platformName: platformName,
