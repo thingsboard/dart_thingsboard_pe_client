@@ -40,6 +40,10 @@ class SelfRegistrationParams extends SignUpSelfRegistrationParams {
   String? defaultDashboardId;
   bool? defaultDashboardFullscreen;
   List<GroupPermission>? permissions;
+  String? pkgName;
+  String? appSecret;
+  String? appScheme;
+  String? appHost;
 
   SelfRegistrationParams(
       {String? signUpTextMessage,
@@ -51,7 +55,11 @@ class SelfRegistrationParams extends SignUpSelfRegistrationParams {
       this.notificationEmail,
       this.defaultDashboardId,
       this.defaultDashboardFullscreen,
-      this.permissions})
+      this.permissions,
+      this.pkgName,
+      this.appSecret,
+      this.appScheme,
+      this.appHost})
       : super(signUpTextMessage: signUpTextMessage,
             captchaSiteKey: captchaSiteKey);
 
@@ -64,6 +72,10 @@ class SelfRegistrationParams extends SignUpSelfRegistrationParams {
         defaultDashboardId = json['defaultDashboardId'],
         defaultDashboardFullscreen = json['defaultDashboardFullscreen'],
         permissions = json['permissions'] != null ? (json['permissions'] as List<dynamic>).map((e) => GroupPermission.fromJson(e)).toList() : null,
+        pkgName = json['pkgName'],
+        appSecret = json['appSecret'],
+        appScheme = json['appScheme'],
+        appHost = json['appHost'],
         super.fromJson(json);
 
 
@@ -94,6 +106,21 @@ class SelfRegistrationParams extends SignUpSelfRegistrationParams {
     if (permissions != null) {
       json['permissions'] = permissions!.map((e) => e.toJson()).toList();
     }
+    if (pkgName != null) {
+      json['pkgName'] = pkgName;
+    }
+    if (pkgName != null) {
+      json['pkgName'] = pkgName;
+    }
+    if (appSecret != null) {
+      json['appSecret'] = appSecret;
+    }
+    if (appScheme != null) {
+      json['appScheme'] = appScheme;
+    }
+    if (appHost != null) {
+      json['appHost'] = appHost;
+    }
     return json;
   }
 
@@ -101,6 +128,6 @@ class SelfRegistrationParams extends SignUpSelfRegistrationParams {
   String toString() {
     return 'SelfRegistrationParams{${signUpSelfRegistrationParamsString('adminSettingsId: $adminSettingsId, domainName: $domainName, captchaSecretKey: $captchaSecretKey, '
         'privacyPolicy: $privacyPolicy, notificationEmail: $notificationEmail, defaultDashboardId: $defaultDashboardId, '
-        'defaultDashboardFullscreen: $defaultDashboardFullscreen, permissions: $permissions')}}';
+        'defaultDashboardFullscreen: $defaultDashboardFullscreen, permissions: $permissions, pkgName: $pkgName, appSecret: $appSecret, appScheme: $appScheme, appHost: $appHost')}}';
   }
 }

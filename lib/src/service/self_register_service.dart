@@ -33,10 +33,15 @@ class SelfRegistrationService {
     return SelfRegistrationParams.fromJson(response.data!);
   }
 
-  Future<SignUpSelfRegistrationParams?> getSignUpSelfRegistrationParams({RequestConfig? requestConfig}) async {
+  Future<SignUpSelfRegistrationParams?> getSignUpSelfRegistrationParams({String? pkgName, RequestConfig? requestConfig}) async {
     return nullIfNotFound(
           (RequestConfig requestConfig) async {
+        var queryParams = <String,dynamic>{};
+        if (pkgName != null) {
+          queryParams['pkgName'] = pkgName;
+        }
         var response = await _tbClient.get<Map<String, dynamic>>('/api/noauth/selfRegistration/signUpSelfRegistrationParams',
+            queryParameters: queryParams,
             options: defaultHttpOptionsFromConfig(requestConfig));
         return response.data != null ? SignUpSelfRegistrationParams.fromJson(response.data!) : null;
       },

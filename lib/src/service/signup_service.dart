@@ -40,16 +40,28 @@ class SignupService {
     return response.data!;
   }
 
-  Future<void> resendEmailActivation(String email, {RequestConfig? requestConfig}) async {
-    await _tbClient.post('/api/noauth/resendEmailActivation', queryParameters: {'email': email},
+  Future<void> resendEmailActivation(String email, {String? pkgName, RequestConfig? requestConfig}) async {
+    var queryParams = <String, dynamic>{
+      'email': email
+    };
+    if (pkgName != null) {
+      queryParams['pkgName'] = pkgName;
+    }
+    await _tbClient.post('/api/noauth/resendEmailActivation', queryParameters: queryParams,
         options: defaultHttpOptionsFromConfig(requestConfig));
   }
 
-  Future<Response<String>> activateEmail(String emailCode, {RequestConfig? requestConfig}) async {
+  Future<Response<String>> activateEmail(String emailCode, {String? pkgName, RequestConfig? requestConfig}) async {
+    var queryParams = <String, dynamic>{
+      'emailCode': emailCode
+    };
+    if (pkgName != null) {
+      queryParams['pkgName'] = pkgName;
+    }
         var options = defaultHttpOptionsFromConfig(requestConfig);
         options.responseType = ResponseType.plain;
         var response = await _tbClient.get<String>('/api/noauth/activateEmail',
-            queryParameters: {'emailCode': emailCode},
+            queryParameters: queryParams,
             options: options);
         return response;
   }
