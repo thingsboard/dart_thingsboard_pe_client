@@ -20,7 +20,7 @@ class SignupService {
     options.responseType = ResponseType.plain;
     var response = await _tbClient.post<String>('/api/noauth/signup', data: jsonEncode(signUpRequest),
         options: options);
-    return signUpResultFromString(response.data!);
+    return signUpResultFromString(jsonDecode(response.data!));
   }
 
   Future<LoginResponse?> acceptPrivacyPolicy({RequestConfig? requestConfig}) async {
