@@ -58,19 +58,25 @@ class SignupService {
     if (pkgName != null) {
       queryParams['pkgName'] = pkgName;
     }
-        var options = defaultHttpOptionsFromConfig(requestConfig);
-        options.responseType = ResponseType.plain;
-        var response = await _tbClient.get<String>('/api/noauth/activateEmail',
-            queryParameters: queryParams,
-            options: options);
-        return response;
+    var options = defaultHttpOptionsFromConfig(requestConfig);
+    options.responseType = ResponseType.plain;
+    var response = await _tbClient.get<String>('/api/noauth/activateEmail',
+        queryParameters: queryParams,
+        options: options);
+    return response;
   }
 
-  Future<LoginResponse?> activateUserByEmailCode(String emailCode, {RequestConfig? requestConfig}) async {
+  Future<LoginResponse?> activateUserByEmailCode(String emailCode, {String? pkgName, RequestConfig? requestConfig}) async {
     return nullIfNotFound(
           (RequestConfig requestConfig) async {
+            var queryParams = <String, dynamic>{
+              'emailCode': emailCode
+            };
+            if (pkgName != null) {
+              queryParams['pkgName'] = pkgName;
+            }
             var response = await _tbClient.post<Map<String, dynamic>>('/api/noauth/activateByEmailCode',
-                queryParameters: {'emailCode': emailCode},
+                queryParameters: queryParams,
                 options: defaultHttpOptionsFromConfig(requestConfig));
         return response.data != null ? LoginResponse.fromJson(response.data!) : null;
       },
