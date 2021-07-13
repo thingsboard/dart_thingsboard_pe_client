@@ -5,7 +5,7 @@ ThingsBoard PE API client library for Dart developers.
 A simple usage example:
 
 ```dart
-import 'package:thingsboard_client/thingsboard_client.dart';
+import 'package:thingsboard_pe_client/thingsboard_client.dart';
 
 main() async {
     try {
