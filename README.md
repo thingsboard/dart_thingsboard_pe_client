@@ -1,4 +1,4 @@
-ThingsBoard PE API client library for Dart developers.
+ThingsBoard PE API client library for Dart developers. It's compatible with TB PE 3.3.0.
 
 ## Usage
 
