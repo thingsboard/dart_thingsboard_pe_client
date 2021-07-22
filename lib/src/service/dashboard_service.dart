@@ -29,8 +29,11 @@ class DashboardService {
     return response.data!;
   }
 
-  Future<PageData<DashboardInfo>> getTenantDashboards(PageLink pageLink,  {RequestConfig? requestConfig}) async {
+  Future<PageData<DashboardInfo>> getTenantDashboards(PageLink pageLink,  {bool? mobile, RequestConfig? requestConfig}) async {
     var queryParams = pageLink.toQueryParameters();
+    if (mobile != null) {
+      queryParams['mobile'] = mobile;
+    }
     var response = await _tbClient.get<Map<String, dynamic>>('/api/tenant/dashboards', queryParameters: queryParams,
         options: defaultHttpOptionsFromConfig(requestConfig));
     return _tbClient.compute(parseDashboardInfoPageData, response.data!);
@@ -43,13 +46,16 @@ class DashboardService {
     return _tbClient.compute(parseDashboardInfoPageData, response.data!);
   }
 
-  Future<PageData<DashboardInfo>> getUserDashboards(PageLink pageLink,  {Operation? operation, String? userId, RequestConfig? requestConfig}) async {
+  Future<PageData<DashboardInfo>> getUserDashboards(PageLink pageLink,  {bool? mobile, Operation? operation, String? userId, RequestConfig? requestConfig}) async {
     var queryParams = pageLink.toQueryParameters();
     if (operation != null) {
       queryParams['operation'] = operation.toShortString();
     }
     if (userId != null) {
       queryParams['userId'] = userId;
+    }
+    if (mobile != null) {
+      queryParams['mobile'] = mobile;
     }
     var response = await _tbClient.get<Map<String, dynamic>>('/api/user/dashboards', queryParameters: queryParams,
         options: defaultHttpOptionsFromConfig(requestConfig));
