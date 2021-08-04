@@ -3,13 +3,11 @@ import 'entity_type_models.dart';
 import 'id/entity_group_id.dart';
 import 'id/entity_id.dart';
 
-enum RoleType {
-  GENERIC,
-  GROUP
-}
+enum RoleType { GENERIC, GROUP }
 
 RoleType roleTypeFromString(String value) {
-  return RoleType.values.firstWhere((e)=>e.toString().split('.')[1].toUpperCase()==value.toUpperCase());
+  return RoleType.values.firstWhere(
+      (e) => e.toString().split('.')[1].toUpperCase() == value.toUpperCase());
 }
 
 extension RoleTypeToString on RoleType {
@@ -43,7 +41,8 @@ enum Operation {
 }
 
 Operation operationFromString(String value) {
-  return Operation.values.firstWhere((e)=>e.toString().split('.')[1].toUpperCase()==value.toUpperCase());
+  return Operation.values.firstWhere(
+      (e) => e.toString().split('.')[1].toUpperCase() == value.toUpperCase());
 }
 
 extension OperationToString on Operation {
@@ -53,47 +52,48 @@ extension OperationToString on Operation {
 }
 
 enum Resource {
-    ALL,
-    PROFILE,
-    ADMIN_SETTINGS,
-    ALARM,
-    DEVICE,
-    ASSET,
-    CUSTOMER,
-    DASHBOARD,
-    ENTITY_VIEW,
-    EDGE,
-    TENANT,
-    RULE_CHAIN,
-    USER,
-    WIDGETS_BUNDLE,
-    WIDGET_TYPE,
-    OAUTH2_CONFIGURATION_INFO,
-    OAUTH2_CONFIGURATION_TEMPLATE,
-    TENANT_PROFILE,
-    DEVICE_PROFILE,
-    CONVERTER,
-    INTEGRATION,
-    SCHEDULER_EVENT,
-    BLOB_ENTITY,
-    CUSTOMER_GROUP,
-    DEVICE_GROUP,
-    ASSET_GROUP,
-    USER_GROUP,
-    ENTITY_VIEW_GROUP,
-    EDGE_GROUP,
-    DASHBOARD_GROUP,
-    ROLE,
-    GROUP_PERMISSION,
-    WHITE_LABELING,
-    AUDIT_LOG,
-    API_USAGE_STATE,
-    TB_RESOURCE,
-    OTA_PACKAGE
+  ALL,
+  PROFILE,
+  ADMIN_SETTINGS,
+  ALARM,
+  DEVICE,
+  ASSET,
+  CUSTOMER,
+  DASHBOARD,
+  ENTITY_VIEW,
+  EDGE,
+  TENANT,
+  RULE_CHAIN,
+  USER,
+  WIDGETS_BUNDLE,
+  WIDGET_TYPE,
+  OAUTH2_CONFIGURATION_INFO,
+  OAUTH2_CONFIGURATION_TEMPLATE,
+  TENANT_PROFILE,
+  DEVICE_PROFILE,
+  CONVERTER,
+  INTEGRATION,
+  SCHEDULER_EVENT,
+  BLOB_ENTITY,
+  CUSTOMER_GROUP,
+  DEVICE_GROUP,
+  ASSET_GROUP,
+  USER_GROUP,
+  ENTITY_VIEW_GROUP,
+  EDGE_GROUP,
+  DASHBOARD_GROUP,
+  ROLE,
+  GROUP_PERMISSION,
+  WHITE_LABELING,
+  AUDIT_LOG,
+  API_USAGE_STATE,
+  TB_RESOURCE,
+  OTA_PACKAGE
 }
 
 Resource resourceFromString(String value) {
-  return Resource.values.firstWhere((e)=>e.toString().split('.')[1].toUpperCase()==value.toUpperCase());
+  return Resource.values.firstWhere(
+      (e) => e.toString().split('.')[1].toUpperCase() == value.toUpperCase());
 }
 
 extension ResourceToString on Resource {
@@ -102,7 +102,7 @@ extension ResourceToString on Resource {
   }
 }
 
-const resourceByEntityType = <EntityType, Resource> {
+const resourceByEntityType = <EntityType, Resource>{
   EntityType.ALARM: Resource.ALARM,
   EntityType.DEVICE: Resource.DEVICE,
   EntityType.DEVICE_PROFILE: Resource.DEVICE_PROFILE,
@@ -127,7 +127,7 @@ const resourceByEntityType = <EntityType, Resource> {
   EntityType.OTA_PACKAGE: Resource.OTA_PACKAGE
 };
 
-const groupResourceByGroupType = <EntityType, Resource> {
+const groupResourceByGroupType = <EntityType, Resource>{
   EntityType.CUSTOMER: Resource.CUSTOMER_GROUP,
   EntityType.DEVICE: Resource.DEVICE_GROUP,
   EntityType.ASSET: Resource.ASSET_GROUP,
@@ -138,13 +138,14 @@ const groupResourceByGroupType = <EntityType, Resource> {
 };
 
 class MergedGroupPermissionInfo {
-
   EntityType entityType;
   Set<Operation> operations;
 
-  MergedGroupPermissionInfo.fromJson(Map<String, dynamic> json):
-        entityType = entityTypeFromString(json['entityType']),
-        operations = (json['operations'] as List<dynamic>).map((e) => operationFromString(e)).toSet();
+  MergedGroupPermissionInfo.fromJson(Map<String, dynamic> json)
+      : entityType = entityTypeFromString(json['entityType']),
+        operations = (json['operations'] as List<dynamic>)
+            .map((e) => operationFromString(e))
+            .toSet();
 
   @override
   String toString() {
@@ -153,12 +154,13 @@ class MergedGroupPermissionInfo {
 }
 
 class MergedGroupTypePermissionInfo {
-
   List<EntityGroupId> entityGroupIds;
   bool hasGenericRead;
 
-  MergedGroupTypePermissionInfo.fromJson(Map<String, dynamic> json):
-        entityGroupIds = (json['entityGroupIds'] as List<dynamic>).map((e) => EntityGroupId.fromJson(e)).toList(),
+  MergedGroupTypePermissionInfo.fromJson(Map<String, dynamic> json)
+      : entityGroupIds = (json['entityGroupIds'] as List<dynamic>)
+            .map((e) => EntityGroupId.fromJson(e))
+            .toList(),
         hasGenericRead = json['hasGenericRead'];
 
   @override
@@ -168,7 +170,6 @@ class MergedGroupTypePermissionInfo {
 }
 
 class MergedUserPermissions {
-
   Map<Resource, Set<Operation>> genericPermissions;
   Map<String, MergedGroupPermissionInfo> groupPermissions;
   Map<EntityType, MergedGroupTypePermissionInfo> readGroupPermissions;
@@ -176,13 +177,24 @@ class MergedUserPermissions {
   Map<Resource, MergedGroupTypePermissionInfo> readAttrPermissions;
   Map<Resource, MergedGroupTypePermissionInfo> readTsPermissions;
 
-  MergedUserPermissions.fromJson(Map<String, dynamic> json):
-        genericPermissions = (json['genericPermissions'] as Map).map((key, value) => MapEntry(resourceFromString(key), (value as List).map((e) => operationFromString(e)).toSet())),
-        groupPermissions = (json['groupPermissions'] as Map).map((key, value) => MapEntry(key, MergedGroupPermissionInfo.fromJson(value))),
-        readGroupPermissions = (json['readGroupPermissions'] as Map).map((key, value) => MapEntry(entityTypeFromString(key), MergedGroupTypePermissionInfo.fromJson(value))),
-        readEntityPermissions = (json['readEntityPermissions'] as Map).map((key, value) => MapEntry(resourceFromString(key), MergedGroupTypePermissionInfo.fromJson(value))),
-        readAttrPermissions = (json['readAttrPermissions'] as Map).map((key, value) => MapEntry(resourceFromString(key), MergedGroupTypePermissionInfo.fromJson(value))),
-        readTsPermissions = (json['readTsPermissions'] as Map).map((key, value) => MapEntry(resourceFromString(key), MergedGroupTypePermissionInfo.fromJson(value)));
+  MergedUserPermissions.fromJson(Map<String, dynamic> json)
+      : genericPermissions = (json['genericPermissions'] as Map).map(
+            (key, value) => MapEntry(resourceFromString(key),
+                (value as List).map((e) => operationFromString(e)).toSet())),
+        groupPermissions = (json['groupPermissions'] as Map).map((key, value) =>
+            MapEntry(key, MergedGroupPermissionInfo.fromJson(value))),
+        readGroupPermissions = (json['readGroupPermissions'] as Map).map(
+            (key, value) => MapEntry(entityTypeFromString(key),
+                MergedGroupTypePermissionInfo.fromJson(value))),
+        readEntityPermissions = (json['readEntityPermissions'] as Map).map(
+            (key, value) => MapEntry(resourceFromString(key),
+                MergedGroupTypePermissionInfo.fromJson(value))),
+        readAttrPermissions = (json['readAttrPermissions'] as Map).map(
+            (key, value) => MapEntry(resourceFromString(key),
+                MergedGroupTypePermissionInfo.fromJson(value))),
+        readTsPermissions = (json['readTsPermissions'] as Map).map(
+            (key, value) => MapEntry(resourceFromString(key),
+                MergedGroupTypePermissionInfo.fromJson(value)));
 
   @override
   String toString() {
@@ -192,7 +204,6 @@ class MergedUserPermissions {
 }
 
 class AllowedPermissionsInfo {
-
   Map<Resource, Set<Operation>> operationsByResource;
   Set<Operation> allowedForGroupRoleOperations;
   Set<Operation> allowedForGroupOwnerOnlyOperations;
@@ -201,13 +212,27 @@ class AllowedPermissionsInfo {
   MergedUserPermissions userPermissions;
   EntityId userOwnerId;
 
-  AllowedPermissionsInfo.fromJson(Map<String, dynamic> json):
-        operationsByResource = (json['operationsByResource'] as Map).map((key, value) => MapEntry(resourceFromString(key), (value as List).map((e) => operationFromString(e)).toSet())),
-        allowedForGroupRoleOperations = (json['allowedForGroupRoleOperations'] as List).map((e) => operationFromString(e)).toSet(),
-        allowedForGroupOwnerOnlyOperations = (json['allowedForGroupOwnerOnlyOperations'] as List).map((e) => operationFromString(e)).toSet(),
-        allowedForGroupOwnerOnlyGroupOperations = (json['allowedForGroupOwnerOnlyGroupOperations'] as List).map((e) => operationFromString(e)).toSet(),
-        allowedResources = (json['allowedResources'] as List).map((e) => resourceFromString(e)).toSet(),
-        userPermissions = MergedUserPermissions.fromJson(json['userPermissions']),
+  AllowedPermissionsInfo.fromJson(Map<String, dynamic> json)
+      : operationsByResource = (json['operationsByResource'] as Map).map(
+            (key, value) => MapEntry(resourceFromString(key),
+                (value as List).map((e) => operationFromString(e)).toSet())),
+        allowedForGroupRoleOperations =
+            (json['allowedForGroupRoleOperations'] as List)
+                .map((e) => operationFromString(e))
+                .toSet(),
+        allowedForGroupOwnerOnlyOperations =
+            (json['allowedForGroupOwnerOnlyOperations'] as List)
+                .map((e) => operationFromString(e))
+                .toSet(),
+        allowedForGroupOwnerOnlyGroupOperations =
+            (json['allowedForGroupOwnerOnlyGroupOperations'] as List)
+                .map((e) => operationFromString(e))
+                .toSet(),
+        allowedResources = (json['allowedResources'] as List)
+            .map((e) => resourceFromString(e))
+            .toSet(),
+        userPermissions =
+            MergedUserPermissions.fromJson(json['userPermissions']),
         userOwnerId = EntityId.fromJson(json['userOwnerId']);
 
   @override
@@ -218,8 +243,11 @@ class AllowedPermissionsInfo {
   }
 
   bool hasReadGroupsPermission(EntityType entityType) {
-    var groupTypePermissionInfo = userPermissions.readGroupPermissions[entityType];
-    return groupTypePermissionInfo != null && (groupTypePermissionInfo.hasGenericRead || groupTypePermissionInfo.entityGroupIds.isNotEmpty);
+    var groupTypePermissionInfo =
+        userPermissions.readGroupPermissions[entityType];
+    return groupTypePermissionInfo != null &&
+        (groupTypePermissionInfo.hasGenericRead ||
+            groupTypePermissionInfo.entityGroupIds.isNotEmpty);
   }
 
   bool hasReadGenericPermission(Resource resource) {
@@ -227,23 +255,28 @@ class AllowedPermissionsInfo {
   }
 
   bool hasGenericPermission(Resource resource, Operation operation) {
-    return _hasGenericResourcePermission(resource, operation) || _hasGenericAllPermission(operation);
+    return _hasGenericResourcePermission(resource, operation) ||
+        _hasGenericAllPermission(operation);
   }
 
-  bool hasGenericEntityGroupTypePermission(Operation operation, EntityType groupType) {
+  bool hasGenericEntityGroupTypePermission(
+      Operation operation, EntityType groupType) {
     var resource = groupResourceByGroupType[groupType];
     return resource != null && hasGenericPermission(resource, operation);
   }
 
-  bool hasGenericEntityGroupPermission(Operation operation, EntityGroup entityGroup) {
+  bool hasGenericEntityGroupPermission(
+      Operation operation, EntityGroup entityGroup) {
     return hasGenericEntityGroupTypePermission(operation, entityGroup.type);
   }
 
-  bool hasEntityGroupPermission(Operation operation, EntityGroupInfo entityGroup) {
+  bool hasEntityGroupPermission(
+      Operation operation, EntityGroupInfo entityGroup) {
     return _checkEntityGroupPermission(operation, entityGroup, true);
   }
 
-  bool hasGroupEntityPermission(Operation operation, EntityGroupInfo entityGroup) {
+  bool hasGroupEntityPermission(
+      Operation operation, EntityGroupInfo entityGroup) {
     return _checkEntityGroupPermission(operation, entityGroup, false);
   }
 
@@ -263,7 +296,6 @@ class AllowedPermissionsInfo {
     return _idsEqual(userOwnerId, ownerId);
   }
 
-
   bool _hasGenericAllPermission(Operation operation) {
     var operations = userPermissions.genericPermissions[Resource.ALL];
     return operations != null && _checkOperation(operations, operation);
@@ -278,15 +310,20 @@ class AllowedPermissionsInfo {
     return operations.contains(Operation.ALL) || operations.contains(operation);
   }
 
-  bool _checkEntityGroupPermission(Operation operation, EntityGroupInfo entityGroup, bool isGroup) {
-    var resource = isGroup ? groupResourceByGroupType[entityGroup.type] : resourceByEntityType[entityGroup.type];
-    if (_isCurrentUserOwner(entityGroup) && hasGenericPermission(resource!, operation)) {
+  bool _checkEntityGroupPermission(
+      Operation operation, EntityGroupInfo entityGroup, bool isGroup) {
+    var resource = isGroup
+        ? groupResourceByGroupType[entityGroup.type]
+        : resourceByEntityType[entityGroup.type];
+    if (_isCurrentUserOwner(entityGroup) &&
+        hasGenericPermission(resource!, operation)) {
       return true;
     }
     return _hasGroupPermissions(entityGroup, operation, isGroup);
   }
 
-  bool _hasGroupPermissions(EntityGroupInfo entityGroup, Operation operation, bool isGroup) {
+  bool _hasGroupPermissions(
+      EntityGroupInfo entityGroup, Operation operation, bool isGroup) {
     if (!allowedForGroupRoleOperations.contains(operation)) {
       return false;
     }
@@ -302,7 +339,8 @@ class AllowedPermissionsInfo {
       }
     }
     var permissionInfo = userPermissions.groupPermissions[entityGroup.id!.id!];
-    return permissionInfo != null && _checkOperation(permissionInfo.operations, operation);
+    return permissionInfo != null &&
+        _checkOperation(permissionInfo.operations, operation);
   }
 
   bool _isCurrentUserOwner(EntityGroupInfo entityGroup) {
@@ -322,5 +360,4 @@ class AllowedPermissionsInfo {
   bool _idsEqual(EntityId id1, EntityId id2) {
     return id1.id == id2.id && id1.entityType == id2.entityType;
   }
-
 }

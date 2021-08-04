@@ -16,8 +16,8 @@ void main() async {
     await fetchEntityGroupEntitiesExample();
     await getOwnersExample();
 
-    await tbClient.logout(requestConfig: RequestConfig(ignoreLoading: true, ignoreErrors: true));
-
+    await tbClient.logout(
+        requestConfig: RequestConfig(ignoreLoading: true, ignoreErrors: true));
   } catch (e, s) {
     print('Error: $e');
     print('Stack: $s');
@@ -25,50 +25,76 @@ void main() async {
 }
 
 Future<void> fetchEntityGroupsExample() async {
-  print('**********************************************************************');
-  print('*                 FETCH ENTITY GROUPS EXAMPLE                        *');
-  print('**********************************************************************');
+  print(
+      '**********************************************************************');
+  print(
+      '*                 FETCH ENTITY GROUPS EXAMPLE                        *');
+  print(
+      '**********************************************************************');
 
-  for (var groupType in [EntityType.DEVICE, EntityType.ASSET, EntityType.ENTITY_VIEW,
-        EntityType.DASHBOARD, EntityType.CUSTOMER, EntityType.USER, EntityType.EDGE]) {
-    var entityGroups = await tbClient.getEntityGroupService().getEntityGroupsByType(groupType);
+  for (var groupType in [
+    EntityType.DEVICE,
+    EntityType.ASSET,
+    EntityType.ENTITY_VIEW,
+    EntityType.DASHBOARD,
+    EntityType.CUSTOMER,
+    EntityType.USER,
+    EntityType.EDGE
+  ]) {
+    var entityGroups =
+        await tbClient.getEntityGroupService().getEntityGroupsByType(groupType);
     print('found ${groupType.toShortString()} groups: $entityGroups');
   }
 
-  print('**********************************************************************');
+  print(
+      '**********************************************************************');
 }
 
 Future<void> fetchEntityGroupEntitiesExample() async {
-  print('**********************************************************************');
-  print('*             FETCH ENTITY GROUP ENTITIES EXAMPLE                    *');
-  print('**********************************************************************');
+  print(
+      '**********************************************************************');
+  print(
+      '*             FETCH ENTITY GROUP ENTITIES EXAMPLE                    *');
+  print(
+      '**********************************************************************');
 
-  var deviceGroupAll = await tbClient.getEntityGroupService().getEntityGroupAllByOwnerAndType(TenantId(tbClient.getAuthUser()!.tenantId), EntityType.DEVICE);
+  var deviceGroupAll = await tbClient
+      .getEntityGroupService()
+      .getEntityGroupAllByOwnerAndType(
+          TenantId(tbClient.getAuthUser()!.tenantId), EntityType.DEVICE);
   print('found device group all: $deviceGroupAll');
 
   var pageLink = PageLink(10);
   PageData<ShortEntityView> deviceEntities;
   do {
-    deviceEntities = await tbClient.getEntityGroupService().getEntities(deviceGroupAll!.id!.id!, pageLink);
+    deviceEntities = await tbClient
+        .getEntityGroupService()
+        .getEntities(deviceGroupAll!.id!.id!, pageLink);
     print('Device group all short entity views: $deviceEntities');
     pageLink = pageLink.nextPageLink();
-  } while(deviceEntities.hasNext);
+  } while (deviceEntities.hasNext);
 
   pageLink = PageLink(10);
   PageData<Device> devices;
   do {
-    devices = await tbClient.getDeviceService().getDevicesByEntityGroupId(deviceGroupAll.id!.id!, pageLink);
+    devices = await tbClient
+        .getDeviceService()
+        .getDevicesByEntityGroupId(deviceGroupAll.id!.id!, pageLink);
     print('Device group all devices: $devices');
     pageLink = pageLink.nextPageLink();
-  } while(devices.hasNext);
+  } while (devices.hasNext);
 
-  print('**********************************************************************');
+  print(
+      '**********************************************************************');
 }
 
 Future<void> getOwnersExample() async {
-  print('**********************************************************************');
-  print('*                         GET OWNERS EXAMPLE                         *');
-  print('**********************************************************************');
+  print(
+      '**********************************************************************');
+  print(
+      '*                         GET OWNERS EXAMPLE                         *');
+  print(
+      '**********************************************************************');
 
   var pageLink = PageLink(10);
   PageData<ContactBased> owners;
@@ -76,8 +102,10 @@ Future<void> getOwnersExample() async {
     owners = await tbClient.getEntityGroupService().getOwners(pageLink);
     print('owners: $owners');
     pageLink = pageLink.nextPageLink();
-  } while(owners.hasNext);
-  print('**********************************************************************');
+  } while (owners.hasNext);
+  print(
+      '**********************************************************************');
 
-  print('**********************************************************************');
+  print(
+      '**********************************************************************');
 }

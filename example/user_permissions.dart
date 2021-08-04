@@ -14,8 +14,8 @@ void main() async {
 
     await userPermissionsExample();
 
-    await tbClient.logout(requestConfig: RequestConfig(ignoreLoading: true, ignoreErrors: true));
-
+    await tbClient.logout(
+        requestConfig: RequestConfig(ignoreLoading: true, ignoreErrors: true));
   } catch (e, s) {
     print('Error: $e');
     print('Stack: $s');
@@ -23,15 +23,21 @@ void main() async {
 }
 
 Future<void> userPermissionsExample() async {
-  print('**********************************************************************');
-  print('*               USER PERMISSIONS EXAMPLE                             *');
-  print('**********************************************************************');
+  print(
+      '**********************************************************************');
+  print(
+      '*               USER PERMISSIONS EXAMPLE                             *');
+  print(
+      '**********************************************************************');
 
-  var allowedUserPermissions = await tbClient.getUserPermissionsService().getAllowedPermissions();
+  var allowedUserPermissions =
+      await tbClient.getUserPermissionsService().getAllowedPermissions();
 
   print('Allowed user permissions: ${allowedUserPermissions.userPermissions}');
 
-  print('Has generic devices read permission: ${allowedUserPermissions.hasGenericPermission(Resource.DEVICE, Operation.READ)}');
+  print(
+      'Has generic devices read permission: ${allowedUserPermissions.hasGenericPermission(Resource.DEVICE, Operation.READ)}');
 
-  print('**********************************************************************');
+  print(
+      '**********************************************************************');
 }

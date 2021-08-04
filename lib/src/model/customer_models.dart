@@ -6,17 +6,19 @@ import 'id/has_uuid.dart';
 import 'id/tenant_id.dart';
 import 'contact_based_model.dart';
 
-class Customer extends ContactBased<CustomerId> implements GroupEntity<CustomerId> {
-
+class Customer extends ContactBased<CustomerId>
+    implements GroupEntity<CustomerId> {
   TenantId? tenantId;
   CustomerId? parentCustomerId;
   String title;
 
   Customer(this.title);
 
-  Customer.fromJson(Map<String, dynamic> json):
-        tenantId = TenantId.fromJson(json['tenantId']),
-        parentCustomerId = json['parentCustomerId'] != null ? CustomerId.fromJson(json['parentCustomerId']) : null,
+  Customer.fromJson(Map<String, dynamic> json)
+      : tenantId = TenantId.fromJson(json['tenantId']),
+        parentCustomerId = json['parentCustomerId'] != null
+            ? CustomerId.fromJson(json['parentCustomerId'])
+            : null,
         title = json['title'],
         super.fromJson(json);
 
@@ -55,7 +57,9 @@ class Customer extends ContactBased<CustomerId> implements GroupEntity<CustomerI
 
   @override
   EntityId? getOwnerId() {
-    return parentCustomerId != null && !parentCustomerId!.isNullUid() ? parentCustomerId : tenantId;
+    return parentCustomerId != null && !parentCustomerId!.isNullUid()
+        ? parentCustomerId
+        : tenantId;
   }
 
   @override
@@ -67,13 +71,13 @@ class Customer extends ContactBased<CustomerId> implements GroupEntity<CustomerI
     }
   }
 
-  bool isSubCustomer() => parentCustomerId != null && !parentCustomerId!.isNullUid();
+  bool isSubCustomer() =>
+      parentCustomerId != null && !parentCustomerId!.isNullUid();
 
   @override
   String toString() {
     return 'Customer{${contactBasedString('tenantId: $tenantId, parentCustomerId: $parentCustomerId, title: $title')}}';
   }
-
 }
 
 class ShortCustomerInfo {
@@ -81,8 +85,8 @@ class ShortCustomerInfo {
   String title;
   bool isPublic;
 
-  ShortCustomerInfo.fromJson(Map<String, dynamic> json):
-        customerId = CustomerId.fromJson(json['customerId']),
+  ShortCustomerInfo.fromJson(Map<String, dynamic> json)
+      : customerId = CustomerId.fromJson(json['customerId']),
         title = json['title'],
         isPublic = json['isPublic'] ?? false;
 

@@ -8,8 +8,8 @@ import 'id/entity_group_id.dart';
 import 'id/entity_id.dart';
 import 'id/has_id.dart';
 
-class EntityGroup extends AdditionalInfoBased<EntityGroupId> implements HasName, HasOwnerId {
-
+class EntityGroup extends AdditionalInfoBased<EntityGroupId>
+    implements HasName, HasOwnerId {
   static final String GROUP_ALL_NAME = 'All';
 
   static final String GROUP_EDGE_ALL_STARTS_WITH = '[Edge]';
@@ -22,8 +22,8 @@ class EntityGroup extends AdditionalInfoBased<EntityGroupId> implements HasName,
 
   EntityGroup(this.name, this.type);
 
-  EntityGroup.fromJson(Map<String, dynamic> json):
-        name = json['name'],
+  EntityGroup.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
         type = entityTypeFromString(json['type']),
         ownerId = EntityId.fromJson(json['ownerId']),
         configuration = json['configuration'],
@@ -63,7 +63,8 @@ class EntityGroup extends AdditionalInfoBased<EntityGroupId> implements HasName,
   }
 
   bool isEdgeGroupAll() {
-    return name.startsWith(GROUP_EDGE_ALL_STARTS_WITH) && name.endsWith(GROUP_EDGE_ALL_ENDS_WITH);
+    return name.startsWith(GROUP_EDGE_ALL_STARTS_WITH) &&
+        name.endsWith(GROUP_EDGE_ALL_ENDS_WITH);
   }
 
   @override
@@ -77,11 +78,12 @@ class EntityGroup extends AdditionalInfoBased<EntityGroupId> implements HasName,
 }
 
 class EntityGroupInfo extends EntityGroup {
-
   Set<EntityId> ownerIds;
 
-  EntityGroupInfo.fromJson(Map<String, dynamic> json):
-        ownerIds = (json['ownerIds'] as List<dynamic>).map((e) => EntityId.fromJson(e)).toSet(),
+  EntityGroupInfo.fromJson(Map<String, dynamic> json)
+      : ownerIds = (json['ownerIds'] as List<dynamic>)
+            .map((e) => EntityId.fromJson(e))
+            .toSet(),
         super.fromJson(json);
 
   @override
@@ -91,7 +93,6 @@ class EntityGroupInfo extends EntityGroup {
 }
 
 class ShortEntityView implements HasId<EntityId>, HasName {
-
   late EntityId id;
   late Map<String, dynamic> properties;
 
@@ -118,14 +119,18 @@ class ShortEntityView implements HasId<EntityId>, HasName {
 }
 
 class ShareGroupRequest {
-
   final EntityId ownerId;
   final bool isAllUserGroup;
   final EntityGroupId? userGroupId;
   final bool readElseWrite;
   final List<RoleId>? roleIds;
 
-  ShareGroupRequest({required this.ownerId, required this.isAllUserGroup, this.userGroupId, required this.readElseWrite, this.roleIds});
+  ShareGroupRequest(
+      {required this.ownerId,
+      required this.isAllUserGroup,
+      this.userGroupId,
+      required this.readElseWrite,
+      this.roleIds});
 
   Map<String, dynamic> toJson() {
     var json = <String, dynamic>{
@@ -141,5 +146,4 @@ class ShareGroupRequest {
     }
     return json;
   }
-
 }

@@ -8,8 +8,8 @@ import 'id/asset_id.dart';
 import 'id/customer_id.dart';
 import 'id/tenant_id.dart';
 
-class Asset extends AdditionalInfoBased<AssetId> implements GroupEntity<AssetId> {
-
+class Asset extends AdditionalInfoBased<AssetId>
+    implements GroupEntity<AssetId> {
   TenantId? tenantId;
   CustomerId? customerId;
   String name;
@@ -18,9 +18,11 @@ class Asset extends AdditionalInfoBased<AssetId> implements GroupEntity<AssetId>
 
   Asset(this.name, this.type);
 
-  Asset.fromJson(Map<String, dynamic> json):
-        tenantId = TenantId.fromJson(json['tenantId']),
-        customerId = json['customerId'] != null ? CustomerId.fromJson(json['customerId']) : null,
+  Asset.fromJson(Map<String, dynamic> json)
+      : tenantId = TenantId.fromJson(json['tenantId']),
+        customerId = json['customerId'] != null
+            ? CustomerId.fromJson(json['customerId'])
+            : null,
         name = json['name'],
         type = json['type'],
         label = json['label'],
@@ -65,7 +67,9 @@ class Asset extends AdditionalInfoBased<AssetId> implements GroupEntity<AssetId>
 
   @override
   EntityId? getOwnerId() {
-    return customerId != null && !customerId!.isNullUid() ? customerId : tenantId;
+    return customerId != null && !customerId!.isNullUid()
+        ? customerId
+        : tenantId;
   }
 
   @override
@@ -86,18 +90,16 @@ class Asset extends AdditionalInfoBased<AssetId> implements GroupEntity<AssetId>
     return '${additionalInfoBasedString('tenantId: $tenantId, customerId: $customerId, name: $name, type: $type, '
         'label: $label${toStringBody != null ? ', ' + toStringBody : ''}')}';
   }
-
 }
 
 class AssetSearchQuery extends EntitySearchQuery {
-
   List<String> assetTypes;
 
-  AssetSearchQuery({
-    required RelationsSearchParameters parameters,
-    required this.assetTypes,
-    String? relationType
-  }): super(parameters: parameters, relationType: relationType);
+  AssetSearchQuery(
+      {required RelationsSearchParameters parameters,
+      required this.assetTypes,
+      String? relationType})
+      : super(parameters: parameters, relationType: relationType);
 
   @override
   Map<String, dynamic> toJson() {

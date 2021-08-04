@@ -9,8 +9,8 @@ import 'id/group_permission_id.dart';
 import 'tenant_entity.dart';
 import 'role_models.dart';
 
-class GroupPermission extends BaseData<GroupPermissionId> implements HasName, TenantEntity {
-
+class GroupPermission extends BaseData<GroupPermissionId>
+    implements HasName, TenantEntity {
   TenantId? tenantId;
   EntityGroupId userGroupId;
   RoleId roleId;
@@ -18,14 +18,23 @@ class GroupPermission extends BaseData<GroupPermissionId> implements HasName, Te
   EntityType? entityGroupType;
   bool isPublic;
 
-  GroupPermission({required this.userGroupId, required this.roleId, this.isPublic = false, this.entityGroupId, this.entityGroupType});
+  GroupPermission(
+      {required this.userGroupId,
+      required this.roleId,
+      this.isPublic = false,
+      this.entityGroupId,
+      this.entityGroupType});
 
-  GroupPermission.fromJson(Map<String, dynamic> json):
-        tenantId = TenantId.fromJson(json['tenantId']),
+  GroupPermission.fromJson(Map<String, dynamic> json)
+      : tenantId = TenantId.fromJson(json['tenantId']),
         userGroupId = EntityGroupId.fromJson(json['userGroupId']),
         roleId = RoleId.fromJson(json['roleId']),
-        entityGroupId = json['entityGroupId'] != null ? EntityGroupId.fromJson(json['entityGroupId']) : null,
-        entityGroupType = json['entityGroupType'] != null ? entityTypeFromString(json['entityGroupType']) : null,
+        entityGroupId = json['entityGroupId'] != null
+            ? EntityGroupId.fromJson(json['entityGroupId'])
+            : null,
+        entityGroupType = json['entityGroupType'] != null
+            ? entityTypeFromString(json['entityGroupType'])
+            : null,
         isPublic = json['isPublic'],
         super.fromJson(json);
 
@@ -78,7 +87,6 @@ class GroupPermission extends BaseData<GroupPermissionId> implements HasName, Te
 }
 
 class GroupPermissionInfo extends GroupPermission {
-
   Role role;
   String? entityGroupName;
   EntityId? entityGroupOwnerId;
@@ -88,14 +96,16 @@ class GroupPermissionInfo extends GroupPermission {
   String userGroupOwnerName;
   bool readOnly;
 
-  GroupPermissionInfo.fromJson(Map<String, dynamic> json):
-        role = Role.fromJson(json['role']),
+  GroupPermissionInfo.fromJson(Map<String, dynamic> json)
+      : role = Role.fromJson(json['role']),
         entityGroupName = json['entityGroupName'],
-        entityGroupOwnerId = json['entityGroupOwnerId'] != null ?  EntityId.fromJson(json['entityGroupOwnerId']) : null,
+        entityGroupOwnerId = json['entityGroupOwnerId'] != null
+            ? EntityId.fromJson(json['entityGroupOwnerId'])
+            : null,
         entityGroupOwnerName = json['entityGroupOwnerName'],
         userGroupName = json['userGroupName'],
         userGroupOwnerId = EntityId.fromJson(json['userGroupOwnerId']),
-        userGroupOwnerName =  json['userGroupOwnerName'],
+        userGroupOwnerName = json['userGroupOwnerName'],
         readOnly = json['readOnly'],
         super.fromJson(json);
 

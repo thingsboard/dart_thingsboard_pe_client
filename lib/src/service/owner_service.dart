@@ -11,13 +11,17 @@ class OwnerService {
 
   OwnerService._internal(this._tbClient);
 
-  Future<void> changeOwnerToTenant(String ownerId, EntityId entityId, {RequestConfig? requestConfig}) async {
-    await _tbClient.post('/api/owner/TENANT/$ownerId/${entityId.entityType.toShortString()}/${entityId.id}',
+  Future<void> changeOwnerToTenant(String ownerId, EntityId entityId,
+      {RequestConfig? requestConfig}) async {
+    await _tbClient.post(
+        '/api/owner/TENANT/$ownerId/${entityId.entityType.toShortString()}/${entityId.id}',
         options: defaultHttpOptionsFromConfig(requestConfig));
   }
 
-  Future<void> changeOwnerToCustomer(String ownerId, EntityId entityId, {RequestConfig? requestConfig}) async {
-    await _tbClient.post('/api/owner/CUSTOMER/$ownerId/${entityId.entityType.toShortString()}/${entityId.id}',
+  Future<void> changeOwnerToCustomer(String ownerId, EntityId entityId,
+      {RequestConfig? requestConfig}) async {
+    await _tbClient.post(
+        '/api/owner/CUSTOMER/$ownerId/${entityId.entityType.toShortString()}/${entityId.id}',
         options: defaultHttpOptionsFromConfig(requestConfig));
   }
 }

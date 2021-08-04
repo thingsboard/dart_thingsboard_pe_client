@@ -3,8 +3,8 @@ class CustomTranslation {
 
   CustomTranslation(this.translationMap);
 
-  CustomTranslation.fromJson(Map<String, dynamic> json):
-        translationMap = json['translationMap'];
+  CustomTranslation.fromJson(Map<String, dynamic> json)
+      : translationMap = json['translationMap'];
 
   Map<String, dynamic> toJson() {
     var json = <String, dynamic>{};

@@ -2,7 +2,6 @@ import '../entity_type_models.dart';
 import 'entity_id.dart';
 
 class IntegrationId extends EntityId {
-
   IntegrationId(String id) : super(EntityType.INTEGRATION, id);
 
   @override

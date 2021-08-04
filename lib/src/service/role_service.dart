@@ -19,8 +19,9 @@ class RoleService {
 
   Future<Role?> getRole(String roleId, {RequestConfig? requestConfig}) async {
     return nullIfNotFound(
-          (RequestConfig requestConfig) async {
-        var response = await _tbClient.get<Map<String, dynamic>>('/api/role/$roleId',
+      (RequestConfig requestConfig) async {
+        var response = await _tbClient.get<Map<String, dynamic>>(
+            '/api/role/$roleId',
             options: defaultHttpOptionsFromConfig(requestConfig));
         return response.data != null ? Role.fromJson(response.data!) : null;
       },
@@ -29,7 +30,8 @@ class RoleService {
   }
 
   Future<Role> saveRole(Role role, {RequestConfig? requestConfig}) async {
-    var response = await _tbClient.post<Map<String, dynamic>>('/api/role', data: jsonEncode(role),
+    var response = await _tbClient.post<Map<String, dynamic>>('/api/role',
+        data: jsonEncode(role),
         options: defaultHttpOptionsFromConfig(requestConfig));
     return Role.fromJson(response.data!);
   }
@@ -39,20 +41,23 @@ class RoleService {
         options: defaultHttpOptionsFromConfig(requestConfig));
   }
 
-  Future<PageData<Role>> getRoles(PageLink pageLink, {RoleType? type, RequestConfig? requestConfig}) async {
+  Future<PageData<Role>> getRoles(PageLink pageLink,
+      {RoleType? type, RequestConfig? requestConfig}) async {
     var queryParams = pageLink.toQueryParameters();
     if (type != null) {
       queryParams['type'] = type.toShortString();
     }
-    var response = await _tbClient.get<Map<String, dynamic>>('/api/roles', queryParameters: queryParams,
+    var response = await _tbClient.get<Map<String, dynamic>>('/api/roles',
+        queryParameters: queryParams,
         options: defaultHttpOptionsFromConfig(requestConfig));
     return _tbClient.compute(parseRolePageData, response.data!);
   }
 
-  Future<List<Role>> getRolesByIds(List<String> roleIds, {RequestConfig? requestConfig}) async {
-    var response = await _tbClient.get<List<dynamic>>('/api/roles', queryParameters: {'roleIds': roleIds.join(',')},
+  Future<List<Role>> getRolesByIds(List<String> roleIds,
+      {RequestConfig? requestConfig}) async {
+    var response = await _tbClient.get<List<dynamic>>('/api/roles',
+        queryParameters: {'roleIds': roleIds.join(',')},
         options: defaultHttpOptionsFromConfig(requestConfig));
     return response.data!.map((e) => Role.fromJson(e)).toList();
   }
-
 }

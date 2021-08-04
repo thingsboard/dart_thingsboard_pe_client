@@ -29,7 +29,6 @@ import '../entity_type_models.dart';
 import './has_uuid.dart';
 
 abstract class EntityId extends HasUuid {
-
   EntityType entityType;
 
   EntityId(this.entityType, String id) : super(id);
@@ -45,7 +44,7 @@ abstract class EntityId extends HasUuid {
   }
 
   factory EntityId.fromTypeAndUuid(EntityType type, String uuid) {
-    switch(type) {
+    switch (type) {
       case EntityType.TENANT:
         return TenantId(uuid);
       case EntityType.TENANT_PROFILE:
@@ -107,5 +106,4 @@ abstract class EntityId extends HasUuid {
     json['entityType'] = entityType.toShortString();
     return json;
   }
-
 }

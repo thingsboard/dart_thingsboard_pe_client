@@ -2,7 +2,6 @@ import '../entity_type_models.dart';
 import 'entity_id.dart';
 
 class GroupPermissionId extends EntityId {
-
   GroupPermissionId(String id) : super(EntityType.GROUP_PERMISSION, id);
 
   @override

@@ -10,16 +10,11 @@ import 'has_owner_id.dart';
 import 'has_customer_id.dart';
 import 'tenant_entity.dart';
 
-enum SchedulerRepeatType {
-  DAILY,
-  WEEKLY,
-  MONTHLY,
-  YEARLY,
-  TIMER
-}
+enum SchedulerRepeatType { DAILY, WEEKLY, MONTHLY, YEARLY, TIMER }
 
 SchedulerRepeatType schedulerRepeatTypeFromString(String value) {
-  return SchedulerRepeatType.values.firstWhere((e)=>e.toString().split('.')[1].toUpperCase()==value.toUpperCase());
+  return SchedulerRepeatType.values.firstWhere(
+      (e) => e.toString().split('.')[1].toUpperCase() == value.toUpperCase());
 }
 
 extension SchedulerRepeatTypeToString on SchedulerRepeatType {
@@ -28,14 +23,11 @@ extension SchedulerRepeatTypeToString on SchedulerRepeatType {
   }
 }
 
-enum SchedulerTimeUnit {
-  HOURS,
-  MINUTES,
-  SECONDS
-}
+enum SchedulerTimeUnit { HOURS, MINUTES, SECONDS }
 
 SchedulerTimeUnit schedulerTimeUnitFromString(String value) {
-  return SchedulerTimeUnit.values.firstWhere((e)=>e.toString().split('.')[1].toUpperCase()==value.toUpperCase());
+  return SchedulerTimeUnit.values.firstWhere(
+      (e) => e.toString().split('.')[1].toUpperCase() == value.toUpperCase());
 }
 
 extension SchedulerTimeUnitToString on SchedulerTimeUnit {
@@ -45,21 +37,29 @@ extension SchedulerTimeUnitToString on SchedulerTimeUnit {
 }
 
 class SchedulerRepeat {
-
   SchedulerRepeatType type;
   int endsOn;
   List<int>? repeatOn;
   int? repeatInterval;
   SchedulerTimeUnit? timeUnit;
 
-  SchedulerRepeat({required this.type, required this.endsOn, this.repeatOn, this.repeatInterval, this.timeUnit});
+  SchedulerRepeat(
+      {required this.type,
+      required this.endsOn,
+      this.repeatOn,
+      this.repeatInterval,
+      this.timeUnit});
 
-  SchedulerRepeat.fromJson(Map<String, dynamic> json):
-        type = schedulerRepeatTypeFromString(json['type']),
+  SchedulerRepeat.fromJson(Map<String, dynamic> json)
+      : type = schedulerRepeatTypeFromString(json['type']),
         endsOn = json['endsOn'],
-        repeatOn = json['repeatOn'] != null ? (json['repeatOn'] as List<dynamic>).map((e) => e as int).toList() : null,
+        repeatOn = json['repeatOn'] != null
+            ? (json['repeatOn'] as List<dynamic>).map((e) => e as int).toList()
+            : null,
         repeatInterval = json['repeatInterval'],
-        timeUnit = json['timeUnit'] != null ? schedulerTimeUnitFromString(json['timeUnit']) : null;
+        timeUnit = json['timeUnit'] != null
+            ? schedulerTimeUnitFromString(json['timeUnit'])
+            : null;
 
   Map<String, dynamic> toJson() {
     var json = <String, dynamic>{
@@ -85,17 +85,18 @@ class SchedulerRepeat {
 }
 
 class SchedulerEventSchedule {
-
   String? timezone;
   int? startTime;
   SchedulerRepeat? repeat;
 
   SchedulerEventSchedule({this.timezone, this.startTime, this.repeat});
 
-  SchedulerEventSchedule.fromJson(Map<String, dynamic> json):
-        timezone = json['timezone'],
+  SchedulerEventSchedule.fromJson(Map<String, dynamic> json)
+      : timezone = json['timezone'],
         startTime = json['startTime'],
-        repeat = json['repeat'] != null ? SchedulerRepeat.fromJson(json['repeat']) : null;
+        repeat = json['repeat'] != null
+            ? SchedulerRepeat.fromJson(json['repeat'])
+            : null;
 
   Map<String, dynamic> toJson() {
     var json = <String, dynamic>{};
@@ -117,19 +118,22 @@ class SchedulerEventSchedule {
   }
 }
 
-class SchedulerEventInfo extends AdditionalInfoBased<SchedulerEventId> implements HasName, TenantEntity, HasCustomerId, HasOwnerId {
-
+class SchedulerEventInfo extends AdditionalInfoBased<SchedulerEventId>
+    implements HasName, TenantEntity, HasCustomerId, HasOwnerId {
   TenantId? tenantId;
   CustomerId? customerId;
   String name;
   String type;
   SchedulerEventSchedule schedule;
 
-  SchedulerEventInfo({required this.name, required this.type, required this.schedule});
+  SchedulerEventInfo(
+      {required this.name, required this.type, required this.schedule});
 
-  SchedulerEventInfo.fromJson(Map<String, dynamic> json):
-        tenantId = TenantId.fromJson(json['tenantId']),
-        customerId = json['customerId'] != null ? CustomerId.fromJson(json['customerId']) : null,
+  SchedulerEventInfo.fromJson(Map<String, dynamic> json)
+      : tenantId = TenantId.fromJson(json['tenantId']),
+        customerId = json['customerId'] != null
+            ? CustomerId.fromJson(json['customerId'])
+            : null,
         name = json['name'],
         type = json['type'],
         schedule = SchedulerEventSchedule.fromJson(json['schedule']),
@@ -172,7 +176,9 @@ class SchedulerEventInfo extends AdditionalInfoBased<SchedulerEventId> implement
 
   @override
   EntityId? getOwnerId() {
-    return customerId != null && !customerId!.isNullUid() ? customerId : tenantId;
+    return customerId != null && !customerId!.isNullUid()
+        ? customerId
+        : tenantId;
   }
 
   @override
@@ -193,15 +199,14 @@ class SchedulerEventInfo extends AdditionalInfoBased<SchedulerEventId> implement
     return '${additionalInfoBasedString('tenantId: $tenantId, customerId: $customerId, name: $name, type: $type, '
         'schedule: $schedule${toStringBody != null ? ', ' + toStringBody : ''}')}';
   }
-
 }
 
 class SchedulerEventWithCustomerInfo extends SchedulerEventInfo {
   String? customerTitle;
   bool? customerIsPublic;
 
-  SchedulerEventWithCustomerInfo.fromJson(Map<String, dynamic> json):
-        customerTitle = json['customerTitle'],
+  SchedulerEventWithCustomerInfo.fromJson(Map<String, dynamic> json)
+      : customerTitle = json['customerTitle'],
         customerIsPublic = json['customerIsPublic'],
         super.fromJson(json);
 
@@ -217,10 +222,13 @@ class SchedulerEventConfiguration {
   Map<String, dynamic>? msgBody;
   Map<String, dynamic>? metadata;
 
-  SchedulerEventConfiguration({this.originatorId, this.msgType, this.msgBody, this.metadata});
+  SchedulerEventConfiguration(
+      {this.originatorId, this.msgType, this.msgBody, this.metadata});
 
-  SchedulerEventConfiguration.fromJson(Map<String, dynamic> json):
-        originatorId = json['originatorId'] != null ? EntityId.fromJson(json['originatorId']) : null,
+  SchedulerEventConfiguration.fromJson(Map<String, dynamic> json)
+      : originatorId = json['originatorId'] != null
+            ? EntityId.fromJson(json['originatorId'])
+            : null,
         msgType = json['msgType'],
         msgBody = json['msgBody'],
         metadata = json['metadata'];
@@ -249,14 +257,18 @@ class SchedulerEventConfiguration {
 }
 
 class SchedulerEvent extends SchedulerEventInfo {
-
   SchedulerEventConfiguration configuration;
 
-  SchedulerEvent({required String name, required String type, required SchedulerEventSchedule schedule, required this.configuration}):
-        super(name: name, type: type, schedule: schedule);
+  SchedulerEvent(
+      {required String name,
+      required String type,
+      required SchedulerEventSchedule schedule,
+      required this.configuration})
+      : super(name: name, type: type, schedule: schedule);
 
-  SchedulerEvent.fromJson(Map<String, dynamic> json):
-        configuration = SchedulerEventConfiguration.fromJson(json['configuration']),
+  SchedulerEvent.fromJson(Map<String, dynamic> json)
+      : configuration =
+            SchedulerEventConfiguration.fromJson(json['configuration']),
         super.fromJson(json);
 
   @override
@@ -270,5 +282,4 @@ class SchedulerEvent extends SchedulerEventInfo {
   String toString() {
     return 'SchedulerEvent{${schedulerEventInfoString('configuration: $configuration')}}';
   }
-
 }

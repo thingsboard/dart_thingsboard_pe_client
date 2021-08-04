@@ -7,7 +7,14 @@ class SignUpRequest {
   String? pkgName;
   String? appSecret;
 
-  SignUpRequest({required this.firstName, required this.lastName, required this.email, required this.password, required this.recaptchaResponse, this.pkgName, this.appSecret});
+  SignUpRequest(
+      {required this.firstName,
+      required this.lastName,
+      required this.email,
+      required this.password,
+      required this.recaptchaResponse,
+      this.pkgName,
+      this.appSecret});
 
   Map<String, dynamic> toJson() {
     var json = <String, dynamic>{
@@ -32,11 +39,9 @@ class SignUpRequest {
   }
 }
 
-enum SignUpResult {
-  SUCCESS,
-  INACTIVE_USER_EXISTS
-}
+enum SignUpResult { SUCCESS, INACTIVE_USER_EXISTS }
 
 SignUpResult signUpResultFromString(String value) {
-  return SignUpResult.values.firstWhere((e)=>e.toString().split('.')[1].toUpperCase()==value.toUpperCase());
+  return SignUpResult.values.firstWhere(
+      (e) => e.toString().split('.')[1].toUpperCase() == value.toUpperCase());
 }

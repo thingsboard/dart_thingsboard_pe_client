@@ -10,8 +10,8 @@ import 'id/has_uuid.dart';
 import 'id/tenant_id.dart';
 import 'id/dashboard_id.dart';
 
-class DashboardInfo extends BaseData<DashboardId> implements GroupEntity<DashboardId> {
-
+class DashboardInfo extends BaseData<DashboardId>
+    implements GroupEntity<DashboardId> {
   TenantId? tenantId;
   CustomerId? customerId;
   String title;
@@ -20,15 +20,20 @@ class DashboardInfo extends BaseData<DashboardId> implements GroupEntity<Dashboa
   bool? mobileHide;
   int? mobileOrder;
 
-  DashboardInfo(this.title): assignedCustomers = {};
+  DashboardInfo(this.title) : assignedCustomers = {};
 
-  DashboardInfo.fromJson(Map<String, dynamic> json):
-        tenantId = TenantId.fromJson(json['tenantId']),
-        customerId = json['customerId'] != null ? CustomerId.fromJson(json['customerId']) : null,
+  DashboardInfo.fromJson(Map<String, dynamic> json)
+      : tenantId = TenantId.fromJson(json['tenantId']),
+        customerId = json['customerId'] != null
+            ? CustomerId.fromJson(json['customerId'])
+            : null,
         title = json['title'],
         image = json['image'],
-        assignedCustomers = json['assignedCustomers'] != null ?
-                 (json['assignedCustomers'] as List<dynamic>).map((e) => ShortCustomerInfo.fromJson(e)).toSet() : {},
+        assignedCustomers = json['assignedCustomers'] != null
+            ? (json['assignedCustomers'] as List<dynamic>)
+                .map((e) => ShortCustomerInfo.fromJson(e))
+                .toSet()
+            : {},
         mobileHide = json['mobileHide'],
         mobileOrder = json['mobileOrder'],
         super.fromJson(json);
@@ -46,7 +51,8 @@ class DashboardInfo extends BaseData<DashboardId> implements GroupEntity<Dashboa
     if (image != null) {
       json['image'] = image;
     }
-    json['assignedCustomers'] = assignedCustomers.map((e) => e.toJson()).toList();
+    json['assignedCustomers'] =
+        assignedCustomers.map((e) => e.toJson()).toList();
     if (mobileHide != null) {
       json['mobileHide'] = mobileHide;
     }
@@ -78,7 +84,9 @@ class DashboardInfo extends BaseData<DashboardId> implements GroupEntity<Dashboa
 
   @override
   EntityId? getOwnerId() {
-    return customerId != null && !customerId!.isNullUid() ? customerId : tenantId;
+    return customerId != null && !customerId!.isNullUid()
+        ? customerId
+        : tenantId;
   }
 
   @override
@@ -96,21 +104,20 @@ class DashboardInfo extends BaseData<DashboardId> implements GroupEntity<Dashboa
   }
 
   String dashboardInfoString([String? toStringBody]) {
-    return '${baseDataString('tenantId: $tenantId, customerId: $customerId, title: $title, image: ${image != null ? '['+image!.substring(0, min(30, image!.length)) + '...]' : 'null'}, '
+    return '${baseDataString('tenantId: $tenantId, customerId: $customerId, title: $title, image: ${image != null ? '[' + image!.substring(0, min(30, image!.length)) + '...]' : 'null'}, '
         'mobileHide: $mobileHide, mobileOrder: $mobileOrder${toStringBody != null ? ', ' + toStringBody : ''}')}';
   }
 }
 
 class Dashboard extends DashboardInfo {
-
   Map<String, dynamic> configuration;
 
-  Dashboard(String title):
-        configuration = {},
+  Dashboard(String title)
+      : configuration = {},
         super(title);
 
-  Dashboard.fromJson(Map<String, dynamic> json):
-        configuration = json['configuration'],
+  Dashboard.fromJson(Map<String, dynamic> json)
+      : configuration = json['configuration'],
         super.fromJson(json);
 
   @override
@@ -127,17 +134,15 @@ class Dashboard extends DashboardInfo {
 }
 
 class HomeDashboard extends Dashboard {
-
   bool hideDashboardToolbar;
 
-  HomeDashboard(String title, this.hideDashboardToolbar):
-        super(title);
+  HomeDashboard(String title, this.hideDashboardToolbar) : super(title);
 
-  HomeDashboard.fromJson(Map<String, dynamic> json):
-        hideDashboardToolbar = json['hideDashboardToolbar'],
+  HomeDashboard.fromJson(Map<String, dynamic> json)
+      : hideDashboardToolbar = json['hideDashboardToolbar'],
         super.fromJson(json);
 
- @override
+  @override
   Map<String, dynamic> toJson() {
     var json = super.toJson();
     json['hideDashboardToolbar'] = hideDashboardToolbar;
@@ -151,17 +156,17 @@ class HomeDashboard extends Dashboard {
 }
 
 class HomeDashboardInfo {
-
   DashboardId? dashboardId;
   bool hideDashboardToolbar;
 
   HomeDashboardInfo(this.hideDashboardToolbar);
 
-  HomeDashboardInfo.fromJson(Map<String, dynamic> json):
-        dashboardId = json['dashboardId'] != null ? DashboardId.fromJson(json['dashboardId']) : null,
+  HomeDashboardInfo.fromJson(Map<String, dynamic> json)
+      : dashboardId = json['dashboardId'] != null
+            ? DashboardId.fromJson(json['dashboardId'])
+            : null,
         hideDashboardToolbar = json['hideDashboardToolbar'];
 
-  @override
   Map<String, dynamic> toJson() {
     var json = <String, dynamic>{};
     if (dashboardId != null) {

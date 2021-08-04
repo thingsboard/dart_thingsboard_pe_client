@@ -13,7 +13,8 @@ class RuleEngineService {
 
   RuleEngineService._internal(this._tbClient);
 
-  Future<dynamic> handleRuleEngineRequest(String requestBody, {EntityId? entityId, int? timeout, RequestConfig? requestConfig}) async {
+  Future<dynamic> handleRuleEngineRequest(String requestBody,
+      {EntityId? entityId, int? timeout, RequestConfig? requestConfig}) async {
     var url = '/api/rule-engine';
     if (entityId != null) {
       url += '/${entityId.entityType.toShortString()}/${entityId.id}';
@@ -21,9 +22,9 @@ class RuleEngineService {
         url += '/$timeout';
       }
     }
-    var response = await _tbClient.post<ResponseBody>(url, data: requestBody,
+    var response = await _tbClient.post<ResponseBody>(url,
+        data: requestBody,
         options: defaultHttpOptionsFromConfig(requestConfig));
     return response.data;
   }
-
 }

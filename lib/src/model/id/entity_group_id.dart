@@ -2,7 +2,6 @@ import '../entity_type_models.dart';
 import 'entity_id.dart';
 
 class EntityGroupId extends EntityId {
-
   EntityGroupId(String id) : super(EntityType.ENTITY_GROUP, id);
 
   @override

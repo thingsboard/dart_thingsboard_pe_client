@@ -15,24 +15,30 @@ class ReportService {
 
   ReportService._internal(this._tbClient);
 
-  Future<ResponseBody?> downloadDashboardReport(String dashboardId, ReportParams reportParams, {RequestConfig? requestConfig}) async {
-      var options = defaultHttpOptionsFromConfig(requestConfig);
-      options.responseType = ResponseType.stream;
-      var response = await _tbClient.post<ResponseBody>('/api/report/$dashboardId/download', data: jsonEncode(reportParams),
-          options: options);
-      return response.data;
+  Future<ResponseBody?> downloadDashboardReport(
+      String dashboardId, ReportParams reportParams,
+      {RequestConfig? requestConfig}) async {
+    var options = defaultHttpOptionsFromConfig(requestConfig);
+    options.responseType = ResponseType.stream;
+    var response = await _tbClient.post<ResponseBody>(
+        '/api/report/$dashboardId/download',
+        data: jsonEncode(reportParams),
+        options: options);
+    return response.data;
   }
 
-  Future<ResponseBody?> downloadTestReport(ReportConfig reportConfig, {String? reportsServerEndpointUrl, RequestConfig? requestConfig}) async {
+  Future<ResponseBody?> downloadTestReport(ReportConfig reportConfig,
+      {String? reportsServerEndpointUrl, RequestConfig? requestConfig}) async {
     var queryParams = <String, dynamic>{};
     if (reportsServerEndpointUrl != null) {
       queryParams['reportsServerEndpointUrl'] = reportsServerEndpointUrl;
     }
     var options = defaultHttpOptionsFromConfig(requestConfig);
     options.responseType = ResponseType.stream;
-    var response = await _tbClient.post<ResponseBody>('/api/report/test', queryParameters: queryParams, data: jsonEncode(reportConfig),
+    var response = await _tbClient.post<ResponseBody>('/api/report/test',
+        queryParameters: queryParams,
+        data: jsonEncode(reportConfig),
         options: options);
     return response.data;
   }
-
 }

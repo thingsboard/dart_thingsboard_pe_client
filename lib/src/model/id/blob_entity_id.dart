@@ -2,7 +2,6 @@ import '../entity_type_models.dart';
 import 'entity_id.dart';
 
 class BlobEntityId extends EntityId {
-
   BlobEntityId(String id) : super(EntityType.BLOB_ENTITY, id);
 
   @override

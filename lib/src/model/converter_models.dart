@@ -8,13 +8,11 @@ import 'id/converter_id.dart';
 import 'additional_info_based.dart';
 import 'tenant_entity.dart';
 
-enum ConverterType {
-  UPLINK,
-  DOWNLINK
-}
+enum ConverterType { UPLINK, DOWNLINK }
 
 ConverterType converterTypeFromString(String value) {
-  return ConverterType.values.firstWhere((e)=>e.toString().split('.')[1].toUpperCase()==value.toUpperCase());
+  return ConverterType.values.firstWhere(
+      (e) => e.toString().split('.')[1].toUpperCase() == value.toUpperCase());
 }
 
 extension ConverterTypeToString on ConverterType {
@@ -22,18 +20,23 @@ extension ConverterTypeToString on ConverterType {
     return toString().split('.').last;
   }
 }
-class Converter extends AdditionalInfoBased<ConverterId> implements HasName, TenantEntity {
 
+class Converter extends AdditionalInfoBased<ConverterId>
+    implements HasName, TenantEntity {
   TenantId? tenantId;
   String name;
   ConverterType type;
   bool debugMode;
   Map<String, dynamic> configuration;
 
-  Converter({required this.name, required this.type, this.debugMode = false, required this.configuration});
+  Converter(
+      {required this.name,
+      required this.type,
+      this.debugMode = false,
+      required this.configuration});
 
-  Converter.fromJson(Map<String, dynamic> json):
-        tenantId = TenantId.fromJson(json['tenantId']),
+  Converter.fromJson(Map<String, dynamic> json)
+      : tenantId = TenantId.fromJson(json['tenantId']),
         name = json['name'],
         type = converterTypeFromString(json['type']),
         debugMode = json['debugMode'],
@@ -75,45 +78,46 @@ class Converter extends AdditionalInfoBased<ConverterId> implements HasName, Ten
 }
 
 class TestUpLinkInputParams {
-
   Map<String, String> metadata;
   String payload;
   String decoder;
 
-  TestUpLinkInputParams({required this.metadata, required this.payload, required this.decoder});
+  TestUpLinkInputParams(
+      {required this.metadata, required this.payload, required this.decoder});
 
-  Map<String, dynamic> toJson() => {
-    'metadata': metadata,
-    'payload': payload,
-    'decoder': decoder
-  };
+  Map<String, dynamic> toJson() =>
+      {'metadata': metadata, 'payload': payload, 'decoder': decoder};
 }
 
 class TestDownLinkInputParams {
-
   Map<String, String> metadata;
   String msg;
   String msgType;
   Map<String, String> integrationMetadata;
   String encoder;
 
-  TestDownLinkInputParams({required this.metadata, required this.msg, required this.msgType, required this.integrationMetadata, required this.encoder});
+  TestDownLinkInputParams(
+      {required this.metadata,
+      required this.msg,
+      required this.msgType,
+      required this.integrationMetadata,
+      required this.encoder});
 
   Map<String, dynamic> toJson() => {
-    'metadata': metadata,
-    'msg': msg,
-    'msgType': msgType,
-    'integrationMetadata': integrationMetadata,
-    'encoder': encoder
-  };
+        'metadata': metadata,
+        'msg': msg,
+        'msgType': msgType,
+        'integrationMetadata': integrationMetadata,
+        'encoder': encoder
+      };
 }
 
 class TestConverterResult {
   String? output;
   String? error;
 
-  TestConverterResult.fromJson(Map<String, dynamic> json):
-        output = json['output'],
+  TestConverterResult.fromJson(Map<String, dynamic> json)
+      : output = json['output'],
         error = json['error'];
 
   @override
@@ -123,15 +127,14 @@ class TestConverterResult {
 }
 
 class ConverterDebugInput {
-
   ContentType inContentType;
   String inContent;
   String inMetadata;
   String inMsgType;
   String inIntegrationMetadata;
 
-  ConverterDebugInput.fromJson(Map<String, dynamic> json):
-        inContentType = contentTypeFromString(json['inContentType']),
+  ConverterDebugInput.fromJson(Map<String, dynamic> json)
+      : inContentType = contentTypeFromString(json['inContentType']),
         inContent = json['inContent'],
         inMetadata = json['inMetadata'],
         inMsgType = json['inMsgType'],

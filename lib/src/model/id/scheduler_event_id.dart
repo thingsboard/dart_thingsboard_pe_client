@@ -2,7 +2,6 @@ import '../entity_type_models.dart';
 import 'entity_id.dart';
 
 class SchedulerEventId extends EntityId {
-
   SchedulerEventId(String id) : super(EntityType.SCHEDULER_EVENT, id);
 
   @override

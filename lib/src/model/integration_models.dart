@@ -7,36 +7,37 @@ import 'id/integration_id.dart';
 import 'tenant_entity.dart';
 
 enum IntegrationType {
-    OCEANCONNECT,
-    SIGFOX,
-    THINGPARK,
-    TPE,
-    CHIRPSTACK,
-    TMOBILE_IOT_CDP,
-    HTTP,
-    MQTT,
-    PUB_SUB,
-    AWS_IOT,
-    AWS_SQS,
-    AWS_KINESIS,
-    IBM_WATSON_IOT,
-    TTN,
-    TTI,
-    AZURE_EVENT_HUB,
-    OPC_UA,
-    CUSTOM,
-    UDP,
-    TCP,
-    KAFKA,
-    AZURE_IOT_HUB,
-    APACHE_PULSAR,
-    RABBITMQ,
-    LORIOT,
-    COAP
+  OCEANCONNECT,
+  SIGFOX,
+  THINGPARK,
+  TPE,
+  CHIRPSTACK,
+  TMOBILE_IOT_CDP,
+  HTTP,
+  MQTT,
+  PUB_SUB,
+  AWS_IOT,
+  AWS_SQS,
+  AWS_KINESIS,
+  IBM_WATSON_IOT,
+  TTN,
+  TTI,
+  AZURE_EVENT_HUB,
+  OPC_UA,
+  CUSTOM,
+  UDP,
+  TCP,
+  KAFKA,
+  AZURE_IOT_HUB,
+  APACHE_PULSAR,
+  RABBITMQ,
+  LORIOT,
+  COAP
 }
 
 IntegrationType integrationTypeFromString(String value) {
-  return IntegrationType.values.firstWhere((e)=>e.toString().split('.')[1].toUpperCase()==value.toUpperCase());
+  return IntegrationType.values.firstWhere(
+      (e) => e.toString().split('.')[1].toUpperCase() == value.toUpperCase());
 }
 
 extension IntegrationTypeToString on IntegrationType {
@@ -45,8 +46,8 @@ extension IntegrationTypeToString on IntegrationType {
   }
 }
 
-class Integration extends AdditionalInfoBased<IntegrationId> implements HasName, TenantEntity {
-
+class Integration extends AdditionalInfoBased<IntegrationId>
+    implements HasName, TenantEntity {
   TenantId? tenantId;
   ConverterId defaultConverterId;
   ConverterId? downlinkConverterId;
@@ -60,22 +61,25 @@ class Integration extends AdditionalInfoBased<IntegrationId> implements HasName,
   String? secret;
   Map<String, dynamic> configuration;
 
-  Integration({required this.defaultConverterId,
-               required this.name,
-               required this.routingKey,
-               required this.type,
-               this.configuration = const {},
-               this.downlinkConverterId,
-               this.debugMode,
-               this.enabled,
-               this.remote,
-               this.allowCreateDevicesOrAssets,
-               this.secret});
+  Integration(
+      {required this.defaultConverterId,
+      required this.name,
+      required this.routingKey,
+      required this.type,
+      this.configuration = const {},
+      this.downlinkConverterId,
+      this.debugMode,
+      this.enabled,
+      this.remote,
+      this.allowCreateDevicesOrAssets,
+      this.secret});
 
-  Integration.fromJson(Map<String, dynamic> json):
-        tenantId = TenantId.fromJson(json['tenantId']),
+  Integration.fromJson(Map<String, dynamic> json)
+      : tenantId = TenantId.fromJson(json['tenantId']),
         defaultConverterId = ConverterId.fromJson(json['defaultConverterId']),
-        downlinkConverterId = json['downlinkConverterId'] != null ? ConverterId.fromJson(json['downlinkConverterId']) : null,
+        downlinkConverterId = json['downlinkConverterId'] != null
+            ? ConverterId.fromJson(json['downlinkConverterId'])
+            : null,
         name = json['name'],
         routingKey = json['routingKey'],
         type = integrationTypeFromString(json['type']),

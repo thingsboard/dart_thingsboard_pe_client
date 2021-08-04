@@ -17,20 +17,22 @@ class CustomMenuItem {
       this.setAccessToken,
       this.childMenuItems});
 
-  CustomMenuItem.fromJson(Map<String, dynamic> json):
-        name = json['name'],
+  CustomMenuItem.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
         iconUrl = json['iconUrl'],
         materialIcon = json['materialIcon'],
         iframeUrl = json['iframeUrl'],
         dashboardId = json['dashboardId'],
         hideDashboardToolbar = json['hideDashboardToolbar'],
         setAccessToken = json['setAccessToken'],
-        childMenuItems = json['childMenuItems'] != null ? (json['childMenuItems'] as List<dynamic>).map((e) => CustomMenuItem.fromJson(e)).toList() : null;
+        childMenuItems = json['childMenuItems'] != null
+            ? (json['childMenuItems'] as List<dynamic>)
+                .map((e) => CustomMenuItem.fromJson(e))
+                .toList()
+            : null;
 
   Map<String, dynamic> toJson() {
-    var json = <String, dynamic>{
-      'name': name
-    };
+    var json = <String, dynamic>{'name': name};
     if (iconUrl != null) {
       json['iconUrl'] = iconUrl;
     }
@@ -62,16 +64,18 @@ class CustomMenuItem {
 }
 
 class CustomMenu {
-
   List<String>? disabledMenuItems;
   List<CustomMenuItem>? menuItems;
 
-  CustomMenu({this.disabledMenuItems,
-              this.menuItems});
+  CustomMenu({this.disabledMenuItems, this.menuItems});
 
-  CustomMenu.fromJson(Map<String, dynamic> json):
-        disabledMenuItems = json['disabledMenuItems'],
-        menuItems = json['menuItems'] != null ? (json['menuItems'] as List<dynamic>).map((e) => CustomMenuItem.fromJson(e)).toList() : null;
+  CustomMenu.fromJson(Map<String, dynamic> json)
+      : disabledMenuItems = json['disabledMenuItems'],
+        menuItems = json['menuItems'] != null
+            ? (json['menuItems'] as List<dynamic>)
+                .map((e) => CustomMenuItem.fromJson(e))
+                .toList()
+            : null;
 
   Map<String, dynamic> toJson() {
     var json = <String, dynamic>{};

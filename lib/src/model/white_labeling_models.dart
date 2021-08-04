@@ -6,9 +6,9 @@ class Favicon {
 
   Favicon({this.url, this.type});
 
-  Favicon.fromJson(Map<String, dynamic> json):
-    url = json['url'],
-    type = json['type'];
+  Favicon.fromJson(Map<String, dynamic> json)
+      : url = json['url'],
+        type = json['type'];
 
   Map<String, dynamic> toJson() {
     var json = <String, dynamic>{};
@@ -23,7 +23,7 @@ class Favicon {
 
   @override
   String toString() {
-    return 'Favicon{url: ${url != null ? '['+url!.substring(0, min(30, url!.length)) + '...]' : 'null'}, type: $type}';
+    return 'Favicon{url: ${url != null ? '[' + url!.substring(0, min(30, url!.length)) + '...]' : 'null'}, type: $type}';
   }
 }
 
@@ -34,15 +34,16 @@ class Palette {
 
   Palette({required this.type, this.extendsPalette, this.colors});
 
-  Palette.fromJson(Map<String, dynamic> json):
-        type = json['type'],
+  Palette.fromJson(Map<String, dynamic> json)
+      : type = json['type'],
         extendsPalette = json['extends'],
-        colors = json['colors'] != null ? (json['colors'] as Map).map((key, value) => MapEntry(key as String, value as String)) : null;
+        colors = json['colors'] != null
+            ? (json['colors'] as Map)
+                .map((key, value) => MapEntry(key as String, value as String))
+            : null;
 
   Map<String, dynamic> toJson() {
-    var json = <String, dynamic>{
-      'type': type
-    };
+    var json = <String, dynamic>{'type': type};
     if (extendsPalette != null) {
       json['extends'] = extendsPalette;
     }
@@ -64,9 +65,13 @@ class PaletteSettings {
 
   PaletteSettings({this.primaryPalette, this.accentPalette});
 
-  PaletteSettings.fromJson(Map<String, dynamic> json):
-        primaryPalette = json['primaryPalette'] != null ? Palette.fromJson(json['primaryPalette']) : null,
-        accentPalette = json['accentPalette'] != null ? Palette.fromJson(json['accentPalette']) : null;
+  PaletteSettings.fromJson(Map<String, dynamic> json)
+      : primaryPalette = json['primaryPalette'] != null
+            ? Palette.fromJson(json['primaryPalette'])
+            : null,
+        accentPalette = json['accentPalette'] != null
+            ? Palette.fromJson(json['accentPalette'])
+            : null;
 
   Map<String, dynamic> toJson() {
     var json = <String, dynamic>{};
@@ -100,18 +105,32 @@ class WhiteLabelingParams {
   String? platformVersion;
   String? customCss;
 
-  WhiteLabelingParams({this.logoImageUrl, this.logoImageChecksum, this.logoImageHeight, this.appTitle,
-    this.favicon, this.faviconChecksum, this.paletteSettings, this.helpLinkBaseUrl, this.enableHelpLinks,
-    this.showNameVersion, this.platformName, this.platformVersion, this.customCss});
+  WhiteLabelingParams(
+      {this.logoImageUrl,
+      this.logoImageChecksum,
+      this.logoImageHeight,
+      this.appTitle,
+      this.favicon,
+      this.faviconChecksum,
+      this.paletteSettings,
+      this.helpLinkBaseUrl,
+      this.enableHelpLinks,
+      this.showNameVersion,
+      this.platformName,
+      this.platformVersion,
+      this.customCss});
 
-  WhiteLabelingParams.fromJson(Map<String, dynamic> json):
-        logoImageUrl = json['logoImageUrl'],
+  WhiteLabelingParams.fromJson(Map<String, dynamic> json)
+      : logoImageUrl = json['logoImageUrl'],
         logoImageChecksum = json['logoImageChecksum'],
         logoImageHeight = json['logoImageHeight'],
         appTitle = json['appTitle'],
-        favicon = json['favicon'] != null ? Favicon.fromJson(json['favicon']) : null,
+        favicon =
+            json['favicon'] != null ? Favicon.fromJson(json['favicon']) : null,
         faviconChecksum = json['faviconChecksum'],
-        paletteSettings = json['paletteSettings'] != null ? PaletteSettings.fromJson(json['paletteSettings']) : null,
+        paletteSettings = json['paletteSettings'] != null
+            ? PaletteSettings.fromJson(json['paletteSettings'])
+            : null,
         helpLinkBaseUrl = json['helpLinkBaseUrl'],
         enableHelpLinks = json['enableHelpLinks'],
         showNameVersion = json['showNameVersion'],
@@ -163,7 +182,7 @@ class WhiteLabelingParams {
   }
 
   String whiteLabelingParamsString([String? toStringBody]) {
-    return 'logoImageUrl: ${logoImageUrl != null ? '['+logoImageUrl!.substring(0, min(30, logoImageUrl!.length)) + '...]' : 'null'}, logoImageChecksum: $logoImageChecksum, logoImageHeight: $logoImageHeight, '
+    return 'logoImageUrl: ${logoImageUrl != null ? '[' + logoImageUrl!.substring(0, min(30, logoImageUrl!.length)) + '...]' : 'null'}, logoImageChecksum: $logoImageChecksum, logoImageHeight: $logoImageHeight, '
         'appTitle: $appTitle, favicon: $favicon, faviconChecksum: $faviconChecksum, paletteSettings: $paletteSettings, '
         'helpLinkBaseUrl: $helpLinkBaseUrl, enableHelpLinks: $enableHelpLinks, showNameVersion: $showNameVersion, '
         'platformName: $platformName, platformVersion: $platformVersion, customCss: $customCss${toStringBody != null ? ', ' + toStringBody : ''}';
@@ -210,8 +229,8 @@ class LoginWhiteLabelingParams extends WhiteLabelingParams {
             platformVersion: platformVersion,
             customCss: customCss);
 
-  LoginWhiteLabelingParams.fromJson(Map<String, dynamic> json):
-        pageBackgroundColor = json['pageBackgroundColor'],
+  LoginWhiteLabelingParams.fromJson(Map<String, dynamic> json)
+      : pageBackgroundColor = json['pageBackgroundColor'],
         darkForeground = json['darkForeground'],
         domainName = json['domainName'],
         baseUrl = json['baseUrl'],

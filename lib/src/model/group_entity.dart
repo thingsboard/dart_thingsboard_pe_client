@@ -5,6 +5,5 @@ import 'id/has_id.dart';
 import 'id/entity_id.dart';
 import 'tenant_entity.dart';
 
-abstract class GroupEntity<I extends EntityId> implements HasId<I>, HasName, TenantEntity, HasCustomerId, HasOwnerId {
-
-}
+abstract class GroupEntity<I extends EntityId>
+    implements HasId<I>, HasName, TenantEntity, HasCustomerId, HasOwnerId {}

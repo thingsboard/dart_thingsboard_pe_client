@@ -12,10 +12,11 @@ class UserPermissionsService {
 
   UserPermissionsService._internal(this._tbClient);
 
-  Future<AllowedPermissionsInfo> getAllowedPermissions({RequestConfig? requestConfig}) async {
-    var response = await _tbClient.get<Map<String, dynamic>>('/api/permissions/allowedPermissions',
+  Future<AllowedPermissionsInfo> getAllowedPermissions(
+      {RequestConfig? requestConfig}) async {
+    var response = await _tbClient.get<Map<String, dynamic>>(
+        '/api/permissions/allowedPermissions',
         options: defaultHttpOptionsFromConfig(requestConfig));
     return AllowedPermissionsInfo.fromJson(response.data!);
   }
-
 }

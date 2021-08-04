@@ -6,8 +6,8 @@ class SignUpSelfRegistrationParams {
 
   SignUpSelfRegistrationParams({this.signUpTextMessage, this.captchaSiteKey});
 
-  SignUpSelfRegistrationParams.fromJson(Map<String, dynamic> json):
-        signUpTextMessage = json['signUpTextMessage'],
+  SignUpSelfRegistrationParams.fromJson(Map<String, dynamic> json)
+      : signUpTextMessage = json['signUpTextMessage'],
         captchaSiteKey = json['captchaSiteKey'];
 
   Map<String, dynamic> toJson() {
@@ -60,24 +60,28 @@ class SelfRegistrationParams extends SignUpSelfRegistrationParams {
       this.appSecret,
       this.appScheme,
       this.appHost})
-      : super(signUpTextMessage: signUpTextMessage,
+      : super(
+            signUpTextMessage: signUpTextMessage,
             captchaSiteKey: captchaSiteKey);
 
-  SelfRegistrationParams.fromJson(Map<String, dynamic> json):
-        adminSettingsId = json['adminSettingsId'],
+  SelfRegistrationParams.fromJson(Map<String, dynamic> json)
+      : adminSettingsId = json['adminSettingsId'],
         domainName = json['domainName'],
         captchaSecretKey = json['captchaSecretKey'],
         privacyPolicy = json['privacyPolicy'],
         notificationEmail = json['notificationEmail'],
         defaultDashboardId = json['defaultDashboardId'],
         defaultDashboardFullscreen = json['defaultDashboardFullscreen'],
-        permissions = json['permissions'] != null ? (json['permissions'] as List<dynamic>).map((e) => GroupPermission.fromJson(e)).toList() : null,
+        permissions = json['permissions'] != null
+            ? (json['permissions'] as List<dynamic>)
+                .map((e) => GroupPermission.fromJson(e))
+                .toList()
+            : null,
         pkgName = json['pkgName'],
         appSecret = json['appSecret'],
         appScheme = json['appScheme'],
         appHost = json['appHost'],
         super.fromJson(json);
-
 
   @override
   Map<String, dynamic> toJson() {

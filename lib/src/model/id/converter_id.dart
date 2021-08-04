@@ -2,7 +2,6 @@ import '../entity_type_models.dart';
 import 'entity_id.dart';
 
 class ConverterId extends EntityId {
-
   ConverterId(String id) : super(EntityType.CONVERTER, id);
 
   @override

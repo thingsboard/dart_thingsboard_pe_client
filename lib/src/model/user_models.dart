@@ -7,9 +7,6 @@ import 'id/has_uuid.dart';
 import 'id/tenant_id.dart';
 
 import 'authority_enum.dart';
-import 'has_customer_id.dart';
-import 'has_name.dart';
-import 'has_tenant_id.dart';
 import 'id/user_id.dart';
 
 class AuthUser {
@@ -36,7 +33,9 @@ class AuthUser {
     tenantId = claims.remove('tenantId');
     customerId = claims.remove('customerId');
     isPublic = claims.remove('isPublic');
-    authority = scopes.isNotEmpty ? authorityFromString(scopes[0]) : Authority.ANONYMOUS;
+    authority = scopes.isNotEmpty
+        ? authorityFromString(scopes[0])
+        : Authority.ANONYMOUS;
     additionalData = claims;
   }
 
@@ -60,7 +59,6 @@ class AuthUser {
 }
 
 class User extends AdditionalInfoBased<UserId> implements GroupEntity<UserId> {
-
   TenantId? tenantId;
   CustomerId? customerId;
   String email;
@@ -70,9 +68,13 @@ class User extends AdditionalInfoBased<UserId> implements GroupEntity<UserId> {
 
   User(this.email, this.authority);
 
-  User.fromJson(Map<String, dynamic> json):
-        tenantId = json['tenantId'] != null ? TenantId.fromJson(json['tenantId']) : null,
-        customerId = json['customerId'] != null ? CustomerId.fromJson(json['customerId']) : null,
+  User.fromJson(Map<String, dynamic> json)
+      : tenantId = json['tenantId'] != null
+            ? TenantId.fromJson(json['tenantId'])
+            : null,
+        customerId = json['customerId'] != null
+            ? CustomerId.fromJson(json['customerId'])
+            : null,
         email = json['email'],
         authority = authorityFromString(json['authority']),
         firstName = json['firstName'],
@@ -121,7 +123,9 @@ class User extends AdditionalInfoBased<UserId> implements GroupEntity<UserId> {
 
   @override
   EntityId? getOwnerId() {
-    return customerId != null && !customerId!.isNullUid() ? customerId : tenantId;
+    return customerId != null && !customerId!.isNullUid()
+        ? customerId
+        : tenantId;
   }
 
   @override

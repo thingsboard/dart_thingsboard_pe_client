@@ -10,22 +10,23 @@ import 'has_customer_id.dart';
 import 'id/blob_entity_id.dart';
 import 'tenant_entity.dart';
 
-class BlobEntityInfo extends AdditionalInfoBased<BlobEntityId> implements HasName, TenantEntity, HasCustomerId, HasOwnerId {
-
+class BlobEntityInfo extends AdditionalInfoBased<BlobEntityId>
+    implements HasName, TenantEntity, HasCustomerId, HasOwnerId {
   TenantId? tenantId;
   CustomerId? customerId;
   String name;
   String type;
   String contentType;
 
-  BlobEntityInfo.fromJson(Map<String, dynamic> json):
-        tenantId = TenantId.fromJson(json['tenantId']),
-        customerId = json['customerId'] != null ? CustomerId.fromJson(json['customerId']) : null,
+  BlobEntityInfo.fromJson(Map<String, dynamic> json)
+      : tenantId = TenantId.fromJson(json['tenantId']),
+        customerId = json['customerId'] != null
+            ? CustomerId.fromJson(json['customerId'])
+            : null,
         name = json['name'],
         type = json['type'],
         contentType = json['contentType'],
         super.fromJson(json);
-
 
   @override
   String getName() {
@@ -49,7 +50,9 @@ class BlobEntityInfo extends AdditionalInfoBased<BlobEntityId> implements HasNam
 
   @override
   EntityId? getOwnerId() {
-    return customerId != null && !customerId!.isNullUid() ? customerId : tenantId;
+    return customerId != null && !customerId!.isNullUid()
+        ? customerId
+        : tenantId;
   }
 
   @override
@@ -70,16 +73,14 @@ class BlobEntityInfo extends AdditionalInfoBased<BlobEntityId> implements HasNam
     return '${additionalInfoBasedString('tenantId: $tenantId, customerId: $customerId, name: $name, type: $type, '
         'contentType: $contentType${toStringBody != null ? ', ' + toStringBody : ''}')}';
   }
-
 }
 
 class BlobEntityWithCustomerInfo extends BlobEntityInfo {
-
   String? customerTitle;
   bool? customerIsPublic;
 
-  BlobEntityWithCustomerInfo.fromJson(Map<String, dynamic> json):
-        customerTitle = json['customerTitle'],
+  BlobEntityWithCustomerInfo.fromJson(Map<String, dynamic> json)
+      : customerTitle = json['customerTitle'],
         customerIsPublic = json['customerIsPublic'],
         super.fromJson(json);
 
@@ -87,5 +88,4 @@ class BlobEntityWithCustomerInfo extends BlobEntityInfo {
   String toString() {
     return 'BlobEntityWithCustomerInfo{${blobEntityInfoString('customerTitle: $customerTitle, customerIsPublic: $customerIsPublic')}}';
   }
-
 }
