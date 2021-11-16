@@ -72,6 +72,7 @@ Future<void> onUserLoaded() async {
         await fetchOtaPackagesExample();
         await fetchRolesExample();
         await fetchWhiteLabelingParamsExample();
+        await fetchSelfRegistrationParamsExample();
       } else if (tbClient.isCustomerUser()) {
         await fetchUsersExample();
         await fetchDeviceProfileInfosExample();
@@ -90,6 +91,8 @@ Future<void> onUserLoaded() async {
               RequestConfig(ignoreLoading: true, ignoreErrors: true));
     } else {
       if (!loginExecuted) {
+        await getOAuth2ClientsExample();
+        await getSignUpSelfRegistrationParamsExample();
         loginExecuted = true;
         await tbClient.login(LoginRequest(username, password));
       }
@@ -110,6 +113,18 @@ Future<void> getOAuth2ClientsExample() async {
 
   var clients = await tbClient.getOAuth2Service().getOAuth2Clients();
   print('OAuth2 clients: $clients');
+}
+
+Future<void> getSignUpSelfRegistrationParamsExample() async {
+  print(
+      '**********************************************************************');
+  print(
+      '*        SIGN-UP SELF-REGISTRATION PARAMS EXAMPLE                    *');
+  print(
+      '**********************************************************************');
+
+  var signUpSelfRegisterParams = await tbClient.getSelfRegistrationService().getSignUpSelfRegistrationParams();
+  print('Sign-up self-register params: $signUpSelfRegisterParams');
 }
 
 Future<void> fetchSettingsExample() async {
@@ -566,6 +581,22 @@ Future<void> fetchWhiteLabelingParamsExample() async {
   var whiteLabelingParams =
       await tbClient.getWhiteLabelingService().getWhiteLabelParams();
   print('whiteLabelingParams: $whiteLabelingParams');
+
+  print(
+      '**********************************************************************');
+}
+
+Future<void> fetchSelfRegistrationParamsExample() async {
+  print(
+      '**********************************************************************');
+  print(
+      '*               FETCH SELF-REGISTRATION PARAMS EXAMPLE                *');
+  print(
+      '**********************************************************************');
+
+  var selfRegistrationParams =
+  await tbClient.getSelfRegistrationService().getSelfRegistrationParams();
+  print('selfRegistrationParams: $selfRegistrationParams');
 
   print(
       '**********************************************************************');

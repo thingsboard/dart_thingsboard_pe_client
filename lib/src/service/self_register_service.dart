@@ -69,4 +69,13 @@ class SelfRegistrationService {
         options: options);
     return response.data!;
   }
+
+  Future<String> getTermsOfUse({RequestConfig? requestConfig}) async {
+    var options = defaultHttpOptionsFromConfig(requestConfig);
+    options.responseType = ResponseType.plain;
+    var response = await _tbClient.get<String>(
+        '/api/noauth/selfRegistration/termsOfUse',
+        options: options);
+    return response.data!;
+  }
 }

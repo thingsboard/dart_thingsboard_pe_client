@@ -3,12 +3,16 @@ import 'group_permission_models.dart';
 class SignUpSelfRegistrationParams {
   String? signUpTextMessage;
   String? captchaSiteKey;
+  bool? showPrivacyPolicy;
+  bool? showTermsOfUse;
 
   SignUpSelfRegistrationParams({this.signUpTextMessage, this.captchaSiteKey});
 
   SignUpSelfRegistrationParams.fromJson(Map<String, dynamic> json)
       : signUpTextMessage = json['signUpTextMessage'],
-        captchaSiteKey = json['captchaSiteKey'];
+        captchaSiteKey = json['captchaSiteKey'],
+        showPrivacyPolicy = json['showPrivacyPolicy'],
+        showTermsOfUse = json['showTermsOfUse'];
 
   Map<String, dynamic> toJson() {
     var json = <String, dynamic>{};
@@ -17,6 +21,12 @@ class SignUpSelfRegistrationParams {
     }
     if (captchaSiteKey != null) {
       json['captchaSiteKey'] = captchaSiteKey;
+    }
+    if (showPrivacyPolicy != null) {
+      json['showPrivacyPolicy'] = showPrivacyPolicy;
+    }
+    if (showTermsOfUse != null) {
+      json['showTermsOfUse'] = showTermsOfUse;
     }
     return json;
   }
@@ -27,7 +37,7 @@ class SignUpSelfRegistrationParams {
   }
 
   String signUpSelfRegistrationParamsString([String? toStringBody]) {
-    return 'signUpTextMessage: $signUpTextMessage, captchaSiteKey: $captchaSiteKey${toStringBody != null ? ', ' + toStringBody : ''}';
+    return 'signUpTextMessage: $signUpTextMessage, captchaSiteKey: $captchaSiteKey, showPrivacyPolicy: $showPrivacyPolicy, showTermsOfUse: $showTermsOfUse${toStringBody != null ? ', ' + toStringBody : ''}';
   }
 }
 
@@ -36,6 +46,7 @@ class SelfRegistrationParams extends SignUpSelfRegistrationParams {
   String? domainName;
   String? captchaSecretKey;
   String? privacyPolicy;
+  String? termsOfUse;
   String? notificationEmail;
   String? defaultDashboardId;
   bool? defaultDashboardFullscreen;
@@ -52,6 +63,7 @@ class SelfRegistrationParams extends SignUpSelfRegistrationParams {
       this.domainName,
       this.captchaSecretKey,
       this.privacyPolicy,
+      this.termsOfUse,
       this.notificationEmail,
       this.defaultDashboardId,
       this.defaultDashboardFullscreen,
@@ -69,6 +81,7 @@ class SelfRegistrationParams extends SignUpSelfRegistrationParams {
         domainName = json['domainName'],
         captchaSecretKey = json['captchaSecretKey'],
         privacyPolicy = json['privacyPolicy'],
+        termsOfUse = json['termsOfUse'],
         notificationEmail = json['notificationEmail'],
         defaultDashboardId = json['defaultDashboardId'],
         defaultDashboardFullscreen = json['defaultDashboardFullscreen'],
@@ -97,6 +110,9 @@ class SelfRegistrationParams extends SignUpSelfRegistrationParams {
     }
     if (privacyPolicy != null) {
       json['privacyPolicy'] = privacyPolicy;
+    }
+    if (termsOfUse != null) {
+      json['termsOfUse'] = termsOfUse;
     }
     if (notificationEmail != null) {
       json['notificationEmail'] = notificationEmail;
@@ -131,7 +147,7 @@ class SelfRegistrationParams extends SignUpSelfRegistrationParams {
   @override
   String toString() {
     return 'SelfRegistrationParams{${signUpSelfRegistrationParamsString('adminSettingsId: $adminSettingsId, domainName: $domainName, captchaSecretKey: $captchaSecretKey, '
-        'privacyPolicy: $privacyPolicy, notificationEmail: $notificationEmail, defaultDashboardId: $defaultDashboardId, '
+        'privacyPolicy: $privacyPolicy, termsOfUse: $termsOfUse, notificationEmail: $notificationEmail, defaultDashboardId: $defaultDashboardId, '
         'defaultDashboardFullscreen: $defaultDashboardFullscreen, permissions: $permissions, pkgName: $pkgName, appSecret: $appSecret, appScheme: $appScheme, appHost: $appHost')}}';
   }
 }
