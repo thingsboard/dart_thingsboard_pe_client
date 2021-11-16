@@ -1,3 +1,7 @@
+## 1.0.3
+
+- Add `terms of use` to self-registration parameters 
+
 ## 1.0.2
 
 - Add support for web platform
