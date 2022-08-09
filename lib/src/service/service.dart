@@ -37,3 +37,6 @@ export 'self_register_service.dart';
 export 'signup_service.dart';
 export 'user_permissions_service.dart';
 export 'white_labeling_service.dart';
+export 'queue_service.dart';
+export 'entities_version_control_service.dart';
+export 'two_factor_auth_service.dart';

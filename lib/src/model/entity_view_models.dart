@@ -1,6 +1,7 @@
 import 'entity_type_models.dart';
 import 'group_entity.dart';
 import 'id/has_uuid.dart';
+import 'exportable_entity.dart';
 import 'relation_models.dart';
 import 'id/customer_id.dart';
 import 'id/entity_id.dart';
@@ -53,7 +54,7 @@ class TelemetryEntityView {
 }
 
 class EntityView extends AdditionalInfoBased<EntityViewId>
-    implements GroupEntity<EntityViewId> {
+    with ExportableEntity<EntityViewId> implements GroupEntity<EntityViewId> {
   TenantId? tenantId;
   CustomerId? customerId;
   EntityId entityId;
@@ -62,6 +63,7 @@ class EntityView extends AdditionalInfoBased<EntityViewId>
   TelemetryEntityView keys;
   int? startTimeMs;
   int? endTimeMs;
+  EntityViewId? externalId;
 
   EntityView(
       {required this.entityId,
@@ -82,6 +84,9 @@ class EntityView extends AdditionalInfoBased<EntityViewId>
         keys = TelemetryEntityView.fromJson(json['keys']),
         startTimeMs = json['startTimeMs'],
         endTimeMs = json['endTimeMs'],
+        externalId = json['externalId'] != null
+            ? EntityViewId.fromJson(json['externalId'])
+            : null,
         super.fromJson(json);
 
   @override
@@ -103,6 +108,9 @@ class EntityView extends AdditionalInfoBased<EntityViewId>
     if (endTimeMs != null) {
       json['endTimeMs'] = endTimeMs;
     }
+    if (externalId != null) {
+      json['externalId'] = externalId!.toJson();
+    }
     return json;
   }
 
@@ -114,6 +122,11 @@ class EntityView extends AdditionalInfoBased<EntityViewId>
   @override
   TenantId? getTenantId() {
     return tenantId;
+  }
+
+  @override
+  void setTenantId(TenantId? tenantId) {
+    this.tenantId = tenantId;
   }
 
   @override
@@ -143,13 +156,23 @@ class EntityView extends AdditionalInfoBased<EntityViewId>
   }
 
   @override
+  EntityViewId? getExternalId() {
+    return externalId;
+  }
+
+  @override
+  void setExternalId(EntityViewId? externalId) {
+    this.externalId = externalId;
+  }
+
+  @override
   String toString() {
     return 'EntityView{${entityViewString()}}';
   }
 
   String entityViewString([String? toStringBody]) {
     return '${additionalInfoBasedString('tenantId: $tenantId, customerId: $customerId, entityId: $entityId, name: $name, type: $type, '
-        'keys: $keys, startTimeMs: $startTimeMs, endTimeMs: $endTimeMs${toStringBody != null ? ', ' + toStringBody : ''}')}';
+        'keys: $keys, startTimeMs: $startTimeMs, endTimeMs: $endTimeMs, externalId: $externalId${toStringBody != null ? ', ' + toStringBody : ''}')}';
   }
 }
 

@@ -24,6 +24,7 @@ import 'customer_id.dart';
 import 'device_id.dart';
 import 'tenant_id.dart';
 import 'rpc_id.dart';
+import 'queue_id.dart';
 
 import '../entity_type_models.dart';
 import './has_uuid.dart';
@@ -97,6 +98,8 @@ abstract class EntityId extends HasUuid {
         return RoleId(uuid);
       case EntityType.GROUP_PERMISSION:
         return GroupPermissionId(uuid);
+      case EntityType.QUEUE:
+        return QueueId(uuid);
     }
   }
 

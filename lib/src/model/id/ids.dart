@@ -33,3 +33,4 @@ export 'group_permission_id.dart';
 export 'integration_id.dart';
 export 'role_id.dart';
 export 'scheduler_event_id.dart';
+export 'queue_id.dart';

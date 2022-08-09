@@ -26,7 +26,8 @@ enum EntityType {
   API_USAGE_STATE,
   TB_RESOURCE,
   OTA_PACKAGE,
-  RPC
+  RPC,
+  QUEUE
 }
 
 EntityType entityTypeFromString(String value) {

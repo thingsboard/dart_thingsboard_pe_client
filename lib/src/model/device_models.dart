@@ -3,6 +3,7 @@ import 'dart:math';
 import 'entity_type_models.dart';
 import 'group_entity.dart';
 import 'id/has_uuid.dart';
+import 'exportable_entity.dart';
 import 'relation_models.dart';
 import 'id/device_credentials_id.dart';
 import 'entity_models.dart';
@@ -124,9 +125,6 @@ class DefaultDeviceProfileConfiguration extends DeviceProfileConfiguration {
   DefaultDeviceProfileConfiguration.fromJson(Map<String, dynamic> json);
 
   @override
-  Map<String, dynamic> toJson() => super.toJson();
-
-  @override
   String toString() {
     return 'DefaultDeviceProfileConfiguration{}';
   }
@@ -176,9 +174,6 @@ class DefaultDeviceProfileTransportConfiguration
 
   DefaultDeviceProfileTransportConfiguration.fromJson(
       Map<String, dynamic> json);
-
-  @override
-  Map<String, dynamic> toJson() => super.toJson();
 
   @override
   String toString() {
@@ -375,7 +370,11 @@ class DeviceProfileData {
 }
 
 class DeviceProfile extends BaseData<DeviceProfileId>
-    with HasName, HasTenantId, HasOtaPackage {
+    with
+        HasName,
+        HasTenantId,
+        HasOtaPackage,
+        ExportableEntity<DeviceProfileId> {
   TenantId? tenantId;
   String name;
   String? description;
@@ -391,6 +390,7 @@ class DeviceProfile extends BaseData<DeviceProfileId>
   OtaPackageId? firmwareId;
   OtaPackageId? softwareId;
   DeviceProfileData profileData;
+  DeviceProfileId? externalId;
 
   DeviceProfile(this.name)
       : type = DeviceProfileType.DEFAULT,
@@ -423,6 +423,9 @@ class DeviceProfile extends BaseData<DeviceProfileId>
             ? OtaPackageId.fromJson(json['softwareId'])
             : null,
         profileData = DeviceProfileData.fromJson(json['profileData']),
+        externalId = json['externalId'] != null
+            ? DeviceProfileId.fromJson(json['externalId'])
+            : null,
         super.fromJson(json);
 
   @override
@@ -463,6 +466,9 @@ class DeviceProfile extends BaseData<DeviceProfileId>
       json['softwareId'] = softwareId!.toJson();
     }
     json['profileData'] = profileData.toJson();
+    if (externalId != null) {
+      json['externalId'] = externalId!.toJson();
+    }
     return json;
   }
 
@@ -477,6 +483,11 @@ class DeviceProfile extends BaseData<DeviceProfileId>
   }
 
   @override
+  void setTenantId(TenantId? tenantId) {
+    this.tenantId = tenantId;
+  }
+
+  @override
   OtaPackageId? getFirmwareId() {
     return firmwareId;
   }
@@ -487,11 +498,21 @@ class DeviceProfile extends BaseData<DeviceProfileId>
   }
 
   @override
+  DeviceProfileId? getExternalId() {
+    return externalId;
+  }
+
+  @override
+  void setExternalId(DeviceProfileId? externalId) {
+    this.externalId = externalId;
+  }
+
+  @override
   String toString() {
     return 'DeviceProfile{${baseDataString('tenantId: $tenantId, name: $name, description: $description, '
         'isDefault: $isDefault, type: $type, image: ${image != null ? '[' + image!.substring(0, min(30, image!.length)) + '...]' : 'null'}, transportType: $transportType, provisionType: $provisionType, '
         'provisionDeviceKey: $provisionDeviceKey, defaultRuleChainId: $defaultRuleChainId, defaultDashboardId: $defaultDashboardId, defaultQueueName: $defaultQueueName, '
-        'firmwareId: $firmwareId, softwareId: $softwareId, profileData: $profileData')}}';
+        'firmwareId: $firmwareId, softwareId: $softwareId, profileData: $profileData, externalId: $externalId')}}';
   }
 }
 
@@ -556,9 +577,6 @@ class DefaultDeviceConfiguration extends DeviceConfiguration {
   DefaultDeviceConfiguration.fromJson(Map<String, dynamic> json);
 
   @override
-  Map<String, dynamic> toJson() => super.toJson();
-
-  @override
   String toString() {
     return 'DefaultDeviceConfiguration{}';
   }
@@ -605,9 +623,6 @@ class DefaultDeviceTransportConfiguration extends DeviceTransportConfiguration {
   }
 
   DefaultDeviceTransportConfiguration.fromJson(Map<String, dynamic> json);
-
-  @override
-  Map<String, dynamic> toJson() => super.toJson();
 
   @override
   String toString() {
@@ -742,6 +757,7 @@ class DeviceData {
 }
 
 class Device extends AdditionalInfoBased<DeviceId>
+    with ExportableEntity<DeviceId>
     implements GroupEntity<DeviceId>, HasOtaPackage {
   TenantId? tenantId;
   CustomerId? customerId;
@@ -752,6 +768,7 @@ class Device extends AdditionalInfoBased<DeviceId>
   OtaPackageId? firmwareId;
   OtaPackageId? softwareId;
   DeviceData deviceData;
+  DeviceId? externalId;
 
   Device(this.name, this.type) : deviceData = DeviceData();
 
@@ -771,6 +788,9 @@ class Device extends AdditionalInfoBased<DeviceId>
             ? OtaPackageId.fromJson(json['softwareId'])
             : null,
         deviceData = DeviceData.fromJson(json['deviceData']),
+        externalId = json['externalId'] != null
+            ? DeviceId.fromJson(json['externalId'])
+            : null,
         super.fromJson(json);
 
   @override
@@ -797,6 +817,9 @@ class Device extends AdditionalInfoBased<DeviceId>
       json['softwareId'] = softwareId!.toJson();
     }
     json['deviceData'] = deviceData.toJson();
+    if (externalId != null) {
+      json['externalId'] = externalId!.toJson();
+    }
     return json;
   }
 
@@ -808,6 +831,11 @@ class Device extends AdditionalInfoBased<DeviceId>
   @override
   TenantId? getTenantId() {
     return tenantId;
+  }
+
+  @override
+  void setTenantId(TenantId? tenantId) {
+    this.tenantId = tenantId;
   }
 
   @override
@@ -845,6 +873,15 @@ class Device extends AdditionalInfoBased<DeviceId>
       customerId = CustomerId(nullUuid);
     }
   }
+  @override
+  DeviceId? getExternalId() {
+    return externalId;
+  }
+
+  @override
+  void setExternalId(DeviceId? externalId) {
+    this.externalId = externalId;
+  }
 
   @override
   String toString() {
@@ -853,7 +890,7 @@ class Device extends AdditionalInfoBased<DeviceId>
 
   String deviceString([String? toStringBody]) {
     return '${additionalInfoBasedString('tenantId: $tenantId, customerId: $customerId, name: $name, type: $type, '
-        'label: $label, deviceProfileId: $deviceProfileId, firmwareId: $firmwareId, softwareId: $softwareId, deviceData: $deviceData${toStringBody != null ? ', ' + toStringBody : ''}')}';
+        'label: $label, deviceProfileId: $deviceProfileId, firmwareId: $firmwareId, softwareId: $softwareId, deviceData: $deviceData, externalId: $externalId${toStringBody != null ? ', ' + toStringBody : ''}')}';
   }
 }
 
