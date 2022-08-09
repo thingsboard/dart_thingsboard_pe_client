@@ -4,7 +4,6 @@ import 'tenant_models.dart';
 
 import 'additional_info_based.dart';
 import 'has_name.dart';
-import 'id/has_uuid.dart';
 import 'id/ids.dart';
 
 abstract class ContactBased<T extends HasUuid> extends AdditionalInfoBased<T>

@@ -4,16 +4,14 @@ import 'additional_info_based.dart';
 import 'entity_type_models.dart';
 import 'has_name.dart';
 import 'has_owner_id.dart';
-import 'id/entity_group_id.dart';
-import 'id/entity_id.dart';
 import 'id/has_id.dart';
 
 class EntityGroup extends AdditionalInfoBased<EntityGroupId>
     implements HasName, HasOwnerId {
-  static final String GROUP_ALL_NAME = 'All';
+  static const String GROUP_ALL_NAME = 'All';
 
-  static final String GROUP_EDGE_ALL_STARTS_WITH = '[Edge]';
-  static final String GROUP_EDGE_ALL_ENDS_WITH = 'All';
+  static const String GROUP_EDGE_ALL_STARTS_WITH = '[Edge]';
+  static const String GROUP_EDGE_ALL_ENDS_WITH = 'All';
 
   String name;
   EntityType type;

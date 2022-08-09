@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:thingsboard_client/thingsboard_client.dart';
+import 'package:thingsboard_pe_client/thingsboard_client.dart';
 import 'package:collection/collection.dart';
 
 const thingsBoardApiEndpoint = 'http://localhost:8080';
