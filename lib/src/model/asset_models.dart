@@ -10,7 +10,8 @@ import 'id/customer_id.dart';
 import 'id/tenant_id.dart';
 
 class Asset extends AdditionalInfoBased<AssetId>
-    with ExportableEntity<AssetId> implements GroupEntity<AssetId> {
+    with ExportableEntity<AssetId>
+    implements GroupEntity<AssetId> {
   TenantId? tenantId;
   CustomerId? customerId;
   String name;

@@ -54,7 +54,8 @@ class TelemetryEntityView {
 }
 
 class EntityView extends AdditionalInfoBased<EntityViewId>
-    with ExportableEntity<EntityViewId> implements GroupEntity<EntityViewId> {
+    with ExportableEntity<EntityViewId>
+    implements GroupEntity<EntityViewId> {
   TenantId? tenantId;
   CustomerId? customerId;
   EntityId entityId;

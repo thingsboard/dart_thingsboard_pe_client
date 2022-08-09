@@ -131,7 +131,9 @@ Future<void> getSignUpSelfRegistrationParamsExample() async {
   print(
       '**********************************************************************');
 
-  var signUpSelfRegisterParams = await tbClient.getSelfRegistrationService().getSignUpSelfRegistrationParams();
+  var signUpSelfRegisterParams = await tbClient
+      .getSelfRegistrationService()
+      .getSignUpSelfRegistrationParams();
   print('Sign-up self-register params: $signUpSelfRegisterParams');
 }
 
@@ -651,7 +653,7 @@ Future<void> fetchSelfRegistrationParamsExample() async {
       '**********************************************************************');
 
   var selfRegistrationParams =
-  await tbClient.getSelfRegistrationService().getSelfRegistrationParams();
+      await tbClient.getSelfRegistrationService().getSelfRegistrationParams();
   print('selfRegistrationParams: $selfRegistrationParams');
 
   print(

@@ -873,6 +873,7 @@ class Device extends AdditionalInfoBased<DeviceId>
       customerId = CustomerId(nullUuid);
     }
   }
+
   @override
   DeviceId? getExternalId() {
     return externalId;

@@ -8,7 +8,8 @@ import 'id/tenant_id.dart';
 import 'contact_based_model.dart';
 
 class Customer extends ContactBased<CustomerId>
-    with ExportableEntity<CustomerId> implements GroupEntity<CustomerId> {
+    with ExportableEntity<CustomerId>
+    implements GroupEntity<CustomerId> {
   TenantId? tenantId;
   CustomerId? parentCustomerId;
   String title;
