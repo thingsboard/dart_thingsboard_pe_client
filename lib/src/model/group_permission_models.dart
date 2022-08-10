@@ -12,7 +12,7 @@ import 'role_models.dart';
 class GroupPermission extends BaseData<GroupPermissionId>
     implements HasName, TenantEntity {
   TenantId? tenantId;
-  EntityGroupId userGroupId;
+  EntityGroupId? userGroupId;
   RoleId roleId;
   EntityGroupId? entityGroupId;
   EntityType? entityGroupType;
@@ -26,8 +26,12 @@ class GroupPermission extends BaseData<GroupPermissionId>
       this.entityGroupType});
 
   GroupPermission.fromJson(Map<String, dynamic> json)
-      : tenantId = TenantId.fromJson(json['tenantId']),
-        userGroupId = EntityGroupId.fromJson(json['userGroupId']),
+      : tenantId = json['tenantId'] != null
+            ? TenantId.fromJson(json['tenantId'])
+            : null,
+        userGroupId = json['userGroupId'] != null
+            ? EntityGroupId.fromJson(json['userGroupId'])
+            : null,
         roleId = RoleId.fromJson(json['roleId']),
         entityGroupId = json['entityGroupId'] != null
             ? EntityGroupId.fromJson(json['entityGroupId'])
@@ -35,7 +39,7 @@ class GroupPermission extends BaseData<GroupPermissionId>
         entityGroupType = json['entityGroupType'] != null
             ? entityTypeFromString(json['entityGroupType'])
             : null,
-        isPublic = json['isPublic'],
+        isPublic = json['isPublic'] != null ? json['isPublic'] : false,
         super.fromJson(json);
 
   @override
@@ -44,7 +48,9 @@ class GroupPermission extends BaseData<GroupPermissionId>
     if (tenantId != null) {
       json['tenantId'] = tenantId!.toJson();
     }
-    json['userGroupId'] = userGroupId.toJson();
+    if (userGroupId != null) {
+      json['userGroupId'] = userGroupId!.toJson();
+    }
     json['roleId'] = roleId.toJson();
     if (entityGroupId != null) {
       json['entityGroupId'] = entityGroupId!.toJson();

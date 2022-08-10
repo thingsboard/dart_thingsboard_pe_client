@@ -1,7 +1,6 @@
-import 'package:thingsboard_pe_client/src/model/entity_type_models.dart';
-
-import 'package:thingsboard_pe_client/src/model/id/tenant_id.dart';
-
+import 'entity_type_models.dart';
+import 'exportable_entity.dart';
+import 'id/tenant_id.dart';
 import 'event_models.dart';
 import 'has_name.dart';
 import 'id/converter_id.dart';
@@ -22,12 +21,13 @@ extension ConverterTypeToString on ConverterType {
 }
 
 class Converter extends AdditionalInfoBased<ConverterId>
-    implements HasName, TenantEntity {
+    with ExportableEntity<ConverterId> implements HasName, TenantEntity {
   TenantId? tenantId;
   String name;
   ConverterType type;
   bool debugMode;
   Map<String, dynamic> configuration;
+  ConverterId? externalId;
 
   Converter(
       {required this.name,
@@ -41,6 +41,9 @@ class Converter extends AdditionalInfoBased<ConverterId>
         type = converterTypeFromString(json['type']),
         debugMode = json['debugMode'],
         configuration = json['configuration'],
+        externalId = json['externalId'] != null
+            ? ConverterId.fromJson(json['externalId'])
+            : null,
         super.fromJson(json);
 
   @override
@@ -53,6 +56,9 @@ class Converter extends AdditionalInfoBased<ConverterId>
     json['type'] = type.toShortString();
     json['debugMode'] = debugMode;
     json['configuration'] = configuration;
+    if (externalId != null) {
+      json['externalId'] = externalId!.toJson();
+    }
     return json;
   }
 
@@ -72,8 +78,23 @@ class Converter extends AdditionalInfoBased<ConverterId>
   }
 
   @override
+  void setTenantId(TenantId? tenantId) {
+    this.tenantId = tenantId;
+  }
+
+  @override
+  ConverterId? getExternalId() {
+    return externalId;
+  }
+
+  @override
+  void setExternalId(ConverterId? externalId) {
+    this.externalId = externalId;
+  }
+
+  @override
   String toString() {
-    return 'Converter{tenantId: $tenantId, name: $name, type: $type, debugMode: $debugMode, configuration: $configuration}';
+    return 'Converter{tenantId: $tenantId, name: $name, type: $type, debugMode: $debugMode, configuration: $configuration, externalId: $externalId}';
   }
 }
 

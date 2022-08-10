@@ -59,6 +59,7 @@ Future<void> onUserLoaded() async {
         await fetchWhiteLabelingParamsExample();
         await fetchQueuesExample();
       } else if (tbClient.isTenantAdmin()) {
+        await fetchPlatformTwoFactorAuthSettingsExample();
         await fetchAccountTwoFactorAuthSettingsExample();
         await fetchTenantSettingsExample();
         await fetchUsersExample();

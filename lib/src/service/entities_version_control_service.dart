@@ -75,12 +75,13 @@ class EntitiesVersionControlService {
   }
 
   Future<EntityDataInfo?> getEntityDataInfo(
-      EntityId externalEntityId, String versionId,
+      EntityId externalEntityId, EntityId internalEntityId, String versionId,
       {RequestConfig? requestConfig}) async {
     return nullIfNotFound(
       (RequestConfig requestConfig) async {
         var response = await _tbClient.get<Map<String, dynamic>>(
             '/api/entities/vc/info/$versionId/${externalEntityId.entityType.toShortString()}/${externalEntityId.id}',
+            queryParameters: {'internalEntityId': internalEntityId.id},
             options: defaultHttpOptionsFromConfig(requestConfig));
         return response.data != null
             ? EntityDataInfo.fromJson(response.data!)

@@ -166,6 +166,7 @@ class BackupCodeTwoFaProviderConfig extends TwoFaProviderConfig {
 }
 
 class PlatformTwoFaSettings {
+  bool useSystemTwoFactorAuthSettings;
   List<TwoFaProviderConfig> providers;
   int minVerificationCodeSendPeriod;
   String? verificationCodeCheckRateLimit;
@@ -173,14 +174,16 @@ class PlatformTwoFaSettings {
   int totalAllowedTimeForVerification;
 
   PlatformTwoFaSettings(
-      {required this.providers,
+      { required this.useSystemTwoFactorAuthSettings,
+        required this.providers,
       this.minVerificationCodeSendPeriod = 5,
       this.verificationCodeCheckRateLimit = '',
       this.maxVerificationFailuresBeforeUserLockout = 0,
       this.totalAllowedTimeForVerification = 60});
 
   PlatformTwoFaSettings.fromJson(Map<String, dynamic> json)
-      : providers = (json['providers'] as List<dynamic>)
+      : useSystemTwoFactorAuthSettings = json['useSystemTwoFactorAuthSettings'],
+        providers = (json['providers'] as List<dynamic>)
             .map((e) => TwoFaProviderConfig.fromJson(e))
             .toList(),
         minVerificationCodeSendPeriod = json['minVerificationCodeSendPeriod'],
@@ -192,6 +195,7 @@ class PlatformTwoFaSettings {
 
   Map<String, dynamic> toJson() {
     var json = <String, dynamic>{};
+    json['useSystemTwoFactorAuthSettings'] = useSystemTwoFactorAuthSettings;
     json['providers'] = providers.map((e) => e.toJson()).toList();
     json['minVerificationCodeSendPeriod'] = minVerificationCodeSendPeriod;
     json['verificationCodeCheckRateLimit'] = verificationCodeCheckRateLimit;
@@ -203,7 +207,7 @@ class PlatformTwoFaSettings {
 
   @override
   String toString() {
-    return 'PlatformTwoFaSettings{providers: $providers, minVerificationCodeSendPeriod: $minVerificationCodeSendPeriod, '
+    return 'PlatformTwoFaSettings{useSystemTwoFactorAuthSettings: $useSystemTwoFactorAuthSettings, providers: $providers, minVerificationCodeSendPeriod: $minVerificationCodeSendPeriod, '
         'verificationCodeCheckRateLimit: $verificationCodeCheckRateLimit, maxVerificationFailuresBeforeUserLockout: $maxVerificationFailuresBeforeUserLockout, '
         'totalAllowedTimeForVerification: $totalAllowedTimeForVerification}';
   }

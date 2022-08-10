@@ -1,3 +1,5 @@
+import 'entity_group_models.dart';
+import 'group_permission_models.dart';
 import 'rule_chain_models.dart';
 import 'device_models.dart';
 import 'relation_models.dart';
@@ -13,29 +15,40 @@ const List<EntityType> exportableEntityTypes = [
   EntityType.CUSTOMER,
   EntityType.DEVICE_PROFILE,
   EntityType.RULE_CHAIN,
-  EntityType.WIDGETS_BUNDLE
+  EntityType.WIDGETS_BUNDLE,
+  EntityType.CONVERTER,
+  EntityType.INTEGRATION,
+  EntityType.ROLE
 ];
 
 class VersionCreateConfig {
   bool saveRelations;
   bool saveAttributes;
   bool saveCredentials;
+  bool savePermissions;
+  bool saveGroupEntities;
 
   VersionCreateConfig(
       {required this.saveRelations,
       required this.saveAttributes,
-      required this.saveCredentials});
+      required this.saveCredentials,
+      required this.savePermissions,
+      required this.saveGroupEntities});
 
   VersionCreateConfig.fromJson(Map<String, dynamic> json)
       : saveRelations = json['saveRelations'],
         saveAttributes = json['saveAttributes'],
-        saveCredentials = json['saveCredentials'];
+        saveCredentials = json['saveCredentials'],
+        savePermissions = json['savePermissions'],
+        saveGroupEntities = json['saveGroupEntities'];
 
   Map<String, dynamic> toJson() {
     var json = <String, dynamic>{};
     json['saveRelations'] = saveRelations;
     json['saveAttributes'] = saveAttributes;
     json['saveCredentials'] = saveCredentials;
+    json['savePermissions'] = savePermissions;
+    json['saveGroupEntities'] = saveGroupEntities;
     return json;
   }
 
@@ -45,7 +58,8 @@ class VersionCreateConfig {
   }
 
   String versionCreateConfigString([String? toStringBody]) {
-    return 'saveRelations: $saveRelations, saveAttributes: $saveAttributes, saveCredentials: $saveCredentials${toStringBody != null ? ', ' + toStringBody : ''}';
+    return 'saveRelations: $saveRelations, saveAttributes: $saveAttributes, saveCredentials: $saveCredentials, savePermissions: $savePermissions, '
+        'saveGroupEntities: $saveGroupEntities${toStringBody != null ? ', ' + toStringBody : ''}';
   }
 }
 
@@ -71,13 +85,17 @@ class EntityTypeVersionCreateConfig extends VersionCreateConfig {
       {required bool saveRelations,
       required bool saveAttributes,
       required bool saveCredentials,
+      required bool savePermissions,
+      required bool saveGroupEntities,
       required this.allEntities,
       this.syncStrategy,
       this.entityIds})
       : super(
             saveRelations: saveRelations,
             saveAttributes: saveAttributes,
-            saveCredentials: saveCredentials);
+            saveCredentials: saveCredentials,
+            savePermissions: savePermissions,
+            saveGroupEntities: saveGroupEntities);
 
   EntityTypeVersionCreateConfig.fromJson(Map<String, dynamic> json)
       : syncStrategy = json['syncStrategy'] != null
@@ -246,6 +264,8 @@ Map<EntityType, EntityTypeVersionCreateConfig>
         saveAttributes: true,
         saveRelations: true,
         saveCredentials: true,
+        savePermissions: true,
+        saveGroupEntities: true,
         allEntities: true,
         entityIds: []);
   }
@@ -256,22 +276,34 @@ class VersionLoadConfig {
   bool loadRelations;
   bool loadAttributes;
   bool loadCredentials;
+  bool loadPermissions;
+  bool loadGroupEntities;
+  bool autoGenerateIntegrationKey;
 
   VersionLoadConfig(
       {required this.loadRelations,
       required this.loadAttributes,
-      required this.loadCredentials});
+      required this.loadCredentials,
+      required this.loadPermissions,
+      required this.loadGroupEntities,
+      required this.autoGenerateIntegrationKey});
 
   VersionLoadConfig.fromJson(Map<String, dynamic> json)
       : loadRelations = json['loadRelations'],
         loadAttributes = json['loadAttributes'],
-        loadCredentials = json['loadCredentials'];
+        loadCredentials = json['loadCredentials'],
+        loadPermissions = json['loadPermissions'],
+        loadGroupEntities = json['loadGroupEntities'],
+        autoGenerateIntegrationKey = json['autoGenerateIntegrationKey'];
 
   Map<String, dynamic> toJson() {
     var json = <String, dynamic>{};
     json['loadRelations'] = loadRelations;
     json['loadAttributes'] = loadAttributes;
     json['loadCredentials'] = loadCredentials;
+    json['loadPermissions'] = loadPermissions;
+    json['loadGroupEntities'] = loadGroupEntities;
+    json['autoGenerateIntegrationKey'] = autoGenerateIntegrationKey;
     return json;
   }
 
@@ -281,7 +313,8 @@ class VersionLoadConfig {
   }
 
   String versionLoadConfigString([String? toStringBody]) {
-    return 'loadRelations: $loadRelations, loadAttributes: $loadAttributes, loadCredentials: $loadCredentials${toStringBody != null ? ', ' + toStringBody : ''}';
+    return 'loadRelations: $loadRelations, loadAttributes: $loadAttributes, loadCredentials: $loadCredentials, '
+        'loadPermissions: $loadPermissions, loadGroupEntities: $loadGroupEntities, autoGenerateIntegrationKey: $autoGenerateIntegrationKey${toStringBody != null ? ', ' + toStringBody : ''}';
   }
 }
 
@@ -293,12 +326,18 @@ class EntityTypeVersionLoadConfig extends VersionLoadConfig {
       {required bool loadRelations,
       required bool loadAttributes,
       required bool loadCredentials,
+      required bool loadPermissions,
+      required bool loadGroupEntities,
+      required bool autoGenerateIntegrationKey,
       required this.removeOtherEntities,
       required this.findExistingEntityByName})
       : super(
             loadRelations: loadRelations,
             loadAttributes: loadAttributes,
-            loadCredentials: loadCredentials);
+            loadCredentials: loadCredentials,
+            loadPermissions: loadPermissions,
+            loadGroupEntities: loadGroupEntities,
+            autoGenerateIntegrationKey: autoGenerateIntegrationKey);
 
   EntityTypeVersionLoadConfig.fromJson(Map<String, dynamic> json)
       : removeOtherEntities = json['removeOtherEntities'],
@@ -375,11 +414,13 @@ abstract class VersionLoadRequest {
 }
 
 class SingleEntityVersionLoadRequest extends VersionLoadRequest {
+  EntityId internalEntityId;
   EntityId externalEntityId;
   VersionLoadConfig config;
 
   SingleEntityVersionLoadRequest(
       {required String versionId,
+      required this.internalEntityId,
       required this.externalEntityId,
       required this.config})
       : super(versionId: versionId);
@@ -390,7 +431,8 @@ class SingleEntityVersionLoadRequest extends VersionLoadRequest {
   }
 
   SingleEntityVersionLoadRequest.fromJson(Map<String, dynamic> json)
-      : externalEntityId = EntityId.fromJson(json['externalEntityId']),
+      : internalEntityId = EntityId.fromJson(json['internalEntityId']),
+        externalEntityId = EntityId.fromJson(json['externalEntityId']),
         config = VersionLoadConfig.fromJson(json['config']),
         super._fromJson(json);
 
@@ -448,6 +490,9 @@ Map<EntityType, EntityTypeVersionLoadConfig>
         loadAttributes: true,
         loadRelations: true,
         loadCredentials: true,
+        loadPermissions: true,
+        loadGroupEntities: true,
+        autoGenerateIntegrationKey: false,
         removeOtherEntities: false,
         findExistingEntityByName: true);
   }
@@ -515,6 +560,9 @@ class EntityTypeLoadResult {
   int? created;
   int? updated;
   int? deleted;
+  int? groupsCreated;
+  int? groupsUpdated;
+  int? groupsDeleted;
 
   EntityTypeLoadResult.fromJson(Map<String, dynamic> json)
       : entityType = json['entityType'] != null
@@ -522,17 +570,23 @@ class EntityTypeLoadResult {
             : null,
         created = json['created'],
         updated = json['updated'],
-        deleted = json['deleted'];
+        deleted = json['deleted'],
+        groupsCreated = json['groupsCreated'],
+        groupsUpdated = json['groupsUpdated'],
+        groupsDeleted = json['groupsDeleted'];
+
 
   @override
   String toString() {
-    return 'EntityTypeLoadResult{entityType: $entityType, created: $created, updated: $updated, deleted: $deleted}';
+    return 'EntityTypeLoadResult{entityType: $entityType, created: $created, updated: $updated, deleted: $deleted, '
+        'groupsCreated: $groupsCreated, groupsUpdated: $groupsUpdated, groupsDeleted: $groupsDeleted}';
   }
 }
 
 enum EntityLoadErrorType {
   DEVICE_CREDENTIALS_CONFLICT,
   MISSING_REFERENCED_ENTITY,
+  INTEGRATION_ROUTING_KEY_CONFLICT,
   RUNTIME
 }
 
@@ -692,6 +746,23 @@ class RuleChainExportData extends EntityExportData<RuleChain> {
   }
 }
 
+class EntityGroupExportData extends EntityExportData<EntityGroup> {
+  List<GroupPermission>? permissions;
+
+  EntityGroupExportData.fromJson(Map<String, dynamic> json)
+      : permissions = json['permissions'] != null
+          ? (json['permissions'] as List<dynamic>)
+            .map((e) => GroupPermission.fromJson(e))
+            .toList()
+            : null,
+        super._fromJson(EntityType.ENTITY_GROUP, json);
+
+  @override
+  String toString() {
+    return 'EntityGroupExportData{${entityExportDataString('permissions: $permissions')}}';
+  }
+}
+
 class EntityDataDiff {
   EntityExportData<dynamic> currentVersion;
   EntityExportData<dynamic> otherVersion;
@@ -710,14 +781,18 @@ class EntityDataInfo {
   bool hasRelations;
   bool hasAttributes;
   bool hasCredentials;
+  bool hasPermissions;
+  bool hasGroupEntities;
 
   EntityDataInfo.fromJson(Map<String, dynamic> json)
       : hasRelations = json['hasRelations'],
         hasAttributes = json['hasAttributes'],
-        hasCredentials = json['hasCredentials'];
+        hasCredentials = json['hasCredentials'],
+        hasPermissions = json['hasPermissions'],
+        hasGroupEntities = json['hasGroupEntities'];
 
   @override
   String toString() {
-    return 'EntityDataInfo{hasRelations: $hasRelations, hasAttributes: $hasAttributes, hasCredentials: $hasCredentials}';
+    return 'EntityDataInfo{hasRelations: $hasRelations, hasAttributes: $hasAttributes, hasCredentials: $hasCredentials, hasPermissions: $hasPermissions, hasGroupEntities: $hasGroupEntities}';
   }
 }

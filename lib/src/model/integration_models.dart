@@ -1,4 +1,5 @@
 import 'entity_type_models.dart';
+import 'exportable_entity.dart';
 import 'id/tenant_id.dart';
 import 'additional_info_based.dart';
 import 'has_name.dart';
@@ -47,6 +48,7 @@ extension IntegrationTypeToString on IntegrationType {
 }
 
 class Integration extends AdditionalInfoBased<IntegrationId>
+    with ExportableEntity<IntegrationId>
     implements HasName, TenantEntity {
   TenantId? tenantId;
   ConverterId defaultConverterId;
@@ -60,6 +62,7 @@ class Integration extends AdditionalInfoBased<IntegrationId>
   bool? allowCreateDevicesOrAssets;
   String? secret;
   Map<String, dynamic> configuration;
+  IntegrationId? externalId;
 
   Integration(
       {required this.defaultConverterId,
@@ -89,6 +92,9 @@ class Integration extends AdditionalInfoBased<IntegrationId>
         allowCreateDevicesOrAssets = json['allowCreateDevicesOrAssets'],
         secret = json['secret'],
         configuration = json['configuration'],
+        externalId = json['externalId'] != null
+            ? IntegrationId.fromJson(json['externalId'])
+            : null,
         super.fromJson(json);
 
   @override
@@ -120,6 +126,9 @@ class Integration extends AdditionalInfoBased<IntegrationId>
       json['secret'] = secret;
     }
     json['configuration'] = configuration;
+    if (externalId != null) {
+      json['externalId'] = externalId!.toJson();
+    }
     return json;
   }
 
@@ -139,9 +148,24 @@ class Integration extends AdditionalInfoBased<IntegrationId>
   }
 
   @override
+  void setTenantId(TenantId? tenantId) {
+    this.tenantId = tenantId;
+  }
+
+  @override
+  IntegrationId? getExternalId() {
+    return externalId;
+  }
+
+  @override
+  void setExternalId(IntegrationId? externalId) {
+    this.externalId = externalId;
+  }
+
+  @override
   String toString() {
     return 'Integration{tenantId: $tenantId, defaultConverterId: $defaultConverterId, downlinkConverterId: $downlinkConverterId, name: $name, '
         'routingKey: $routingKey, type: $type, debugMode: $debugMode, enabled: $enabled, remote: $remote, allowCreateDevicesOrAssets: $allowCreateDevicesOrAssets, '
-        'secret: $secret, configuration: $configuration}';
+        'secret: $secret, configuration: $configuration, externalId: $externalId}';
   }
 }

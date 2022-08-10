@@ -1,5 +1,5 @@
-import 'package:thingsboard_pe_client/src/model/id/ids.dart';
-
+import './exportable_entity.dart';
+import './id/ids.dart';
 import 'additional_info_based.dart';
 import 'entity_type_models.dart';
 import 'has_name.dart';
@@ -7,7 +7,7 @@ import 'has_owner_id.dart';
 import 'id/has_id.dart';
 
 class EntityGroup extends AdditionalInfoBased<EntityGroupId>
-    implements HasName, HasOwnerId {
+    with ExportableNoTenantIdEntity<EntityGroupId> implements HasName, HasOwnerId {
   static const String GROUP_ALL_NAME = 'All';
 
   static const String GROUP_EDGE_ALL_STARTS_WITH = '[Edge]';
@@ -17,6 +17,7 @@ class EntityGroup extends AdditionalInfoBased<EntityGroupId>
   EntityType type;
   EntityId? ownerId;
   Map<String, dynamic>? configuration;
+  EntityGroupId? externalId;
 
   EntityGroup(this.name, this.type);
 
@@ -25,6 +26,9 @@ class EntityGroup extends AdditionalInfoBased<EntityGroupId>
         type = entityTypeFromString(json['type']),
         ownerId = EntityId.fromJson(json['ownerId']),
         configuration = json['configuration'],
+        externalId = json['externalId'] != null
+            ? EntityGroupId.fromJson(json['externalId'])
+            : null,
         super.fromJson(json);
 
   @override
@@ -37,6 +41,9 @@ class EntityGroup extends AdditionalInfoBased<EntityGroupId>
     }
     if (configuration != null) {
       json['configuration'] = configuration;
+    }
+    if (externalId != null) {
+      json['externalId'] = externalId!.toJson();
     }
     return json;
   }
@@ -66,12 +73,22 @@ class EntityGroup extends AdditionalInfoBased<EntityGroupId>
   }
 
   @override
+  EntityGroupId? getExternalId() {
+    return externalId;
+  }
+
+  @override
+  void setExternalId(EntityGroupId? externalId) {
+    this.externalId = externalId;
+  }
+
+  @override
   String toString() {
     return 'EntityGroup{${entityGroupString()}}';
   }
 
   String entityGroupString([String? toStringBody]) {
-    return '${additionalInfoBasedString('name: $name, type: $type, ownerId: $ownerId, configuration: $configuration${toStringBody != null ? ', ' + toStringBody : ''}')}';
+    return '${additionalInfoBasedString('name: $name, type: $type, ownerId: $ownerId, configuration: $configuration, externalId: $externalId${toStringBody != null ? ', ' + toStringBody : ''}')}';
   }
 }
 

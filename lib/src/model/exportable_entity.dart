@@ -34,8 +34,23 @@ abstract class ExportableEntity<I extends EntityId> {
         return EntityView.fromJson(json) as ExportableEntity<I>;
       case EntityType.WIDGETS_BUNDLE:
         return WidgetsBundle.fromJson(json) as ExportableEntity<I>;
+      case EntityType.ENTITY_GROUP:
+        return EntityGroup.fromJson(json) as ExportableEntity<I>;
+      case EntityType.CONVERTER:
+        return Converter.fromJson(json) as ExportableEntity<I>;
+      case EntityType.INTEGRATION:
+        return Integration.fromJson(json) as ExportableEntity<I>;
+      case EntityType.ROLE:
+        return Role.fromJson(json) as ExportableEntity<I>;
       default:
         throw FormatException('Not exportable entity type: $entityType!');
     }
   }
+}
+
+abstract class ExportableNoTenantIdEntity<I extends EntityId> implements ExportableEntity<I> {
+
+  @override
+  void setTenantId(TenantId? tenantId) {}
+
 }

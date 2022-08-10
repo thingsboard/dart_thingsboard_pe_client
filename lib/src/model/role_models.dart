@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'additional_info_based.dart';
 import 'entity_type_models.dart';
+import 'exportable_entity.dart';
 import 'has_customer_id.dart';
 import 'has_name.dart';
 import 'has_owner_id.dart';
@@ -92,12 +93,14 @@ class SpecificRolePermissions extends RolePermissions
 }
 
 class Role extends AdditionalInfoBased<RoleId>
+    with ExportableEntity<RoleId>
     implements HasName, TenantEntity, HasCustomerId, HasOwnerId {
   TenantId? tenantId;
   CustomerId? customerId;
   String name;
   RoleType type;
   RolePermissions permissions;
+  RoleId? externalId;
 
   Role.fromJson(Map<String, dynamic> json)
       : tenantId = TenantId.fromJson(json['tenantId']),
@@ -107,6 +110,9 @@ class Role extends AdditionalInfoBased<RoleId>
         name = json['name'],
         type = roleTypeFromString(json['type']),
         permissions = RolePermissions.fromJson(json),
+        externalId = json['externalId'] != null
+            ? RoleId.fromJson(json['externalId'])
+            : null,
         super.fromJson(json);
 
   @override
@@ -121,6 +127,9 @@ class Role extends AdditionalInfoBased<RoleId>
     json['name'] = name;
     json['type'] = type.toShortString();
     json['permissions'] = permissions.toJson();
+    if (externalId != null) {
+      json['externalId'] = externalId!.toJson();
+    }
     return json;
   }
 
@@ -132,6 +141,11 @@ class Role extends AdditionalInfoBased<RoleId>
   @override
   TenantId? getTenantId() {
     return tenantId;
+  }
+
+  @override
+  void setTenantId(TenantId? tenantId) {
+    this.tenantId = tenantId;
   }
 
   @override
@@ -161,7 +175,17 @@ class Role extends AdditionalInfoBased<RoleId>
   }
 
   @override
+  RoleId? getExternalId() {
+    return externalId;
+  }
+
+  @override
+  void setExternalId(RoleId? externalId) {
+    this.externalId = externalId;
+  }
+
+  @override
   String toString() {
-    return 'Role{tenantId: $tenantId, customerId: $customerId, name: $name, type: $type, permissions: $permissions}';
+    return 'Role{tenantId: $tenantId, customerId: $customerId, name: $name, type: $type, permissions: $permissions, externalId: $externalId}';
   }
 }
