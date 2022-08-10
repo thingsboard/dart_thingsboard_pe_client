@@ -48,9 +48,8 @@ abstract class ExportableEntity<I extends EntityId> {
   }
 }
 
-abstract class ExportableNoTenantIdEntity<I extends EntityId> implements ExportableEntity<I> {
-
+abstract class ExportableNoTenantIdEntity<I extends EntityId>
+    implements ExportableEntity<I> {
   @override
   void setTenantId(TenantId? tenantId) {}
-
 }

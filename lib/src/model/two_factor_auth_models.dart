@@ -174,8 +174,8 @@ class PlatformTwoFaSettings {
   int totalAllowedTimeForVerification;
 
   PlatformTwoFaSettings(
-      { required this.useSystemTwoFactorAuthSettings,
-        required this.providers,
+      {required this.useSystemTwoFactorAuthSettings,
+      required this.providers,
       this.minVerificationCodeSendPeriod = 5,
       this.verificationCodeCheckRateLimit = '',
       this.maxVerificationFailuresBeforeUserLockout = 0,

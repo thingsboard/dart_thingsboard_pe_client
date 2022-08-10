@@ -7,7 +7,8 @@ import 'has_owner_id.dart';
 import 'id/has_id.dart';
 
 class EntityGroup extends AdditionalInfoBased<EntityGroupId>
-    with ExportableNoTenantIdEntity<EntityGroupId> implements HasName, HasOwnerId {
+    with ExportableNoTenantIdEntity<EntityGroupId>
+    implements HasName, HasOwnerId {
   static const String GROUP_ALL_NAME = 'All';
 
   static const String GROUP_EDGE_ALL_STARTS_WITH = '[Edge]';

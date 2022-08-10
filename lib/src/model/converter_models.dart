@@ -21,7 +21,8 @@ extension ConverterTypeToString on ConverterType {
 }
 
 class Converter extends AdditionalInfoBased<ConverterId>
-    with ExportableEntity<ConverterId> implements HasName, TenantEntity {
+    with ExportableEntity<ConverterId>
+    implements HasName, TenantEntity {
   TenantId? tenantId;
   String name;
   ConverterType type;

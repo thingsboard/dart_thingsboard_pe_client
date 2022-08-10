@@ -575,7 +575,6 @@ class EntityTypeLoadResult {
         groupsUpdated = json['groupsUpdated'],
         groupsDeleted = json['groupsDeleted'];
 
-
   @override
   String toString() {
     return 'EntityTypeLoadResult{entityType: $entityType, created: $created, updated: $updated, deleted: $deleted, '
@@ -751,9 +750,9 @@ class EntityGroupExportData extends EntityExportData<EntityGroup> {
 
   EntityGroupExportData.fromJson(Map<String, dynamic> json)
       : permissions = json['permissions'] != null
-          ? (json['permissions'] as List<dynamic>)
-            .map((e) => GroupPermission.fromJson(e))
-            .toList()
+            ? (json['permissions'] as List<dynamic>)
+                .map((e) => GroupPermission.fromJson(e))
+                .toList()
             : null,
         super._fromJson(EntityType.ENTITY_GROUP, json);
 
