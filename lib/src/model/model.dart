@@ -58,3 +58,4 @@ export 'scheduler_event_models.dart';
 export 'self_register_models.dart';
 export 'signup_models.dart';
 export 'white_labeling_models.dart';
+export 'version.dart';
