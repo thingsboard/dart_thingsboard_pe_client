@@ -35,9 +35,7 @@ enum Operation {
   IMPERSONATE,
   CLAIM_DEVICES,
   SHARE_GROUP,
-  ASSIGN_TO_TENANT,
-  ASSIGN_TO_EDGE,
-  UNASSIGN_FROM_EDGE
+  ASSIGN_TO_TENANT
 }
 
 Operation operationFromString(String value) {
@@ -88,7 +86,10 @@ enum Resource {
   AUDIT_LOG,
   API_USAGE_STATE,
   TB_RESOURCE,
-  OTA_PACKAGE
+  OTA_PACKAGE,
+  QUEUE,
+  VERSION_CONTROL,
+  BILLING
 }
 
 Resource resourceFromString(String value) {
@@ -124,7 +125,8 @@ const resourceByEntityType = <EntityType, Resource>{
   EntityType.GROUP_PERMISSION: Resource.GROUP_PERMISSION,
   EntityType.TB_RESOURCE: Resource.TB_RESOURCE,
   EntityType.EDGE: Resource.EDGE,
-  EntityType.OTA_PACKAGE: Resource.OTA_PACKAGE
+  EntityType.OTA_PACKAGE: Resource.OTA_PACKAGE,
+  EntityType.QUEUE: Resource.QUEUE
 };
 
 const groupResourceByGroupType = <EntityType, Resource>{
