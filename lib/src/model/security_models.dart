@@ -71,6 +71,7 @@ enum Resource {
   OAUTH2_CONFIGURATION_TEMPLATE,
   TENANT_PROFILE,
   DEVICE_PROFILE,
+  ASSET_PROFILE,
   CONVERTER,
   INTEGRATION,
   SCHEDULER_EVENT,
@@ -87,8 +88,11 @@ enum Resource {
   WHITE_LABELING,
   AUDIT_LOG,
   API_USAGE_STATE,
+  BILLING,
   TB_RESOURCE,
-  OTA_PACKAGE
+  OTA_PACKAGE,
+  QUEUE,
+  VERSION_CONTROL
 }
 
 Resource resourceFromString(String value) {
@@ -105,26 +109,29 @@ extension ResourceToString on Resource {
 const resourceByEntityType = <EntityType, Resource>{
   EntityType.ALARM: Resource.ALARM,
   EntityType.DEVICE: Resource.DEVICE,
-  EntityType.DEVICE_PROFILE: Resource.DEVICE_PROFILE,
   EntityType.ASSET: Resource.ASSET,
   EntityType.CUSTOMER: Resource.CUSTOMER,
   EntityType.DASHBOARD: Resource.DASHBOARD,
   EntityType.ENTITY_VIEW: Resource.ENTITY_VIEW,
+  EntityType.EDGE: Resource.EDGE,
   EntityType.TENANT: Resource.TENANT,
-  EntityType.TENANT_PROFILE: Resource.TENANT_PROFILE,
   EntityType.RULE_CHAIN: Resource.RULE_CHAIN,
   EntityType.USER: Resource.USER,
   EntityType.WIDGETS_BUNDLE: Resource.WIDGETS_BUNDLE,
   EntityType.WIDGET_TYPE: Resource.WIDGET_TYPE,
+  EntityType.TENANT_PROFILE: Resource.TENANT_PROFILE,
+  EntityType.DEVICE_PROFILE: Resource.DEVICE_PROFILE,
+  EntityType.ASSET_PROFILE: Resource.ASSET_PROFILE,
   EntityType.CONVERTER: Resource.CONVERTER,
   EntityType.INTEGRATION: Resource.INTEGRATION,
   EntityType.SCHEDULER_EVENT: Resource.SCHEDULER_EVENT,
   EntityType.BLOB_ENTITY: Resource.BLOB_ENTITY,
   EntityType.ROLE: Resource.ROLE,
   EntityType.GROUP_PERMISSION: Resource.GROUP_PERMISSION,
+  EntityType.API_USAGE_STATE: Resource.API_USAGE_STATE,
   EntityType.TB_RESOURCE: Resource.TB_RESOURCE,
-  EntityType.EDGE: Resource.EDGE,
-  EntityType.OTA_PACKAGE: Resource.OTA_PACKAGE
+  EntityType.OTA_PACKAGE: Resource.OTA_PACKAGE,
+  EntityType.QUEUE: Resource.QUEUE
 };
 
 const groupResourceByGroupType = <EntityType, Resource>{

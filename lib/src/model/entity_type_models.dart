@@ -7,6 +7,7 @@ enum EntityType {
   USER,
   DASHBOARD,
   ASSET,
+  ASSET_PROFILE,
   DEVICE,
   DEVICE_PROFILE,
   ALARM,
