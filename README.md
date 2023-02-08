@@ -1,7 +1,5 @@
 ThingsBoard PE API client library for Dart developers. Provides model objects and services to communicate with ThingsBoard PE platform using RESTful APIs and WebSocket protocol.
-Current client version is compatible with ThingsBoard PE starting from version 3.4.0PE.
-ThingsBoard API client library for Dart developers. Provides model objects and services to communicate with ThingsBoard platform using RESTful APIs and WebSocket protocol.
-Current client version is compatible with ThingsBoard starting from version 3.4.0.
+Current client version is compatible with ThingsBoard PE starting from version 3.4.2PE.
 
 ## Usage
 

@@ -47,7 +47,7 @@ void onMfa() async {
       .getAvailableLoginTwoFaProviders();
   print('Available providers: $providers');
   var defaultProvider =
-  providers.firstWhereOrNull((provider) => provider.isDefault);
+      providers.firstWhereOrNull((provider) => provider.isDefault);
   if (defaultProvider != null) {
     print('Default provider: $defaultProvider');
     await tbClient
@@ -92,6 +92,8 @@ Future<void> onUserLoaded() async {
         await fetchUsersExample();
         await fetchDeviceProfilesExample();
         await fetchDeviceProfileInfosExample();
+        await fetchAssetProfilesExample();
+        await fetchAssetProfileInfosExample();
         await fetchUserAssetsExample();
         await fetchUserDevicesExample();
         await fetchUserCustomersExample();
@@ -112,6 +114,7 @@ Future<void> onUserLoaded() async {
         await fetchAccountTwoFactorAuthSettingsExample();
         await fetchUsersExample();
         await fetchDeviceProfileInfosExample();
+        await fetchAssetProfileInfosExample();
         await fetchUserAssetsExample();
         await fetchUserDevicesExample();
         await fetchUserCustomersExample();
@@ -373,6 +376,48 @@ Future<void> fetchDeviceProfileInfosExample() async {
     print('deviceProfileInfos: $deviceProfileInfos');
     pageLink = pageLink.nextPageLink();
   } while (deviceProfileInfos.hasNext);
+
+  print(
+      '**********************************************************************');
+}
+
+Future<void> fetchAssetProfilesExample() async {
+  print(
+      '**********************************************************************');
+  print(
+      '*                 FETCH ASSET PROFILES EXAMPLE                       *');
+  print(
+      '**********************************************************************');
+
+  var pageLink = PageLink(10);
+  PageData<AssetProfile> assetProfiles;
+  do {
+    assetProfiles =
+        await tbClient.getAssetProfileService().getAssetProfiles(pageLink);
+    print('assetProfiles: $assetProfiles');
+    pageLink = pageLink.nextPageLink();
+  } while (assetProfiles.hasNext);
+
+  print(
+      '**********************************************************************');
+}
+
+Future<void> fetchAssetProfileInfosExample() async {
+  print(
+      '**********************************************************************');
+  print(
+      '*                 FETCH ASSET PROFILE INFOS EXAMPLE                  *');
+  print(
+      '**********************************************************************');
+
+  var pageLink = PageLink(10);
+  PageData<AssetProfileInfo> assetProfileInfos;
+  do {
+    assetProfileInfos =
+        await tbClient.getAssetProfileService().getAssetProfileInfos(pageLink);
+    print('assetProfileInfos: $assetProfileInfos');
+    pageLink = pageLink.nextPageLink();
+  } while (assetProfileInfos.hasNext);
 
   print(
       '**********************************************************************');

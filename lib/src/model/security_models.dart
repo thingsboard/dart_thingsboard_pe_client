@@ -35,9 +35,7 @@ enum Operation {
   IMPERSONATE,
   CLAIM_DEVICES,
   SHARE_GROUP,
-  ASSIGN_TO_TENANT,
-  ASSIGN_TO_EDGE,
-  UNASSIGN_FROM_EDGE
+  ASSIGN_TO_TENANT
 }
 
 Operation operationFromString(String value) {
