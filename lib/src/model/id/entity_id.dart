@@ -5,6 +5,11 @@ import 'group_permission_id.dart';
 import 'integration_id.dart';
 import 'role_id.dart';
 import 'scheduler_event_id.dart';
+import 'package:thingsboard_pe_client/src/model/id/notification_id.dart';
+import 'package:thingsboard_pe_client/src/model/id/notification_request_id.dart';
+import 'package:thingsboard_pe_client/src/model/id/notification_rule_id.dart';
+import 'package:thingsboard_pe_client/src/model/id/notification_target_id.dart';
+import 'package:thingsboard_pe_client/src/model/id/notification_template_id.dart';
 import 'ota_package_id.dart';
 import 'alarm_id.dart';
 import 'api_usage_state_id.dart';
@@ -103,6 +108,16 @@ abstract class EntityId extends HasUuid {
         return GroupPermissionId(uuid);
       case EntityType.QUEUE:
         return QueueId(uuid);
+      case EntityType.NOTIFICATION_TARGET:
+        return NotificationTargetId(uuid);
+      case EntityType.NOTIFICATION_TEMPLATE:
+        return NotificationTemplateId(uuid);
+      case EntityType.NOTIFICATION_REQUEST:
+        return NotificationRequestId(uuid);
+      case EntityType.NOTIFICATION:
+        return NotificationId(uuid);
+      case EntityType.NOTIFICATION_RULE:
+        return NotificationRuleId(uuid);
     }
   }
 

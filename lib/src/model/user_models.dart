@@ -69,6 +69,7 @@ class User extends AdditionalInfoBased<UserId> implements GroupEntity<UserId> {
   Authority authority;
   String? firstName;
   String? lastName;
+  String? phone;
 
   User(this.email, this.authority);
 
@@ -83,6 +84,7 @@ class User extends AdditionalInfoBased<UserId> implements GroupEntity<UserId> {
         authority = authorityFromString(json['authority']),
         firstName = json['firstName'],
         lastName = json['lastName'],
+        phone = json['phone'],
         super.fromJson(json);
 
   @override
@@ -101,6 +103,9 @@ class User extends AdditionalInfoBased<UserId> implements GroupEntity<UserId> {
     }
     if (lastName != null) {
       json['lastName'] = lastName;
+    }
+    if (phone != null) {
+      json['phone'] = phone;
     }
     return json;
   }
@@ -155,6 +160,7 @@ class User extends AdditionalInfoBased<UserId> implements GroupEntity<UserId> {
 
   @override
   String toString() {
-    return 'User{${additionalInfoBasedString('tenantId: $tenantId, customerId: $customerId, email: $email, authority: ${authority.toShortString()}, firstName: $firstName, lastName: $lastName')}}';
+    return 'User{${additionalInfoBasedString('tenantId: $tenantId, customerId: $customerId, email: $email, '
+        'authority: ${authority.toShortString()}, firstName: $firstName, lastName: $lastName, phone: $phone')}}';
   }
 }
