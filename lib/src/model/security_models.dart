@@ -90,6 +90,7 @@ enum Resource {
   OTA_PACKAGE,
   QUEUE,
   VERSION_CONTROL,
+  NOTIFICATION,
   BILLING
 }
 
@@ -128,7 +129,11 @@ const resourceByEntityType = <EntityType, Resource>{
   EntityType.TB_RESOURCE: Resource.TB_RESOURCE,
   EntityType.EDGE: Resource.EDGE,
   EntityType.OTA_PACKAGE: Resource.OTA_PACKAGE,
-  EntityType.QUEUE: Resource.QUEUE
+  EntityType.QUEUE: Resource.QUEUE,
+  EntityType.NOTIFICATION_TARGET: Resource.NOTIFICATION,
+  EntityType.NOTIFICATION_TEMPLATE: Resource.NOTIFICATION,
+  EntityType.NOTIFICATION_REQUEST: Resource.NOTIFICATION,
+  EntityType.NOTIFICATION_RULE: Resource.NOTIFICATION
 };
 
 const groupResourceByGroupType = <EntityType, Resource>{

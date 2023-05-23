@@ -33,6 +33,7 @@ class AssetProfile extends BaseData<AssetProfileId>
   RuleChainId? defaultRuleChainId;
   DashboardId? defaultDashboardId;
   String? defaultQueueName;
+  RuleChainId? defaultEdgeRuleChainId;
   AssetProfileId? externalId;
 
   AssetProfile(this.name);
@@ -50,6 +51,9 @@ class AssetProfile extends BaseData<AssetProfileId>
             ? DashboardId.fromJson(json['defaultDashboardId'])
             : null,
         defaultQueueName = json['defaultQueueName'],
+        defaultEdgeRuleChainId = json['defaultEdgeRuleChainId'] != null
+            ? RuleChainId.fromJson(json['defaultEdgeRuleChainId'])
+            : null,
         externalId = json['externalId'] != null
             ? AssetProfileId.fromJson(json['externalId'])
             : null,
@@ -79,6 +83,9 @@ class AssetProfile extends BaseData<AssetProfileId>
     }
     if (defaultQueueName != null) {
       json['defaultQueueName'] = defaultQueueName;
+    }
+    if (defaultEdgeRuleChainId != null) {
+      json['defaultEdgeRuleChainId'] = defaultEdgeRuleChainId!.toJson();
     }
     if (externalId != null) {
       json['externalId'] = externalId!.toJson();
@@ -111,6 +118,10 @@ class AssetProfile extends BaseData<AssetProfileId>
     return defaultRuleChainId;
   }
 
+  RuleChainId? getDefaultEdgeRuleChainId() {
+    return defaultEdgeRuleChainId;
+  }
+
   @override
   AssetProfileId? getExternalId() {
     return externalId;
@@ -126,16 +137,17 @@ class AssetProfile extends BaseData<AssetProfileId>
     return 'AssetProfile{${baseDataString('tenantId: $tenantId, name: $name, description: $description, '
         'isDefault: $isDefault, image: ${image != null ? '[' + image!.substring(0, min(30, image!.length)) + '...]' : 'null'}, '
         'defaultRuleChainId: $defaultRuleChainId, defaultDashboardId: $defaultDashboardId, defaultQueueName: $defaultQueueName, '
-        'externalId: $externalId')}}';
+        'defaultEdgeRuleChainId: $defaultEdgeRuleChainId, externalId: $externalId')}}';
   }
 }
 
 class AssetProfileInfo extends EntityInfo {
   DashboardId? defaultDashboardId;
   String? image;
+  TenantId? tenantId;
 
-  AssetProfileInfo(
-      EntityId id, String name, this.image, this.defaultDashboardId)
+  AssetProfileInfo(EntityId id, String name, this.image,
+      this.defaultDashboardId, this.tenantId)
       : super(id, name);
 
   AssetProfileInfo.fromJson(Map<String, dynamic> json)
@@ -143,11 +155,13 @@ class AssetProfileInfo extends EntityInfo {
             ? DashboardId.fromJson(json['defaultDashboardId'])
             : null,
         image = json['image'],
+        tenantId = TenantId.fromJson(json['tenantId']),
         super.fromJson(json);
 
   @override
   String toString() {
     return 'AssetProfileInfo{${entityInfoString('defaultDashboardId: $defaultDashboardId, '
+        'tenantId: $tenantId'
         'image: ${image != null ? '[' + image!.substring(0, min(30, image!.length)) + '...]' : 'null'}')}}';
   }
 }
