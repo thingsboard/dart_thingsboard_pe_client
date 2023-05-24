@@ -1,3 +1,7 @@
+## 1.0.7
+
+- Fixed incorrect deserializing alarm models
+
 ## 1.0.6
 
 - Update API and models according to ThingsBoard platform version 3.5.0
