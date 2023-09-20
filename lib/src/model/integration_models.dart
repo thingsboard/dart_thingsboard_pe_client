@@ -13,6 +13,7 @@ enum IntegrationType {
   THINGPARK,
   TPE,
   CHIRPSTACK,
+  PARTICLE,
   TMOBILE_IOT_CDP,
   HTTP,
   MQTT,
@@ -24,6 +25,7 @@ enum IntegrationType {
   TTN,
   TTI,
   AZURE_EVENT_HUB,
+  AZURE_SERVICE_BUS,
   OPC_UA,
   CUSTOM,
   UDP,
@@ -33,7 +35,8 @@ enum IntegrationType {
   APACHE_PULSAR,
   RABBITMQ,
   LORIOT,
-  COAP
+  COAP,
+  TUYA
 }
 
 IntegrationType integrationTypeFromString(String value) {
