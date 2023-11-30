@@ -50,7 +50,7 @@ abstract mixin class ExportableEntity<I extends EntityId> {
   }
 }
 
-abstract class ExportableNoTenantIdEntity<I extends EntityId>
+abstract mixin class ExportableNoTenantIdEntity<I extends EntityId>
     implements ExportableEntity<I> {
   @override
   void setTenantId(TenantId? tenantId) {}
