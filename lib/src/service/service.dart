@@ -41,3 +41,4 @@ export 'white_labeling_service.dart';
 export 'queue_service.dart';
 export 'entities_version_control_service.dart';
 export 'two_factor_auth_service.dart';
+export 'notification_websocket_service.dart';
