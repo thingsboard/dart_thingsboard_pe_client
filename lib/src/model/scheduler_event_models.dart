@@ -122,6 +122,7 @@ class SchedulerEventInfo extends AdditionalInfoBased<SchedulerEventId>
     implements HasName, TenantEntity, HasCustomerId, HasOwnerId {
   TenantId? tenantId;
   CustomerId? customerId;
+  EntityId? originatorId;
   String name;
   String type;
   SchedulerEventSchedule schedule;
@@ -133,6 +134,9 @@ class SchedulerEventInfo extends AdditionalInfoBased<SchedulerEventId>
       : tenantId = TenantId.fromJson(json['tenantId']),
         customerId = json['customerId'] != null
             ? CustomerId.fromJson(json['customerId'])
+            : null,
+        originatorId = json['originatorId'] != null
+            ? EntityId.fromJson(json['originatorId'])
             : null,
         name = json['name'],
         type = json['type'],
@@ -147,6 +151,9 @@ class SchedulerEventInfo extends AdditionalInfoBased<SchedulerEventId>
     }
     if (customerId != null) {
       json['customerId'] = customerId!.toJson();
+    }
+    if (originatorId != null) {
+      json['originatorId'] = originatorId!.toJson();
     }
     json['name'] = name;
     json['type'] = type;
