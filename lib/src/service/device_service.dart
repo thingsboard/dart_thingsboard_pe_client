@@ -35,10 +35,17 @@ class DeviceService {
   }
 
   Future<Device> saveDevice(Device device,
-      {String? accessToken, RequestConfig? requestConfig}) async {
+      {String? accessToken,
+      String? entityGroupId,
+      List<String>? entityGroupIds,
+      RequestConfig? requestConfig}) async {
     var response = await _tbClient.post<Map<String, dynamic>>('/api/device',
         data: jsonEncode(device),
-        queryParameters: {'accessToken': accessToken},
+        queryParameters: {
+          'accessToken': accessToken,
+          'entityGroupId': entityGroupId,
+          'entityGroupIds': entityGroupIds?.join(',')
+        },
         options: defaultHttpOptionsFromConfig(requestConfig));
     return Device.fromJson(response.data!);
   }
