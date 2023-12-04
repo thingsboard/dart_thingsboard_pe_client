@@ -2,28 +2,22 @@ import 'dart:math';
 
 class Favicon {
   String? url;
-  String? type;
 
-  Favicon({this.url, this.type});
+  Favicon({this.url});
 
-  Favicon.fromJson(Map<String, dynamic> json)
-      : url = json['url'],
-        type = json['type'];
+  Favicon.fromJson(Map<String, dynamic> json) : url = json['url'];
 
   Map<String, dynamic> toJson() {
     var json = <String, dynamic>{};
     if (url != null) {
       json['url'] = url;
     }
-    if (type != null) {
-      json['type'] = type;
-    }
     return json;
   }
 
   @override
   String toString() {
-    return 'Favicon{url: ${url != null ? '[' + url!.substring(0, min(30, url!.length)) + '...]' : 'null'}, type: $type}';
+    return 'Favicon{url: ${url != null ? '[' + url!.substring(0, min(30, url!.length)) + '...]' : 'null'}}';
   }
 }
 
@@ -92,11 +86,9 @@ class PaletteSettings {
 
 class WhiteLabelingParams {
   String? logoImageUrl;
-  String? logoImageChecksum;
   int? logoImageHeight;
   String? appTitle;
   Favicon? favicon;
-  String? faviconChecksum;
   PaletteSettings? paletteSettings;
   String? helpLinkBaseUrl;
   bool? enableHelpLinks;
@@ -107,11 +99,9 @@ class WhiteLabelingParams {
 
   WhiteLabelingParams(
       {this.logoImageUrl,
-      this.logoImageChecksum,
       this.logoImageHeight,
       this.appTitle,
       this.favicon,
-      this.faviconChecksum,
       this.paletteSettings,
       this.helpLinkBaseUrl,
       this.enableHelpLinks,
@@ -122,12 +112,10 @@ class WhiteLabelingParams {
 
   WhiteLabelingParams.fromJson(Map<String, dynamic> json)
       : logoImageUrl = json['logoImageUrl'],
-        logoImageChecksum = json['logoImageChecksum'],
         logoImageHeight = json['logoImageHeight'],
         appTitle = json['appTitle'],
         favicon =
             json['favicon'] != null ? Favicon.fromJson(json['favicon']) : null,
-        faviconChecksum = json['faviconChecksum'],
         paletteSettings = json['paletteSettings'] != null
             ? PaletteSettings.fromJson(json['paletteSettings'])
             : null,
@@ -182,8 +170,8 @@ class WhiteLabelingParams {
   }
 
   String whiteLabelingParamsString([String? toStringBody]) {
-    return 'logoImageUrl: ${logoImageUrl != null ? '[' + logoImageUrl!.substring(0, min(30, logoImageUrl!.length)) + '...]' : 'null'}, logoImageChecksum: $logoImageChecksum, logoImageHeight: $logoImageHeight, '
-        'appTitle: $appTitle, favicon: $favicon, faviconChecksum: $faviconChecksum, paletteSettings: $paletteSettings, '
+    return 'logoImageUrl: ${logoImageUrl != null ? '[' + logoImageUrl!.substring(0, min(30, logoImageUrl!.length)) + '...]' : 'null'}, logoImageHeight: $logoImageHeight, '
+        'appTitle: $appTitle, favicon: $favicon, paletteSettings: $paletteSettings, '
         'helpLinkBaseUrl: $helpLinkBaseUrl, enableHelpLinks: $enableHelpLinks, showNameVersion: $showNameVersion, '
         'platformName: $platformName, platformVersion: $platformVersion, customCss: $customCss${toStringBody != null ? ', ' + toStringBody : ''}';
   }
@@ -206,11 +194,9 @@ class LoginWhiteLabelingParams extends WhiteLabelingParams {
       this.prohibitDifferentUrl,
       this.showNameBottom,
       String? logoImageUrl,
-      String? logoImageChecksum,
       int? logoImageHeight,
       String? appTitle,
       Favicon? favicon,
-      String? faviconChecksum,
       PaletteSettings? paletteSettings,
       bool? showNameVersion,
       String? platformName,
@@ -218,11 +204,9 @@ class LoginWhiteLabelingParams extends WhiteLabelingParams {
       String? customCss})
       : super(
             logoImageUrl: logoImageUrl,
-            logoImageChecksum: logoImageChecksum,
             logoImageHeight: logoImageHeight,
             appTitle: appTitle,
             favicon: favicon,
-            faviconChecksum: faviconChecksum,
             paletteSettings: paletteSettings,
             showNameVersion: showNameVersion,
             platformName: platformName,
