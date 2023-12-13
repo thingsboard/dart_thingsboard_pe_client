@@ -15,16 +15,8 @@ class WhiteLabelingService {
   WhiteLabelingService._internal(this._tbClient);
 
   Future<WhiteLabelingParams> getWhiteLabelParams(
-      {String? logoImageChecksum,
-      String? faviconChecksum,
-      RequestConfig? requestConfig}) async {
+      {RequestConfig? requestConfig}) async {
     var queryParams = <String, dynamic>{};
-    if (logoImageChecksum != null) {
-      queryParams['logoImageChecksum'] = logoImageChecksum;
-    }
-    if (faviconChecksum != null) {
-      queryParams['faviconChecksum'] = faviconChecksum;
-    }
     var response = await _tbClient.get<Map<String, dynamic>>(
         '/api/whiteLabel/whiteLabelParams',
         queryParameters: queryParams,
@@ -33,16 +25,8 @@ class WhiteLabelingService {
   }
 
   Future<LoginWhiteLabelingParams> getLoginWhiteLabelParams(
-      {String? logoImageChecksum,
-      String? faviconChecksum,
-      RequestConfig? requestConfig}) async {
+      {RequestConfig? requestConfig}) async {
     var queryParams = <String, dynamic>{};
-    if (logoImageChecksum != null) {
-      queryParams['logoImageChecksum'] = logoImageChecksum;
-    }
-    if (faviconChecksum != null) {
-      queryParams['faviconChecksum'] = faviconChecksum;
-    }
     var response = await _tbClient.get<Map<String, dynamic>>(
         '/api/noauth/whiteLabel/loginWhiteLabelParams',
         queryParameters: queryParams,
