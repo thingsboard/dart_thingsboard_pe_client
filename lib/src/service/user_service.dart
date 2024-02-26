@@ -239,7 +239,7 @@ class UserService {
       return response.data != null
           ? MobileSessionInfo.fromJson(response.data!)
           : null;
-    } on Exception catch (_) {
+    } catch (_) {
       return null;
     }
   }
