@@ -1,3 +1,8 @@
+## 1.0.10
+
+- Updated the API and models to align with the latest ThingsBoard platform, version 3.6.3
+- Introduced support for push notifications
+
 ## 1.0.9
 
 - Update API and models according to ThingsBoard platform version 3.6.2
