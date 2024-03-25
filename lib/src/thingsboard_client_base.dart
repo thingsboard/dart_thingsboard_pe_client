@@ -83,6 +83,7 @@ class ThingsboardClient {
   QueueService? _queueService;
   EntitiesVersionControlService? _entitiesVersionControlService;
   TwoFactorAuthService? _twoFactorAuthService;
+  NotificationsService? _notificationService;
 
   factory ThingsboardClient(String apiEndpoint,
       {TbStorage? storage,
@@ -289,6 +290,26 @@ class ThingsboardClient {
           queryParameters: queryParameters,
           options: options,
           cancelToken: cancelToken);
+    } catch (e) {
+      throw toThingsboardError(e);
+    }
+  }
+
+  Future<Response<T>> put<T>(
+    String path, {
+    data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+  }) async {
+    try {
+      return _dio.put(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+      );
     } catch (e) {
       throw toThingsboardError(e);
     }
@@ -655,5 +676,10 @@ class ThingsboardClient {
   TwoFactorAuthService getTwoFactorAuthService() {
     _twoFactorAuthService ??= TwoFactorAuthService(this);
     return _twoFactorAuthService!;
+  }
+
+  NotificationsService getNotificationService() {
+    _notificationService ??= NotificationsService(this);
+    return _notificationService!;
   }
 }
