@@ -177,7 +177,8 @@ class Asset extends AdditionalInfoBased<AssetId>
   AssetProfileId? assetProfileId;
   AssetId? externalId;
 
-  Asset(this.name, this.type);
+  Asset(this.name, this.type, {Map<String, dynamic>? additionalInfo})
+      : super(additionalInfo: additionalInfo);
 
   Asset.fromJson(Map<String, dynamic> json)
       : tenantId = TenantId.fromJson(json['tenantId']),
