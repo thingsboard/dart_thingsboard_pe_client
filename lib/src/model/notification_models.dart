@@ -17,7 +17,11 @@ enum NotificationType {
   ENTITIES_LIMIT,
   API_USAGE_LIMIT,
   RULE_NODE,
-  RATE_LIMITS
+  RATE_LIMITS,
+  INTEGRATION_LIFECYCLE_EVENT,
+  EDGE_CONNECTION,
+  EDGE_COMMUNICATION_FAILURE,
+  EXCEEDED_RATE_LIMITS
 }
 
 NotificationType notificationTypeFromString(String value) {
@@ -102,6 +106,7 @@ class NotificationInfo {
   final String? type;
   final AlarmSeverity? alarmSeverity;
   final AlarmStatus? alarmStatus;
+  final String? alarmId;
   final String? alarmType;
   final EntityId? stateEntityId;
   final bool? acknowledged;
@@ -116,6 +121,7 @@ class NotificationInfo {
         alarmStatus = json['alarmStatus'] != null
             ? alarmStatusFromString(json['alarmStatus'])
             : null,
+        alarmId = json['alarmId'],
         alarmType = json['alarmType'],
         stateEntityId = json['stateEntityId'] != null
             ? EntityId.fromJson(json['stateEntityId'])
