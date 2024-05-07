@@ -91,7 +91,9 @@ enum Resource {
   QUEUE,
   VERSION_CONTROL,
   NOTIFICATION,
-  BILLING
+  BILLING,
+  QUEUE_STATS,
+  MOBILE_APP_SETTINGS
 }
 
 Resource resourceFromString(String value) {
