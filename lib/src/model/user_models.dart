@@ -1,13 +1,6 @@
-import 'additional_info_based.dart';
-import 'entity_type_models.dart';
-import 'group_entity.dart';
-import 'id/customer_id.dart';
-import 'id/entity_id.dart';
-import 'id/has_uuid.dart';
-import 'id/tenant_id.dart';
+import 'package:thingsboard_pe_client/src/model/model.dart';
 
-import 'authority_enum.dart';
-import 'id/user_id.dart';
+import 'group_entity.dart';
 
 class AuthUser {
   late String sub;
@@ -163,4 +156,17 @@ class User extends AdditionalInfoBased<UserId> implements GroupEntity<UserId> {
     return 'User{${additionalInfoBasedString('tenantId: $tenantId, customerId: $customerId, email: $email, '
         'authority: ${authority.toShortString()}, firstName: $firstName, lastName: $lastName, phone: $phone')}}';
   }
+}
+
+class UserInfo {
+  final UserId id;
+  String email;
+  String? firstName;
+  String? lastName;
+
+  UserInfo.fromJson(Map<String, dynamic> json)
+      : id = UserId.fromJson(json['id']),
+        email = json['email'],
+        firstName = json['firstName'],
+        lastName = json['lastName'];
 }

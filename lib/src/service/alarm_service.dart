@@ -1,14 +1,16 @@
 import 'dart:convert';
 
-import '../model/id/entity_id.dart';
-import '../model/page/page_data.dart';
+import 'package:thingsboard_pe_client/src/model/model.dart';
+
 import '../http/http_utils.dart';
-import '../model/alarm_models.dart';
-import '../model/entity_type_models.dart';
 import '../thingsboard_client_base.dart';
 
 PageData<AlarmInfo> parseAlarmInfoPageData(Map<String, dynamic> json) {
   return PageData.fromJson(json, (json) => AlarmInfo.fromJson(json));
+}
+
+PageData<AlarmType> parseAlarmTypeData(Map<String, dynamic> json) {
+  return PageData.fromJson(json, (json) => AlarmType.fromJson(json));
 }
 
 class AlarmService {
@@ -145,5 +147,17 @@ class AlarmService {
     return response.data != null
         ? alarmSeverityFromString(response.data!)
         : null;
+  }
+
+  Future<PageData<AlarmType>> getAlarmTypes(
+    PageLink pageLink, {
+    RequestConfig? requestConfig,
+  }) async {
+    final response = await _tbClient.get<Map<String, dynamic>>(
+        '/api/alarm/types',
+        queryParameters: pageLink.toQueryParameters(),
+        options: defaultHttpOptionsFromConfig(requestConfig));
+
+    return _tbClient.compute(parseAlarmTypeData, response.data!);
   }
 }
