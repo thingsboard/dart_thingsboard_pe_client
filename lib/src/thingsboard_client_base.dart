@@ -93,7 +93,7 @@ class ThingsboardClient {
       LoadStartedCallback? onLoadStarted,
       LoadFinishedCallback? onLoadFinished,
       TbCompute? computeFunc}) {
-    var dio = Dio();
+    final dio = Dio();
     dio.options.baseUrl = apiEndpoint;
     final tbClient = ThingsboardClient._internal(
         apiEndpoint,
@@ -106,8 +106,16 @@ class ThingsboardClient {
         onLoadFinished,
         computeFunc ?? syncCompute);
     dio.interceptors.clear();
-    dio.interceptors.add(HttpInterceptor(dio, tbClient, tbClient._loadStarted,
-        tbClient._loadFinished, tbClient._onError));
+    dio.interceptors.add(
+      HttpInterceptor(
+        dio,
+        tbClient,
+        tbClient._loadStarted,
+        tbClient._loadFinished,
+        tbClient._onError,
+      ),
+    );
+
     return tbClient;
   }
 
@@ -123,8 +131,8 @@ class ThingsboardClient {
       this._computeFunc)
       : _storage = storage ?? InMemoryStorage();
 
-  Future<void> _clearJwtToken() async {
-    await _setUserFromJwtToken(null, null, true);
+  Future<void> _clearJwtToken({bool notifyUser = true}) async {
+    await _setUserFromJwtToken(null, null, notifyUser);
   }
 
   Future<void> _setUserFromJwtToken(
@@ -353,13 +361,27 @@ class ThingsboardClient {
     await _setUserFromJwtToken(jwtToken, refreshToken, notify);
   }
 
-  Future<void> logout({RequestConfig? requestConfig}) async {
+  Future<void> logout(
+      {RequestConfig? requestConfig, bool notifyUser = true}) async {
     try {
       await post('/api/auth/logout',
           options: defaultHttpOptionsFromConfig(requestConfig));
-      await _clearJwtToken();
+      await _clearJwtToken(notifyUser: notifyUser);
     } catch (e) {
-      await _clearJwtToken();
+      await _clearJwtToken(notifyUser: notifyUser);
+    }
+  }
+
+  Future<LoginResponse> getLoginDataBySecretKey({
+    required String host,
+    required String key,
+  }) async {
+    final dio = Dio();
+    try {
+      final response = await dio.get('$host/api/noauth/qr/$key');
+      return LoginResponse.fromJson(response.data);
+    } catch (e) {
+      throw toThingsboardError(e);
     }
   }
 
