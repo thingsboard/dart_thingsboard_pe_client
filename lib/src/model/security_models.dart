@@ -93,7 +93,10 @@ enum Resource {
   NOTIFICATION,
   BILLING,
   QUEUE_STATS,
-  MOBILE_APP_SETTINGS
+  MOBILE_APP_SETTINGS,
+  DOMAIN,
+  MOBILE_APP,
+  OAUTH2_CLIENT
 }
 
 Resource resourceFromString(String value) {
