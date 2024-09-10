@@ -36,7 +36,7 @@ class OAuth2Service {
     Response<List<dynamic>> response;
     try {
       response = await _tbClient.post<List<dynamic>>(
-          '/api/noauth/oauth2/client',
+          '/api/noauth/oauth2Clients',
           queryParameters: queryParams,
           options: defaultHttpOptionsFromConfig(requestConfig));
     } on ThingsboardError catch (e) {
