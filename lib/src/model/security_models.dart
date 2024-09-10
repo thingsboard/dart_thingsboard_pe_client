@@ -96,12 +96,15 @@ enum Resource {
   MOBILE_APP_SETTINGS,
   DOMAIN,
   MOBILE_APP,
-  OAUTH2_CLIENT
+  OAUTH2_CLIENT,
+  NONE
 }
 
 Resource resourceFromString(String value) {
   return Resource.values.firstWhere(
-      (e) => e.toString().split('.')[1].toUpperCase() == value.toUpperCase());
+    (e) => e.toString().split('.')[1].toUpperCase() == value.toUpperCase(),
+    orElse: () => Resource.NONE,
+  );
 }
 
 extension ResourceToString on Resource {
