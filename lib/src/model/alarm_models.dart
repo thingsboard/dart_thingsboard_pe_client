@@ -327,7 +327,7 @@ class AlarmComment {
   });
 
   final String text;
-  final String subtype;
+  final String? subtype;
   final UserId userId;
 
   factory AlarmComment.fromJson(Map<String, dynamic> json) {
