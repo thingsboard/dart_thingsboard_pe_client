@@ -166,15 +166,30 @@ class AlarmService {
   }
 
   Future<PageData<AlarmCommentInfo>> getAlarmComments(
-    PageLink pageLink, {
+    AlarmCommentsQuery query, {
     required AlarmId id,
     RequestConfig? requestConfig,
   }) async {
     final response = await _tbClient.get<Map<String, dynamic>>(
         '/api/alarm/${id.id}/comment',
-        queryParameters: pageLink.toQueryParameters(),
+        queryParameters: query.toQueryParameters(),
         options: defaultHttpOptionsFromConfig(requestConfig));
 
     return _tbClient.compute(parseAlarmComments, response.data!);
+  }
+
+  Future<AlarmCommentInfo> postAlarmComment(
+    String comment, {
+    required AlarmId id,
+    RequestConfig? requestConfig,
+  }) async {
+    final response = await _tbClient.post<Map<String, dynamic>>(
+        '/api/alarm/${id.id}/comment',
+        data: jsonEncode({
+          'comment': {'text': comment}
+        }),
+        options: defaultHttpOptionsFromConfig(requestConfig));
+
+    return AlarmCommentInfo.fromJson(response.data!);
   }
 }
