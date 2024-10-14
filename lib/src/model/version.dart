@@ -5,7 +5,7 @@ class PlatformVersionMatcher {
     PlatformVersion platformVersion, {
     required String type,
   }) {
-    if (type != 'PE' || type != 'PAAS') {
+    if (type != 'PE' && type != 'PAAS') {
       return false;
     }
 
