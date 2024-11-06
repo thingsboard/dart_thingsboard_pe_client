@@ -159,6 +159,13 @@ class User extends AdditionalInfoBased<UserId> implements GroupEntity<UserId> {
 }
 
 class UserInfo {
+  UserInfo(
+    this.id, {
+    required this.email,
+    this.firstName,
+    this.lastName,
+  });
+
   final UserId id;
   String email;
   String? firstName;
@@ -169,4 +176,18 @@ class UserInfo {
         email = json['email'],
         firstName = json['firstName'],
         lastName = json['lastName'];
+}
+
+class UsersAssignQuery {
+  const UsersAssignQuery({
+    required this.pageLink,
+    required this.id,
+  });
+
+  final PageLink pageLink;
+  final AlarmId id;
+
+  Map<String, dynamic> toQueryParameters() {
+    return pageLink.toQueryParameters();
+  }
 }
