@@ -6,11 +6,13 @@ class LoginMobileInfo {
   const LoginMobileInfo({
     required this.oAuth2Clients,
     required this.selfRegistrationParams,
+    required this.storeInfo,
     required this.versionInfo,
   });
 
   final List<OAuth2ClientInfo> oAuth2Clients;
   final MobileSelfRegistrationParams? selfRegistrationParams;
+  final StoreInfo? storeInfo;
   final VersionInfo? versionInfo;
 
   factory LoginMobileInfo.fromJson(Map<String, dynamic> json) {
@@ -22,6 +24,9 @@ class LoginMobileInfo {
           ? MobileSelfRegistrationParams.fromJson(
               json['selfRegistrationParams'],
             )
+          : null,
+      storeInfo: json['storeInfo'] != null
+          ? StoreInfo.fromJson(json['storeInfo'])
           : null,
       versionInfo: json['versionInfo'] != null
           ? VersionInfo.fromJson(json['versionInfo'])
