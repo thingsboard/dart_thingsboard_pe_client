@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'package:dio/dio.dart';
-import '../model/login_models.dart';
 
-import '../model/signup_models.dart';
+import 'package:dio/dio.dart';
+import 'package:thingsboard_pe_client/src/model/model.dart';
+
 import '../http/http_utils.dart';
 import '../thingsboard_client_base.dart';
 
@@ -46,15 +46,23 @@ class SignupService {
     return response.data!;
   }
 
-  Future<void> resendEmailActivation(String email,
-      {String? pkgName, RequestConfig? requestConfig}) async {
-    var queryParams = <String, dynamic>{'email': email};
+  Future<void> resendEmailActivation(
+    String email, {
+    String? pkgName,
+    PlatformType? platform,
+    RequestConfig? requestConfig,
+  }) async {
+    final queryParams = <String, dynamic>{'email': email};
     if (pkgName != null) {
       queryParams['pkgName'] = pkgName;
+      queryParams['platform'] = platform?.toShortString();
     }
-    await _tbClient.post('/api/noauth/resendEmailActivation',
-        queryParameters: queryParams,
-        options: defaultHttpOptionsFromConfig(requestConfig));
+
+    await _tbClient.post(
+      '/api/noauth/resendEmailActivation',
+      queryParameters: queryParams,
+      options: defaultHttpOptionsFromConfig(requestConfig),
+    );
   }
 
   Future<Response<String>> activateEmail(String emailCode,
@@ -70,13 +78,18 @@ class SignupService {
     return response;
   }
 
-  Future<LoginResponse?> activateUserByEmailCode(String emailCode,
-      {String? pkgName, RequestConfig? requestConfig}) async {
+  Future<LoginResponse?> activateUserByEmailCode(
+    String emailCode, {
+    String? pkgName,
+    PlatformType? platform,
+    RequestConfig? requestConfig,
+  }) async {
     return nullIfNotFound(
       (RequestConfig requestConfig) async {
         var queryParams = <String, dynamic>{'emailCode': emailCode};
         if (pkgName != null) {
           queryParams['pkgName'] = pkgName;
+          queryParams['platform'] = platform?.toShortString();
         }
         var response = await _tbClient.post<Map<String, dynamic>>(
             '/api/noauth/activateByEmailCode',

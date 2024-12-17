@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 
-import '../model/self_register_models.dart';
-
 import '../http/http_utils.dart';
+import '../model/mobile/mobile_info_query.dart';
+import '../model/self_register_models.dart';
 import '../thingsboard_client_base.dart';
 
 class SelfRegistrationService {
@@ -61,21 +61,34 @@ class SelfRegistrationService {
     );
   }
 
-  Future<String> getPrivacyPolicy({RequestConfig? requestConfig}) async {
-    var options = defaultHttpOptionsFromConfig(requestConfig);
+  Future<String> getPrivacyPolicy({
+    MobileInfoQuery? query,
+    RequestConfig? requestConfig,
+  }) async {
+    final queryParams = query?.toQueryParameters();
+    final options = defaultHttpOptionsFromConfig(requestConfig);
     options.responseType = ResponseType.plain;
     var response = await _tbClient.get<String>(
-        '/api/noauth/selfRegistration/privacyPolicy',
-        options: options);
+      '/api/noauth/selfRegistration/privacyPolicy',
+      options: options,
+      queryParameters: queryParams,
+    );
+
     return response.data!;
   }
 
-  Future<String> getTermsOfUse({RequestConfig? requestConfig}) async {
-    var options = defaultHttpOptionsFromConfig(requestConfig);
+  Future<String> getTermsOfUse({
+    MobileInfoQuery? query,
+    RequestConfig? requestConfig,
+  }) async {
+    final queryParams = query?.toQueryParameters();
+    final options = defaultHttpOptionsFromConfig(requestConfig);
     options.responseType = ResponseType.plain;
     var response = await _tbClient.get<String>(
-        '/api/noauth/selfRegistration/termsOfUse',
-        options: options);
+      '/api/noauth/selfRegistration/termsOfUse',
+      options: options,
+      queryParameters: queryParams,
+    );
     return response.data!;
   }
 }
