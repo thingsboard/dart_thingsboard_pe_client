@@ -17,19 +17,26 @@ class SignUpRequest {
       this.appSecret});
 
   Map<String, dynamic> toJson() {
+    var fieldsJson = <String, dynamic>{
+      'FIRST_NAME': firstName,
+      'LAST_NAME': lastName,
+      'EMAIL': email,
+      'PASSWORD': password,
+    };
+    
     var json = <String, dynamic>{
-      'firstName': firstName,
-      'lastName': lastName,
-      'email': email,
-      'password': password,
+      'fields': fieldsJson,
       'recaptchaResponse': recaptchaResponse
     };
+
+    // Optional fields
     if (pkgName != null) {
       json['pkgName'] = pkgName;
     }
     if (appSecret != null) {
       json['appSecret'] = appSecret;
     }
+
     return json;
   }
 
