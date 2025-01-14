@@ -15,12 +15,19 @@ class SignupService {
 
   SignupService._internal(this._tbClient);
 
-  Future<SignUpResult> signup(SignUpRequest signUpRequest,
-      {RequestConfig? requestConfig}) async {
-    var options = defaultHttpOptionsFromConfig(requestConfig);
+  Future<SignUpResult> signup(
+    SignUpRequest signUpRequest, {
+    RequestConfig? requestConfig,
+  }) async {
+    final options = defaultHttpOptionsFromConfig(requestConfig);
     options.responseType = ResponseType.plain;
-    var response = await _tbClient.post<String>('/api/noauth/signup',
-        data: jsonEncode(signUpRequest), options: options);
+
+    final response = await _tbClient.post<String>(
+      '/api/noauth/signup',
+      data: signUpRequest.toJson(),
+      options: options,
+    );
+
     return signUpResultFromString(jsonDecode(response.data!));
   }
 

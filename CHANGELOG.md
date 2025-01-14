@@ -1,3 +1,8 @@
+## 3.0.1
+
+- Adapted to backend changes for version information representation.
+- Fixed signup discrepancy.
+
 ## 3.0.0
 
 - Introduced a new API for dynamically configuring via mobile center.

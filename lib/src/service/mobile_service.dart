@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:thingsboard_pe_client/thingsboard_client.dart';
 
 class MobileService {
@@ -41,21 +38,5 @@ class MobileService {
     return response.data != null
         ? LoginMobileInfo.fromJson(response.data!)
         : null;
-  }
-
-  Future<SignUpResult> signup(
-    MobileSignUpRequest signUpRequest, {
-    RequestConfig? requestConfig,
-  }) async {
-    final options = defaultHttpOptionsFromConfig(requestConfig);
-    options.responseType = ResponseType.plain;
-
-    final response = await _tbClient.post<String>(
-      '/api/noauth/signup',
-      data: signUpRequest.toJson(),
-      options: options,
-    );
-
-    return signUpResultFromString(jsonDecode(response.data!));
   }
 }
