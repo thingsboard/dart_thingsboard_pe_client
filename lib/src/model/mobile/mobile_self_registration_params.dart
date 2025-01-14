@@ -1,4 +1,5 @@
-import 'package:thingsboard_pe_client/src/model/mobile/mobile_models.dart';
+import 'package:thingsboard_pe_client/thingsboard_client.dart'
+    show RecaptchaModel, SignUpField;
 
 class MobileSelfRegistrationParams {
   const MobileSelfRegistrationParams({
