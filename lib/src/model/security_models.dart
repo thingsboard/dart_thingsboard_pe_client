@@ -35,12 +35,16 @@ enum Operation {
   IMPERSONATE,
   CLAIM_DEVICES,
   SHARE_GROUP,
-  ASSIGN_TO_TENANT
+  ASSIGN_TO_TENANT,
+  WRITE_CALCULATED_FIELD,
+  UNKNOWN,
 }
 
 Operation operationFromString(String value) {
   return Operation.values.firstWhere(
-      (e) => e.toString().split('.')[1].toUpperCase() == value.toUpperCase());
+    (e) => e.toString().split('.')[1].toUpperCase() == value.toUpperCase(),
+    orElse: () => Operation.UNKNOWN,
+  );
 }
 
 extension OperationToString on Operation {
