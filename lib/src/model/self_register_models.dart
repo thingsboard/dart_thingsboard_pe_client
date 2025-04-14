@@ -10,7 +10,7 @@ class SignUpSelfRegistrationParams {
 
   SignUpSelfRegistrationParams.fromJson(Map<String, dynamic> json)
       : signUpTextMessage = json['signUpTextMessage'],
-        captchaSiteKey = json['captchaSiteKey'],
+        captchaSiteKey = json['captcha']['siteKey'],
         showPrivacyPolicy = json['showPrivacyPolicy'],
         showTermsOfUse = json['showTermsOfUse'];
 
@@ -20,7 +20,7 @@ class SignUpSelfRegistrationParams {
       json['signUpTextMessage'] = signUpTextMessage;
     }
     if (captchaSiteKey != null) {
-      json['captchaSiteKey'] = captchaSiteKey;
+      json['captcha'] = {'siteKey': captchaSiteKey};
     }
     if (showPrivacyPolicy != null) {
       json['showPrivacyPolicy'] = showPrivacyPolicy;
