@@ -187,7 +187,7 @@ class Asset extends AdditionalInfoBased<AssetId>
         name = json['name'],
         type = json['type'],
         label = json['label'],
-        assetProfileId = AssetProfileId.fromJson(json['assetProfileId']),
+        assetProfileId = json['assetProfileId'] != null ? AssetProfileId.fromJson(json['assetProfileId']) : null ,
         externalId = json['externalId'] != null
             ? AssetId.fromJson(json['externalId'])
             : null,
@@ -275,6 +275,22 @@ class Asset extends AdditionalInfoBased<AssetId>
   String assetString([String? toStringBody]) {
     return '${additionalInfoBasedString('tenantId: $tenantId, customerId: $customerId, name: $name, type: $type, '
         'label: $label, assetProfileId: $assetProfileId, externalId: $externalId${toStringBody != null ? ', ' + toStringBody : ''}')}';
+  }
+}
+class AssetInfo extends Asset {
+  String? customerTitle;
+  bool? customerIsPublic;
+  String? assetProfileName;
+
+  AssetInfo.fromJson(Map<String, dynamic> json)
+      : customerTitle = json['customerTitle'],
+        customerIsPublic = json['customerIsPublic'],
+        assetProfileName = json['assetProfileName'],
+        super.fromJson(json);
+
+  @override
+  String toString() {
+    return 'AssetInfo{${assetString('assetProfileName: $assetProfileName, customerTitle: $customerTitle, customerIsPublic: $customerIsPublic')}}';
   }
 }
 
