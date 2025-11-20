@@ -77,7 +77,7 @@ class Alarm extends BaseData<AlarmId> with HasName, HasTenantId {
   bool? propagate;
   bool? propagateToOwner;
   bool? propagateToTenant;
-  Map<String, dynamic>? details;
+  dynamic details;
 
   Alarm(this.originator, this.type, this.severity);
 
@@ -103,8 +103,7 @@ class Alarm extends BaseData<AlarmId> with HasName, HasTenantId {
         propagate = json['propagate'],
         propagateToOwner = json['propagateToOwner'],
         propagateToTenant = json['propagateToTenant'],
-        details =
-            json['details'] is String ? <String, dynamic>{} : json['details'],
+        details = json['details'],
         super.fromJson(json);
 
   @override
