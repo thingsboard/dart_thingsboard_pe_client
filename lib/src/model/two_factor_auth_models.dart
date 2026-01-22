@@ -286,7 +286,7 @@ class TotpTwoFaAccountConfig extends TwoFaAccountConfig {
 }
 
 class SmsTwoFaAccountConfig extends TwoFaAccountConfig {
-  String phoneNumber;
+  String? phoneNumber;
 
   SmsTwoFaAccountConfig({required bool useByDefault, required this.phoneNumber})
       : super(useByDefault: useByDefault);
@@ -352,7 +352,7 @@ class BackupCodeTwoFaAccountConfig extends TwoFaAccountConfig {
   }
 
   BackupCodeTwoFaAccountConfig.fromJson(Map<String, dynamic> json)
-      : codes =
+      : codes = json['codes'] == null ? {} : 
             (json['codes'] as List<dynamic>).map((e) => e as String).toSet(),
         super._fromJson(json);
 

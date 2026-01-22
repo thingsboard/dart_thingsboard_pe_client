@@ -17,6 +17,14 @@ PageData<AlarmCommentInfo> parseAlarmComments(Map<String, dynamic> json) {
   return PageData.fromJson(json, (json) => AlarmCommentInfo.fromJson(json));
 }
 
+PageData<AlarmType> parseAlarmTypeData(Map<String, dynamic> json) {
+  return PageData.fromJson(json, (json) => AlarmType.fromJson(json));
+}
+
+PageData<AlarmCommentInfo> parseAlarmComments(Map<String, dynamic> json) {
+  return PageData.fromJson(json, (json) => AlarmCommentInfo.fromJson(json));
+}
+
 class AlarmService {
   final ThingsboardClient _tbClient;
 

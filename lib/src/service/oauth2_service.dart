@@ -40,7 +40,6 @@ class OAuth2Service {
           queryParameters: queryParams,
           options: defaultHttpOptionsFromConfig(requestConfig));
     } on ThingsboardError catch (e) {
-      print('dio response $e');
       if (e.status == 302) {
         final redirectUrl = e.error.response.headers['location'].first;
         response = await _tbClient.post(redirectUrl);

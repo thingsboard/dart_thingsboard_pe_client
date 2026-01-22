@@ -118,6 +118,28 @@ abstract class EntityId extends HasUuid {
         return NotificationId(uuid);
       case EntityType.NOTIFICATION_RULE:
         return NotificationRuleId(uuid);
+      case EntityType.CALCULATED_FIELD:
+        return CalculatedFieldId(uuid);
+
+      case EntityType.QUEUE_STATS:
+        return QueueStatsId(uuid);
+      case EntityType.OAUTH2_CLIENT:
+        return Oauth2ClientId(uuid);
+            case EntityType.ADMIN_SETTINGS:
+        return AdminSettingsId(uuid);
+      case EntityType.AI_MODEL:
+        return AiModelId(uuid);
+      case EntityType.API_KEY:
+        return ApiKeyId(uuid);
+      case EntityType.DOMAIN:
+        return DomainId(uuid);
+      case EntityType.MOBILE_APP:
+        return MobileAppId(uuid);
+      case EntityType.MOBILE_APP_BUNDLE:
+        return MobileAppBundleId(uuid);
+      case EntityType.JOB:
+        return JobId(uuid);
+
     }
   }
 

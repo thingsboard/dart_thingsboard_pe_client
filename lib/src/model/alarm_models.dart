@@ -1,15 +1,4 @@
-import 'package:thingsboard_pe_client/src/model/entity_type_models.dart';
-import 'package:thingsboard_pe_client/src/model/tenant_entity.dart';
-
-import 'base_data.dart';
-import 'has_name.dart';
-import 'has_tenant_id.dart';
-import 'id/alarm_id.dart';
-import 'id/customer_id.dart';
-import 'id/entity_id.dart';
-import 'id/tenant_id.dart';
-import 'id/user_id.dart';
-import 'page/page_link.dart';
+import 'package:thingsboard_pe_client/thingsboard_pe_client.dart';
 
 enum AlarmSeverity { CRITICAL, MAJOR, MINOR, WARNING, INDETERMINATE }
 
@@ -59,19 +48,34 @@ extension AlarmSearchStatusToString on AlarmSearchStatus {
   }
 }
 
+enum AlarmCommentType { SYSTEM, OTHER }
+
+AlarmCommentType alarmCommentTypeFromString(String value) {
+  return AlarmCommentType.values.firstWhere(
+    (e) => e.toString().split('.')[1].toUpperCase() == value.toUpperCase(),
+  );
+}
+
+extension AlarmCommentTypeToString on AlarmCommentType {
+  String toShortString() {
+    return toString().split('.').last;
+  }
+}
+
 class Alarm extends BaseData<AlarmId> with HasName, HasTenantId {
   TenantId? tenantId;
   CustomerId? customerId;
   String type;
   EntityId originator;
   AlarmSeverity severity;
-  AlarmStatus? status;
-  bool? acknowledged;
-  bool? cleared;
+  AlarmStatus status;
+  bool acknowledged;
+  bool cleared;
   UserId? assigneeId;
   int? startTs;
   int? endTs;
   int? ackTs;
+  List<String>? propagateRelationTypes;
   int? clearTs;
   int? assignTs;
   bool? propagate;
@@ -79,10 +83,19 @@ class Alarm extends BaseData<AlarmId> with HasName, HasTenantId {
   bool? propagateToTenant;
   dynamic details;
 
-  Alarm(this.originator, this.type, this.severity);
+  Alarm(this.originator, this.type, this.severity,
+      {this.acknowledged = false, this.cleared = false})
+      : this.status = toStatus(cleared, acknowledged);
+  static AlarmStatus toStatus(bool cleared, bool acknowledged) {
+    if (cleared) {
+      return acknowledged ? AlarmStatus.CLEARED_ACK : AlarmStatus.CLEARED_UNACK;
+    } else {
+      return acknowledged ? AlarmStatus.ACTIVE_ACK : AlarmStatus.ACTIVE_UNACK;
+    }
+  }
 
   Alarm.fromJson(Map<String, dynamic> json)
-      : tenantId = TenantId.fromJson(json['tenantId']),
+      : tenantId = json['tenantId'] != null? TenantId.fromJson(json['tenantId']) : null,
         customerId = json['customerId'] != null
             ? CustomerId.fromJson(json['customerId'])
             : null,
@@ -92,6 +105,8 @@ class Alarm extends BaseData<AlarmId> with HasName, HasTenantId {
         status = alarmStatusFromString(json['status']),
         acknowledged = json['acknowledged'],
         cleared = json['cleared'],
+        propagateRelationTypes =
+            List<String>.from(json['propagateRelationTypes'] ?? []),
         assigneeId = json['assigneeId'] != null
             ? UserId.fromJson(json['assigneeId'])
             : null,
@@ -114,7 +129,7 @@ class Alarm extends BaseData<AlarmId> with HasName, HasTenantId {
     json['type'] = type;
     json['originator'] = originator.toJson();
     json['severity'] = severity.toShortString();
-    json['status'] = status?.toShortString();
+    json['status'] = status.toShortString();
     json['acknowledged'] = acknowledged;
     json['cleared'] = cleared;
     json['assigneeId'] = assigneeId?.toJson();
@@ -126,6 +141,7 @@ class Alarm extends BaseData<AlarmId> with HasName, HasTenantId {
     json['propagate'] = propagate;
     json['propagateToOwner'] = propagateToOwner;
     json['propagateToTenant'] = propagateToTenant;
+    json['propagateRelationTypes'] = propagateRelationTypes;
     if (details != null) {
       json['details'] = details;
     }
@@ -151,7 +167,7 @@ class Alarm extends BaseData<AlarmId> with HasName, HasTenantId {
     return '${baseDataString('tenantId: $tenantId, customerId: $customerId, type: $type, originator: $originator, severity: $severity, '
         'status: $status, acknowledged: $acknowledged, cleared: $cleared, assigneeId: $assigneeId, startTs: $startTs, endTs: $endTs, '
         'ackTs: $ackTs, clearTs: $clearTs, assignTs: $assignTs, propagate: $propagate, propagateToOwner: $propagateToOwner, '
-        'propagateToTenant: $propagateToTenant, details: $details${toStringBody != null ? ', ' + toStringBody : ''}')}';
+        'propagateToTenant: $propagateToTenant, propagateRelationTypes: $propagateRelationTypes,  details: $details${toStringBody != null ? ', ' + toStringBody : ''}')}';
   }
 }
 
@@ -159,10 +175,12 @@ class AlarmInfo extends Alarm {
   String? originatorName;
   String? originatorLabel;
   AlarmAssignee? assignee;
+  String? originatorDisplayName;
 
   AlarmInfo.fromJson(Map<String, dynamic> json)
       : originatorName = json['originatorName'],
         originatorLabel = json['originatorLabel'],
+        originatorDisplayName = json['originatorDisplayName'],
         assignee = json['assignee'] != null
             ? AlarmAssignee.fromJson(json['assignee'])
             : null,
@@ -174,19 +192,19 @@ class AlarmInfo extends Alarm {
   }
 
   String alarmInfoString([String? toStringBody]) {
-    return '${alarmString('originatorName: $originatorName, originatorLabel: $originatorLabel, '
+    return '${alarmString('originatorName: $originatorName, originatorDisplayName: $originatorDisplayName, originatorLabel: $originatorLabel, '
         'assignee: $assignee${toStringBody != null ? ', ' + toStringBody : ''}')}';
   }
 }
 
 class AlarmAssignee {
-  UserId id;
+  UserId? id;
   String? firstName;
   String? lastName;
   String email;
 
   AlarmAssignee.fromJson(Map<String, dynamic> json)
-      : id = UserId.fromJson(json['id']),
+      : id = json['id'] != null ? UserId.fromJson(json['id']) : null,
         firstName = json['firstName'],
         lastName = json['lastName'],
         email = json['email'];
@@ -207,6 +225,7 @@ class AlarmQuery {
   AlarmSearchStatus? searchStatus;
   AlarmStatus? status;
   UserId? assigneeId;
+  @deprecated
   bool? fetchOriginator;
 
   AlarmQuery(this.pageLink,
@@ -346,6 +365,129 @@ class AlarmComment {
 
   factory AlarmComment.fromJson(Map<String, dynamic> json) {
     return AlarmComment(
+      text: json['text'],
+      subtype: json['subtype'],
+      userId: json['userId'] != null ? UserId(json['userId']) : null,
+      edited: json['edited'] != null,
+      editedOn: json['editedOn'],
+      assigneeId: json['assigneeId'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final json = <String, dynamic>{'text': text};
+    if (subtype != null) {
+      json['subtype'] = subtype;
+    }
+    if (userId != null) {
+      json['userId'] = userId!.toJson();
+    }
+    if (edited) {
+      json['edited'] = 'true';
+    }
+    if (editedOn != null) {
+      json['editedOn'] = editedOn;
+    }
+
+    return json;
+  }
+}
+
+class AlarmCommentsQuery {
+  const AlarmCommentsQuery({
+    required this.pageLink,
+    required this.id,
+  });
+
+  final PageLink pageLink;
+  final AlarmId id;
+
+  Map<String, dynamic> toQueryParameters() {
+    return pageLink.toQueryParameters();
+  }
+}
+
+class AlarmComment {
+  String? id;
+  int? createdTime;
+  AlarmId alarmId;
+  UserId? userId;
+  AlarmCommentType type;
+  dynamic comment;
+  String? name;
+  AlarmComment(this.id, this.createdTime, this.alarmId, this.userId, this.type,
+      this.comment, this.name);
+  AlarmComment.fromJson(Map<String, dynamic> json)
+      : comment = json['comment'],
+        id = json['id']['id'],
+        createdTime = json['createdTime'],
+        alarmId = AlarmId.fromJson(json['alarmId']),
+        userId =
+            json['userId'] != null ? UserId.fromJson(json['userId']) : null,
+        type = alarmCommentTypeFromString(json['type']),
+        name = json['name'];
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "createdTime": createdTime,
+      "alarmId": alarmId.toJson(),
+      "userId": userId?.toJson(),
+      "type": type.toShortString(),
+      "comment": comment,
+      "name": name,
+    };
+  }
+}
+
+class AlarmCommentInfo extends AlarmComment {
+  String? firstName;
+  String? lastName;
+  String? email;
+  AlarmCommentInfo(
+      super.id,
+      super.createdTime,
+      super.alarmId,
+      super.userId,
+      super.type,
+      super.comment,
+      super.name,
+      this.email,
+      this.firstName,
+      this.lastName);
+  AlarmCommentInfo.fromJson(Map<String, dynamic> json)
+      : firstName = json['firstName'],
+        lastName = json['lastName'],
+        email = json['email'],
+        super.fromJson(json);
+  @override
+  Map<String, dynamic> toJson() {
+    final json = super.toJson();
+    json['firstName'] = firstName;
+    json['lastName'] = lastName;
+    json['email'] = email;
+    return json;
+  }
+}
+
+class AlarmCommentJsonNode {
+  const AlarmCommentJsonNode({
+    required this.text,
+    required this.subtype,
+    required this.userId,
+    required this.edited,
+    required this.editedOn,
+    required this.assigneeId,
+  });
+
+  final String text;
+  final String? subtype;
+  final UserId? userId;
+  final bool edited;
+  final int? editedOn;
+  final String? assigneeId;
+
+  factory AlarmCommentJsonNode.fromJson(Map<String, dynamic> json) {
+    return AlarmCommentJsonNode(
       text: json['text'],
       subtype: json['subtype'],
       userId: json['userId'] != null ? UserId(json['userId']) : null,
