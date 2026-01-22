@@ -1,9 +1,4 @@
-import 'package:thingsboard_client/src/model/id/entity_id.dart';
-import 'package:thingsboard_client/src/model/query/entity_filter/entity_filter.dart';
-import 'package:thingsboard_client/src/model/query/entity_filter/entity_filter_type.dart';
-
-import 'package:thingsboard_client/src/model/relation_models.dart';
-import 'package:thingsboard_client/thingsboard_client.dart';
+import 'package:thingsboard_pe_client/thingsboard_client.dart';
 
 class RelationsQueryFilter extends EntityFilter {
   EntityId rootEntity;

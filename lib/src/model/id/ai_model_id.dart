@@ -1,11 +1,11 @@
-import 'package:thingsboard_client/thingsboard_client.dart';
+import 'package:thingsboard_pe_client/thingsboard_client.dart';
 
 class AiModelId extends EntityId {
-  AiModelId(String id) : super(EntityType.AI_MODEL,id);
+  AiModelId(String id) : super(EntityType.AI_MODEL, id);
 
   @override
   factory AiModelId.fromJson(Map<String, dynamic> json) {
-   return EntityId.fromJson(json) as AiModelId;
+    return EntityId.fromJson(json) as AiModelId;
   }
 
   @override

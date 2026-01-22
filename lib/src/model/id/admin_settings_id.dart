@@ -1,13 +1,11 @@
-import 'package:thingsboard_client/thingsboard_client.dart';
-
-import 'has_uuid.dart';
+import 'package:thingsboard_pe_client/thingsboard_client.dart';
 
 class AdminSettingsId extends EntityId {
-  AdminSettingsId(String id) : super(EntityType.ADMIN_SETTINGS,id);
+  AdminSettingsId(String id) : super(EntityType.ADMIN_SETTINGS, id);
 
   @override
   factory AdminSettingsId.fromJson(Map<String, dynamic> json) {
-   return EntityId.fromJson(json) as AdminSettingsId;
+    return EntityId.fromJson(json) as AdminSettingsId;
   }
 
   @override

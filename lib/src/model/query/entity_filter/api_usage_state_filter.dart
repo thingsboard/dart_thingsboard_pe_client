@@ -1,6 +1,4 @@
-import 'package:thingsboard_client/src/model/id/customer_id.dart';
-import 'package:thingsboard_client/src/model/query/entity_filter/entity_filter.dart';
-import 'package:thingsboard_client/src/model/query/entity_filter/entity_filter_type.dart';
+import 'package:thingsboard_pe_client/thingsboard_client.dart';
 
 class ApiUsageStateFilter extends EntityFilter {
   CustomerId? customerId;

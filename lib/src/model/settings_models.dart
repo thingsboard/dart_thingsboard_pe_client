@@ -1,8 +1,7 @@
 import 'dart:collection';
 import 'dart:math';
 
-import 'package:thingsboard_client/src/model/model.dart';
-
+import 'package:thingsboard_pe_client/thingsboard_client.dart';
 import 'entity_type_models.dart';
 import 'vc_models.dart';
 import 'id/admin_settings_id.dart';
@@ -15,7 +14,7 @@ class AdminSettings extends BaseData<AdminSettingsId> with HasTenantId {
 
   AdminSettings.fromJson(Map<String, dynamic> json)
       : key = json['key'],
-      tenantId = TenantId.fromJson(json['tenantId']),
+        tenantId = TenantId.fromJson(json['tenantId']),
         jsonValue = json['jsonValue'],
         super.fromJson(json, (id) => AdminSettingsId(id));
 

@@ -1,4 +1,5 @@
-import 'package:thingsboard_client/src/model/entity_subtype/entity_sub_type.dart';
+
+import 'package:thingsboard_pe_client/thingsboard_client.dart';
 
 class AlarmType extends EntitySubType {
   AlarmType(super.entityType, super.tenantId, super.type);

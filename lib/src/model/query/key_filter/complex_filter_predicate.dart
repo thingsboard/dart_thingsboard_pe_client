@@ -1,4 +1,4 @@
-import 'package:thingsboard_client/src/model/query/key_filter/key_filter_predicate.dart';
+import 'package:thingsboard_pe_client/thingsboard_client.dart';
 
 enum ComplexOperation { AND, OR }
 

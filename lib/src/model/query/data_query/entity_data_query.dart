@@ -1,8 +1,5 @@
-import 'package:thingsboard_client/src/model/query/data_query/abstract_data_query.dart';
-import 'package:thingsboard_client/src/model/query/entity_filter/entity_filter.dart';
-import 'package:thingsboard_client/src/model/query/entity_key/entity_key.dart';
-import 'package:thingsboard_client/src/model/query/key_filter/key_filter.dart';
-import 'package:thingsboard_client/src/model/query/page_link/entity_data_page_link.dart';
+
+import 'package:thingsboard_pe_client/thingsboard_client.dart';
 
 class EntityDataQuery extends AbstractDataQuery<EntityDataPageLink> {
   EntityDataQuery(

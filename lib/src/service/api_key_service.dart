@@ -1,4 +1,4 @@
-import 'package:thingsboard_client/thingsboard_client.dart';
+import 'package:thingsboard_pe_client/thingsboard_client.dart';
 
 PageData<ApiKey> parseApiKeysPageData(Map<String, dynamic> json) {
   return PageData.fromJson(json, (json) => ApiKey.fromJson(json));

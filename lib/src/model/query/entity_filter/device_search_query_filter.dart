@@ -1,6 +1,4 @@
-import 'package:thingsboard_client/src/model/query/entity_filter/entity_search_query_filter.dart';
-import 'package:thingsboard_client/src/model/query/entity_filter/entity_filter_type.dart';
-import 'package:thingsboard_client/thingsboard_client.dart';
+import 'package:thingsboard_pe_client/thingsboard_client.dart';
 
 class DeviceSearchQueryFilter extends EntitySearchQueryFilter {
   List<String> deviceTypes;

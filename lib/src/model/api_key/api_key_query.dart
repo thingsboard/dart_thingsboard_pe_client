@@ -1,5 +1,4 @@
-import 'package:thingsboard_client/src/model/model.dart';
-
+import 'package:thingsboard_pe_client/thingsboard_client.dart';
 class ApiKeyQuery {
   final String userId;
   final PageLink pageLink;

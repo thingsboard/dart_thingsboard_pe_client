@@ -1,4 +1,4 @@
-import 'package:thingsboard_client/src/model/query/key_filter/dynamic_value.dart';
+import 'package:thingsboard_pe_client/thingsboard_client.dart';
 
 class FilterPredicateValue<T> {
   T defaultValue;

@@ -1,5 +1,5 @@
-import 'package:thingsboard_client/src/model/query/entity_filter/entity_filter.dart';
-import 'package:thingsboard_client/src/model/query/key_filter/key_filter.dart';
+
+import 'package:thingsboard_pe_client/thingsboard_client.dart';
 
 class EntityCountQuery {
   EntityFilter entityFilter;

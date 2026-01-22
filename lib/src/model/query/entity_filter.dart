@@ -16,3 +16,7 @@ export 'entity_filter/entity_view_type_filter.dart';
 export 'entity_filter/relations_query_filter.dart';
 export 'entity_filter/single_entity_filter.dart';
 export 'entity_filter/entity_filter_type.dart';
+export 'entity_filter/entities_by_group_name_filter.dart';
+export 'entity_filter/entity_group_filter.dart';
+export 'entity_filter/entity_group_list_filter.dart';
+export 'entity_filter/entity_group_name_filter.dart';

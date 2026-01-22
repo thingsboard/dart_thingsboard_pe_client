@@ -89,12 +89,15 @@ class ThingsboardClient {
   TwoFactorAuthService? _twoFactorAuthService;
   NotificationsService? _notificationService;
   MobileService? _mobileService;
-
+  ApiKeyService? _apiKeyService;
+  String? apiKey;
   factory ThingsboardClient(
     String apiEndpoint, {
     TbStorage? storage,
+    String? apiKey,
     UserLoadedCallback? onUserLoaded,
     MfaAuthCallback? onMfaAuth,
+    MfaAuthCallback? onMfaForce,
     ErrorCallback? onError,
     LoadStartedCallback? onLoadStarted,
     LoadFinishedCallback? onLoadFinished,

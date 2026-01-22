@@ -1,13 +1,13 @@
 import 'package:thingsboard_pe_client/thingsboard_client.dart';
 
-class SingleEntityFilter extends EntityFilter {
+class StateEntityOwnerFilter extends EntityFilter {
   EntityId singleEntity;
 
-  SingleEntityFilter({required this.singleEntity});
+  StateEntityOwnerFilter({required this.singleEntity});
 
   @override
   EntityFilterType getType() {
-    return EntityFilterType.SINGLE_ENTITY;
+    return EntityFilterType.STATE_ENTITY_OWNER;
   }
 
   @override
@@ -19,6 +19,6 @@ class SingleEntityFilter extends EntityFilter {
 
   @override
   String toString() {
-    return 'SingleEntityFilter{singleEntity: $singleEntity}';
+    return 'StateEntityOwnerFilter{singleEntity: $singleEntity}';
   }
 }

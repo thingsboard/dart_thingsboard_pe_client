@@ -1,4 +1,4 @@
-import 'package:thingsboard_client/thingsboard_client.dart';
+import 'package:thingsboard_pe_client/thingsboard_client.dart';
 
 class Oauth2ClientId extends EntityId {
   Oauth2ClientId(String id) : super(EntityType.OAUTH2_CLIENT, id);

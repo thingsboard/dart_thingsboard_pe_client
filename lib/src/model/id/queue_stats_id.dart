@@ -1,4 +1,4 @@
-import 'package:thingsboard_client/thingsboard_client.dart';
+import 'package:thingsboard_pe_client/thingsboard_client.dart';
 
 class QueueStatsId extends EntityId {
   QueueStatsId(String id) : super(EntityType.QUEUE_STATS, id);

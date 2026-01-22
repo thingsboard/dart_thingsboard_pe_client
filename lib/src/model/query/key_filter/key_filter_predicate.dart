@@ -1,4 +1,4 @@
-import 'package:thingsboard_client/src/model/query/key_filter/filter_predicate_value.dart';
+import 'package:thingsboard_pe_client/thingsboard_client.dart';
 
 enum FilterPredicateType { STRING, NUMERIC, BOOLEAN, COMPLEX }
 

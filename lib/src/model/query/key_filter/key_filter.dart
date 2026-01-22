@@ -1,6 +1,4 @@
-import 'package:thingsboard_client/src/model/query/entity_key/entity_key.dart';
-import 'package:thingsboard_client/src/model/query/entity_key/entity_key_value_type.dart';
-import 'package:thingsboard_client/src/model/query/key_filter/key_filter_predicate.dart';
+import 'package:thingsboard_pe_client/thingsboard_client.dart';
 
 class KeyFilter {
   EntityKey key;

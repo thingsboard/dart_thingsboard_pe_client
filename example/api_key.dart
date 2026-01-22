@@ -1,6 +1,5 @@
 import 'example_utils.dart';
-import 'thingsboard_client.dart';
-import 'package:thingsboard_client/thingsboard_client.dart';
+import 'package:thingsboard_pe_client/thingsboard_client.dart';
 
 const thingsBoardApiEndpoint = 'http://localhost:8080';
 const apiKey = 'tb_your_api_key';
@@ -15,7 +14,7 @@ void main() async {
     var savedDevice = await tbClient.getDeviceService().saveDevice(device);
     print('savedDevice: $savedDevice');
     var foundDevice =
-        await tbClient.getDeviceService().getDeviceInfo(savedDevice.id!.id!);
+        await tbClient.getDeviceService().getDevice(savedDevice.id!.id!);
     print(foundDevice);
   } catch (e, s) {
     print('Error: $e');

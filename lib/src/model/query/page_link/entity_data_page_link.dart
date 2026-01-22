@@ -1,4 +1,4 @@
-import 'package:thingsboard_client/src/model/query/page_link/entity_data_sort_order.dart';
+import 'package:thingsboard_pe_client/thingsboard_client.dart';
 
 class EntityDataPageLink {
   int pageSize;

@@ -12,7 +12,12 @@ enum EntityFilterType {
   DEVICE_SEARCH_QUERY,
   ENTITY_VIEW_SEARCH_QUERY,
   EDGE_SEARCH_QUERY,
-  API_USAGE_STATE
+  API_USAGE_STATE,
+  ENTITY_GROUP,
+  ENTITY_GROUP_LIST,
+  ENTITY_GROUP_NAME,
+  ENTITIES_BY_GROUP_NAME,
+  STATE_ENTITY_OWNER,
 }
 
 const Map<EntityFilterType, String> entityFilterTypeToStringMap = {
@@ -29,7 +34,12 @@ const Map<EntityFilterType, String> entityFilterTypeToStringMap = {
   EntityFilterType.DEVICE_SEARCH_QUERY: 'deviceSearchQuery',
   EntityFilterType.ENTITY_VIEW_SEARCH_QUERY: 'entityViewSearchQuery',
   EntityFilterType.EDGE_SEARCH_QUERY: 'edgeSearchQuery',
-  EntityFilterType.API_USAGE_STATE: 'apiUsageState'
+  EntityFilterType.API_USAGE_STATE: 'apiUsageState',
+  EntityFilterType.ENTITY_GROUP: 'entityGroup',
+  EntityFilterType.ENTITY_GROUP_LIST: 'entityGroupList',
+  EntityFilterType.ENTITY_GROUP_NAME: 'entityGroupName',
+  EntityFilterType.ENTITIES_BY_GROUP_NAME: 'entitiesByGroupName',
+  EntityFilterType.STATE_ENTITY_OWNER: 'stateEntityOwner',
 };
 
 Map<String, EntityFilterType> stringToEntityFilterTypeMap =

@@ -1,6 +1,5 @@
-import 'package:thingsboard_client/src/model/id/entity_id.dart';
-import 'package:thingsboard_client/src/model/query/entity_key/entity_key_type.dart';
-import 'package:thingsboard_client/src/model/telemetry_models.dart';
+
+import 'package:thingsboard_pe_client/thingsboard_client.dart';
 
 class EntityData {
   final EntityId entityId;

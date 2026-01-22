@@ -1,7 +1,4 @@
-import 'package:thingsboard_client/src/model/alarm_models.dart';
-import 'package:thingsboard_client/src/model/id/user_id.dart';
-import 'package:thingsboard_client/src/model/query/page_link/entity_data_page_link.dart';
-import 'package:thingsboard_client/src/model/query/page_link/entity_data_sort_order.dart';
+import 'package:thingsboard_pe_client/thingsboard_client.dart';
 
 class AlarmDataPageLink extends EntityDataPageLink {
   int? startTs;

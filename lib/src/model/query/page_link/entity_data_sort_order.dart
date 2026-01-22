@@ -1,4 +1,4 @@
-import 'package:thingsboard_client/src/model/query/entity_key/entity_key.dart';
+import 'package:thingsboard_pe_client/thingsboard_client.dart';
 
 enum EntityDataSortOrderDirection { ASC, DESC }
 

@@ -2,7 +2,8 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:dio/dio.dart';
-import 'package:thingsboard_client/src/interceptor/key_intercept_config.dart';
+import 'package:thingsboard_pe_client/src/interceptor/key_intercept_config.dart';
+
 import '../error/thingsboard_error.dart';
 import 'interceptor_config.dart';
 import '../model/constants.dart';

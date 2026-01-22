@@ -1,8 +1,17 @@
+import 'admin_settings_id.dart';
+import 'ai_model_id.dart';
+import 'api_key_id.dart';
 import 'blob_entity_id.dart';
 import 'converter_id.dart';
+import 'domain_id.dart';
 import 'entity_group_id.dart';
 import 'group_permission_id.dart';
 import 'integration_id.dart';
+import 'job_id.dart';
+import 'mobile_app_bundle_id.dart';
+import 'mobile_app_id.dart';
+import 'oauth_2_client_id.dart';
+import 'queue_stats_id.dart';
 import 'role_id.dart';
 import 'scheduler_event_id.dart';
 import 'ota_package_id.dart';
@@ -31,7 +40,7 @@ import 'notification_request_id.dart';
 import 'notification_rule_id.dart';
 import 'notification_target_id.dart';
 import 'notification_template_id.dart';
-
+import 'calculated_field_id.dart';
 import '../entity_type_models.dart';
 import './has_uuid.dart';
 
@@ -120,7 +129,6 @@ abstract class EntityId extends HasUuid {
         return NotificationRuleId(uuid);
       case EntityType.CALCULATED_FIELD:
         return CalculatedFieldId(uuid);
-
       case EntityType.QUEUE_STATS:
         return QueueStatsId(uuid);
       case EntityType.OAUTH2_CLIENT:

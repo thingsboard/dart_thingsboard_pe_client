@@ -1,6 +1,5 @@
-import 'package:thingsboard_client/src/model/base_data.dart';
-import 'package:thingsboard_client/src/model/id/api_key_id.dart';
-import 'package:thingsboard_client/thingsboard_client.dart';
+
+import 'package:thingsboard_pe_client/thingsboard_client.dart';
 
 class ApiKey extends BaseData<ApiKeyId> with HasTenantId {
   TenantId? tenantId;
