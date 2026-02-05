@@ -49,3 +49,4 @@ export 'mobile_app_id.dart';
 export 'ai_model_id.dart';
 export 'oauth_2_client_id.dart';
 export 'queue_stats_id.dart';
+export 'report_template_id.dart';

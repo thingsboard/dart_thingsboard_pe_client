@@ -1,3 +1,5 @@
+import 'package:thingsboard_pe_client/src/model/id/report_template_id.dart';
+
 import 'admin_settings_id.dart';
 import 'ai_model_id.dart';
 import 'api_key_id.dart';
@@ -53,7 +55,10 @@ abstract class EntityId extends HasUuid {
     if (json.containsKey('entityType') && json.containsKey('id')) {
       var entityType = entityTypeFromString(json['entityType']);
       String uuid = json['id'];
-      return EntityId.fromTypeAndUuid(entityType, uuid);
+      return EntityId.fromTypeAndUuid(
+        entityType,
+        uuid,
+      );
     } else {
       throw FormatException('Missing entityType or id!');
     }
@@ -133,7 +138,7 @@ abstract class EntityId extends HasUuid {
         return QueueStatsId(uuid);
       case EntityType.OAUTH2_CLIENT:
         return Oauth2ClientId(uuid);
-            case EntityType.ADMIN_SETTINGS:
+      case EntityType.ADMIN_SETTINGS:
         return AdminSettingsId(uuid);
       case EntityType.AI_MODEL:
         return AiModelId(uuid);
@@ -147,7 +152,8 @@ abstract class EntityId extends HasUuid {
         return MobileAppBundleId(uuid);
       case EntityType.JOB:
         return JobId(uuid);
-
+      case EntityType.REPORT_TEMPLATE:
+        return ReportTemplateId(uuid);
     }
   }
 

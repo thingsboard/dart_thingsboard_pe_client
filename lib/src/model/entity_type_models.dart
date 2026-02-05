@@ -44,11 +44,13 @@ enum EntityType {
   ADMIN_SETTINGS,
   AI_MODEL,
   API_KEY,
+  REPORT_TEMPLATE
 }
 
 EntityType entityTypeFromString(String value) {
   return EntityType.values.firstWhere(
-      (e) => e.toString().split('.')[1].toUpperCase() == value.toUpperCase());
+    (e) => e.toString().split('.')[1].toUpperCase() == value.toUpperCase(),
+  );
 }
 
 extension EntityTypeToString on EntityType {
