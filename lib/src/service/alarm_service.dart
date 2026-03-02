@@ -179,42 +179,20 @@ class AlarmService {
   }
 
   Future<AlarmCommentInfo> postAlarmComment(
-    String comment, {
-    required AlarmId alarmId,
+    AlarmComment comment, {
+      @deprecated
+     AlarmId? alarmId,
     RequestConfig? requestConfig,
   }) async {
     final response = await _tbClient.post<Map<String, dynamic>>(
-      '/api/alarm/${alarmId.id}/comment',
-      data: jsonEncode(
-        {
-          'comment': {'text': comment}
-        },
-      ),
+      '/api/alarm/${comment.id}/comment',
+      data: comment.toJson(),
       options: defaultHttpOptionsFromConfig(requestConfig),
     );
 
     return AlarmCommentInfo.fromJson(response.data!);
   }
 
-  Future<AlarmCommentInfo> updatedAlarmComment(
-    String comment, {
-    required AlarmId alarmId,
-    required String commentId,
-    RequestConfig? requestConfig,
-  }) async {
-    final response = await _tbClient.post<Map<String, dynamic>>(
-      '/api/alarm/${alarmId.id}/comment',
-      data: jsonEncode(
-        {
-          'id': {'id': commentId},
-          'comment': {'text': comment},
-        },
-      ),
-      options: defaultHttpOptionsFromConfig(requestConfig),
-    );
-
-    return AlarmCommentInfo.fromJson(response.data!);
-  }
 
   Future<void> deleteAlarmComment(
     String id, {

@@ -2,14 +2,11 @@ import 'id/tenant_id.dart';
 
 enum EntityType {
   TENANT,
-  TENANT_PROFILE,
   CUSTOMER,
   USER,
   DASHBOARD,
   ASSET,
   DEVICE,
-  DEVICE_PROFILE,
-  ASSET_PROFILE,
   ALARM,
   ENTITY_GROUP,
   CONVERTER,
@@ -18,27 +15,42 @@ enum EntityType {
   RULE_NODE,
   SCHEDULER_EVENT,
   BLOB_ENTITY,
-  EDGE,
   ENTITY_VIEW,
   WIDGETS_BUNDLE,
   WIDGET_TYPE,
   ROLE,
   GROUP_PERMISSION,
+  TENANT_PROFILE,
+  DEVICE_PROFILE,
+  ASSET_PROFILE,
   API_USAGE_STATE,
   TB_RESOURCE,
   OTA_PACKAGE,
+  EDGE,
   RPC,
   QUEUE,
   NOTIFICATION_TARGET,
   NOTIFICATION_TEMPLATE,
   NOTIFICATION_REQUEST,
   NOTIFICATION,
-  NOTIFICATION_RULE
+  NOTIFICATION_RULE,
+  QUEUE_STATS,
+  OAUTH2_CLIENT,
+  DOMAIN,
+  MOBILE_APP,
+  MOBILE_APP_BUNDLE,
+  CALCULATED_FIELD,
+  JOB,
+  ADMIN_SETTINGS,
+  AI_MODEL,
+  API_KEY,
+  REPORT_TEMPLATE
 }
 
 EntityType entityTypeFromString(String value) {
   return EntityType.values.firstWhere(
-      (e) => e.toString().split('.')[1].toUpperCase() == value.toUpperCase());
+    (e) => e.toString().split('.')[1].toUpperCase() == value.toUpperCase(),
+  );
 }
 
 extension EntityTypeToString on EntityType {

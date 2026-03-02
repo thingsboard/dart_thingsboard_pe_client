@@ -7,6 +7,9 @@ import '../model/model.dart';
 PageData<Asset> parseAssetPageData(Map<String, dynamic> json) {
   return PageData.fromJson(json, (json) => Asset.fromJson(json));
 }
+PageData<AssetInfo> parseAssetInfoPageData(Map<String, dynamic> json) {
+  return PageData.fromJson(json, (json) => AssetInfo.fromJson(json));
+}
 
 class AssetService {
   final ThingsboardClient _tbClient;
@@ -53,7 +56,16 @@ class AssetService {
         options: defaultHttpOptionsFromConfig(requestConfig));
     return _tbClient.compute(parseAssetPageData, response.data!);
   }
-
+Future<PageData<AssetInfo>> getTenantAssetInfos(PageLink pageLink,
+      {String type = '', RequestConfig? requestConfig}) async {
+    var queryParams = pageLink.toQueryParameters();
+    queryParams['type'] = type;
+    var response = await _tbClient.get<Map<String, dynamic>>(
+        '/api/tenant/assetInfos',
+        queryParameters: queryParams,
+        options: defaultHttpOptionsFromConfig(requestConfig));
+    return _tbClient.compute(parseAssetInfoPageData, response.data!);
+  }
   Future<Asset?> getTenantAsset(String assetName,
       {RequestConfig? requestConfig}) async {
     return nullIfNotFound(
@@ -79,7 +91,17 @@ class AssetService {
         options: defaultHttpOptionsFromConfig(requestConfig));
     return _tbClient.compute(parseAssetPageData, response.data!);
   }
-
+ Future<PageData<AssetInfo>> getCustomerAssetInfos(
+      String customerId, PageLink pageLink,
+      {String type = '', RequestConfig? requestConfig}) async {
+    var queryParams = pageLink.toQueryParameters();
+    queryParams['type'] = type;
+    var response = await _tbClient.get<Map<String, dynamic>>(
+        '/api/customer/$customerId/assetInfos',
+        queryParameters: queryParams,
+        options: defaultHttpOptionsFromConfig(requestConfig));
+    return _tbClient.compute(parseAssetInfoPageData, response.data!);
+  }
   Future<PageData<Asset>> getUserAssets(PageLink pageLink,
       {String type = '', RequestConfig? requestConfig}) async {
     var queryParams = pageLink.toQueryParameters();

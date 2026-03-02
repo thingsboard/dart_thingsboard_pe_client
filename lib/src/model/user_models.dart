@@ -1,6 +1,4 @@
-import 'package:thingsboard_pe_client/src/model/model.dart';
-
-import 'group_entity.dart';
+import 'package:thingsboard_pe_client/thingsboard_client.dart';
 
 class AuthUser {
   late String sub;
@@ -46,6 +44,10 @@ class AuthUser {
 
   bool isPreVerificationToken() {
     return authority == Authority.PRE_VERIFICATION_TOKEN;
+  }
+
+  bool isMfaConfigurationToken() {
+    return authority == Authority.MFA_CONFIGURATION_TOKEN;
   }
 
   @override
