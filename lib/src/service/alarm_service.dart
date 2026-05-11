@@ -180,8 +180,8 @@ class AlarmService {
 
   Future<AlarmCommentInfo> postAlarmComment(
     AlarmComment comment, {
-      @deprecated
-     AlarmId? alarmId,
+    @Deprecated('Use AlarmComment.alarmId instead.')
+    AlarmId? alarmId,
     RequestConfig? requestConfig,
   }) async {
     final response = await _tbClient.post<Map<String, dynamic>>(

@@ -218,7 +218,7 @@ class AlarmQuery {
   AlarmSearchStatus? searchStatus;
   AlarmStatus? status;
   UserId? assigneeId;
-  @deprecated
+  @Deprecated('Not used anymore. Originator is always fetched.')
   bool? fetchOriginator;
 
   AlarmQuery(this.pageLink,
