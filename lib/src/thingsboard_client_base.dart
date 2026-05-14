@@ -67,6 +67,7 @@ class ThingsboardClient {
   EdgeService? _edgeService;
   ResourceService? _resourceService;
   OtaPackageService? _otaPackageService;
+  ImageService? _imageService;
   TelemetryWebsocketService? _telemetryWebsocketService;
   BlobEntityService? _blobEntityService;
   ConverterService? _converterService;
@@ -691,6 +692,11 @@ class ThingsboardClient {
   OtaPackageService getOtaPackageService() {
     _otaPackageService ??= OtaPackageService(this);
     return _otaPackageService!;
+  }
+
+  ImageService getImageService() {
+    _imageService ??= ImageService(this);
+    return _imageService!;
   }
 
   TelemetryService getTelemetryService() {
