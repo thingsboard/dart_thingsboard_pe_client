@@ -2,38 +2,55 @@
 - **Deprecated:** `thingsboard_pe_client` is discontinued and replaced by
   [`thingsboard_client`](https://pub.dev/packages/thingsboard_client) (ThingsBoard CE and PE are now one product).
 - The package no longer contains any implementation: it only re-exports `thingsboard_client: ^5.0.0`.
-  `thingsboard_pe_client.dart`, `thingsboard_client.dart` and every `src/...` library are marked `@Deprecated`,
-  so existing code compiles with deprecation diagnostics.
-- The API is the same OpenAPI-generated API as in 4.4.x (`get*ControllerApi()`, built_value models).
-- Deep imports (`package:thingsboard_pe_client/src/...`) keep working through deprecated stubs that re-export
-  the same files of `thingsboard_client`. `ThingsboardPeClient` (from `src/api.dart`) is a deprecated alias of the
-  generated `ThingsboardClient`. The stubs are generated once by `tool/gen_stubs.sh` and cover every 4.4.x file.
-- **BREAKING:** 65 constants in 18 enums are renamed to the plain generator names (the values sent over the
-  wire are unchanged), e.g. `SignUpFieldId.aDDRESS2` → `ADDRESS2`, `EntityType.oAUTH2CLIENT` → `OAUTH2_CLIENT`,
+  `thingsboard_pe_client.dart`, `thingsboard_client.dart` and every `src/...` library are marked `@Deprecated`.
+- The REST API is the same OpenAPI-generated API as in 4.4.x (`get*ControllerApi()`, built_value models), apart
+  from the breaking changes below. The full migration guide is the "Migrating from `thingsboard_pe_client` 4.4.x"
+  entry and the telemetry WebSocket, login and `Authority` entries of the
+  [thingsboard_client 5.0.0 CHANGELOG](https://pub.dev/packages/thingsboard_client/changelog#500).
+- Deep imports (`package:thingsboard_pe_client/src/...`) keep working through deprecated stubs for every 4.4.x
+  library that still exists in `thingsboard_client`. `ThingsboardPeClient` (from `src/api.dart`) is a deprecated
+  alias of the generated `ThingsboardClient`. The stubs are generated once by `tool/gen_stubs.sh`.
+- **BREAKING:** deep imports of 4.4.x files removed from `thingsboard_client` no longer work: the handwritten
+  telemetry models (`src/model/id/*`, `src/model/telemetry/query/**`, `src/model/telemetry/alarm_models.dart`,
+  `base_data.dart`, `has_name.dart`, `has_tenant_id.dart`, `ts_value.dart`, `push_notification_models.dart`),
+  `src/model/login_models.dart`, `src/api/device_api_controller_api.dart`, `src/api/solution_controller_api.dart`
+  and the solution template models. Import `package:thingsboard_client/thingsboard_client.dart` instead.
+- **BREAKING:** the telemetry WebSocket API (`TelemetrySubscriber`, commands, queries, updates) is exported by the
+  main library and works on the generated built_value models instead of ~90 handwritten duplicates:
+  - `DeviceId(uuid)` → `DeviceId((b) => b..id = uuid)`;
+    `EntityDataQuery(entityFilter: f, pageLink: p)` → `EntityDataQuery((b) => b..entityFilter = f..pageLink = p.toBuilder())`;
+    discriminators (`type`, `entityType`, ...) are set automatically and are not passed any more.
+  - `AttributeData.value` is a `JsonObject`.
+  - `EntityDataUpdate` / `AlarmDataUpdate` are immutable: `withTsOffset(int)` returns a shifted copy.
+  - Notifications: `NotificationsUpdate` holds the generated `Notification` with typed `*NotificationInfo`
+    subtypes. `PushNotification`, `PushNotificationInfo`, `PushNotificationType`, `PushNotificationStatus` and their
+    helpers are removed: use `Notification`, `NotificationType` and `NotificationStatus`.
+  - The `KvEntry` family, `RestJsonConverter`, the facade `AlarmQuery` / `AlarmQueryV2` / `AlarmCommentsQuery`,
+    `BaseData`, `HasName`, `HasTenantId` and `PushNotificationQuery` are removed; the handwritten `DataType` and
+    `AlarmInfo` are replaced by the generated REST models of the same names.
+  - Each update is parsed by its command's parser: a custom `WebsocketCmd` subclass must override `updateParser`.
+- **BREAKING:** `LoginRequest`, `RefreshTokenRequest` and `LoginResponse` are the generated built_value models,
+  exported by the main library: `LoginRequest(userName: u, password: p)` →
+  `LoginRequest((b) => b..username = u..password = p)` (`userName` → `username`),
+  `RefreshTokenRequest(token)` → `RefreshTokenRequest((b) => b..refreshToken = token)`;
+  `LoginResponse.scope` is `Authority?` and `LoginResponse.refreshToken` is nullable. The JSON on the wire is unchanged.
+- **BREAKING:** `Authority` is a single type, the generated built_value class; the handwritten `enum Authority` is
+  removed (`src/model/authority_enum.dart` re-exports the generated class with `authorityFromString` and
+  `toShortString`). `AuthUser.authority` is `Authority?` and is `null` for an anonymous user (was
+  `Authority.ANONYMOUS`); `authorityFromString` returns `null` for an unknown name instead of throwing; a `switch`
+  over `Authority` needs a `default` branch.
+- **BREAKING:** 65 constants in 18 enums are renamed to the plain generator names (wire values are unchanged), e.g.
+  `SignUpFieldId.aDDRESS2` → `ADDRESS2`, `EntityType.oAUTH2CLIENT` → `OAUTH2_CLIENT`,
   `DeviceTransportType.lWM2M` → `LWM2M`, `DeviceCredentialsType.x509CERTIFICATE` → `X509_CERTIFICATE`,
-  `ThingsboardErrorCode.n10` → `number10`. The full list is in the "Migrating from `thingsboard_pe_client` 4.4.x"
-  entry of the [thingsboard_client 5.0.0 CHANGELOG](https://pub.dev/packages/thingsboard_client/changelog#500).
-- **BREAKING:** `Authority` is now a single type, the generated built_value class; the handwritten `enum Authority`
-  is removed (`src/model/authority_enum.dart` re-exports the generated class together with `authorityFromString` and
-  `toShortString`). `AuthUser.authority` is now `Authority?` and is `null` for an anonymous user (was
-  `Authority.ANONYMOUS`). `authorityFromString` returns `null` for an unknown name instead of throwing. A `switch`
-  over `Authority` now needs a `default` branch.
-- Login works with the main library alone: `package:thingsboard_client/thingsboard_client.dart` now exports the
-  handwritten `LoginRequest`, `LoginResponse` and `RefreshTokenRequest` accepted by `ThingsboardClient.login()`.
-  The generated classes with the same names are available only through `src/model/login_request.dart`,
-  `login_response.dart` and `refresh_token_request.dart`.
-- New public library `package:thingsboard_client/telemetry.dart` with the WebSocket telemetry API
-  (`TelemetrySubscriber`, commands, `EntityDataQuery`, `EntityId`, ...). Import it with a prefix. It is not
-  re-exported by this package.
-- **BREAKING:** `DeviceApiControllerApi` and `ThingsboardClient.getDeviceApiControllerApi()` are removed, and a
-  deep import of `src/api/device_api_controller_api.dart` no longer works. The device-token HTTP endpoints
-  (`/api/v1/**`) are not part of the ThingsBoard client API spec; devices should use the MQTT, CoAP or HTTP device
-  transport directly. See the [thingsboard_client 5.0.0 CHANGELOG](https://pub.dev/packages/thingsboard_client/changelog#500).
+  `ThingsboardErrorCode.n10` → `number10`.
+- **BREAKING:** `DeviceApiControllerApi` and `ThingsboardClient.getDeviceApiControllerApi()` are removed. The
+  device-token HTTP endpoints (`/api/v1/**`) are not part of the ThingsBoard client API spec; devices should use the
+  MQTT, CoAP or HTTP device transport directly.
 - **BREAKING:** `SolutionControllerApi` (`getSolutionControllerApi()`) and the solution template models
   (`ComplexOperation`, `SolutionInstallResponse`, `SolutionTemplateLevel`, `TenantSolutionTemplateDetails`,
-  `TenantSolutionTemplateInfo`, `TenantSolutionTemplateInstructions`) are removed. They were generated from a
-  4.4.0 snapshot spec and are not part of the ThingsBoard 4.4.0 release; deep imports of these files no longer work.
-- **BREAKING** (model fixes from the OpenAPI spec, no compatible alias possible):
+  `TenantSolutionTemplateInfo`, `TenantSolutionTemplateInstructions`) are removed. They came from a 4.4.0 snapshot
+  spec and are not part of the ThingsBoard 4.4.0 release.
+- **BREAKING** (model fixes from the OpenAPI spec):
   - `AliasEntityId.entityType` is now `String` (was `EntityType`) and `AliasEntityId.id` is now `String?`.
   - `RefreshTokenRequest.refreshToken` is now `String?` (was `JsonObject?`).
   - `ColumnSettings.type` is removed.
