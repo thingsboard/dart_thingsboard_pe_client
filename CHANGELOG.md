@@ -39,6 +39,20 @@
   `toShortString`). `AuthUser.authority` is `Authority?` and is `null` for an anonymous user (was
   `Authority.ANONYMOUS`); `authorityFromString` returns `null` for an unknown name instead of throwing; a `switch`
   over `Authority` needs a `default` branch.
+- **BREAKING:** `ThingsboardError.errorCode` (the facade `ThingsBoardErrorCode`) now matches the server:
+  `subscriptionViolation` is 40 (it was 35, so it was never returned), and `entitiesLimitExceeded` (41) and
+  `setupIncomplete` (47) are new; before, codes 40, 41 and 47 decoded as `general`. `tenantTrialExpired` (12) is
+  removed, the server never sends it.
+- **BREAKING:** `SortOrder` takes the generated `Direction` exported by the main library
+  (`SortOrder('name', Direction.ASC)`). The handwritten `Direction` enum (`src/model/page/sort_order.dart`) and
+  `Direction.toShortString()` are removed (use `Direction.name`); `PageLink.toQueryParameters()` output is unchanged.
+  The `src/model/page/sort_order.dart` stub re-exports the generated `Direction`, so code that imports `Direction`
+  from there keeps compiling.
+- **BREAKING:** removed unused API: `nullIfNotFound` and `isSuccessful` (catch the `DioException` instead and
+  inspect `(e.error as ThingsboardError).errorCode`), `AuthUser.fromToken`, the top-level `isJwtTokenValid(String?)`
+  (use `ThingsboardClient.isJwtTokenValid()`), and `KeyInterceptConfig` (no longer exported by the main library).
+- Fixed: `LocalFileStorage.getItem` returns `defaultValue` for an absent key, and `containsKey` waits for the file
+  to load, so a key stored by a previous instance is found.
 - **BREAKING:** 65 constants in 18 enums are renamed to the plain generator names (wire values are unchanged), e.g.
   `SignUpFieldId.aDDRESS2` → `ADDRESS2`, `EntityType.oAUTH2CLIENT` → `OAUTH2_CLIENT`,
   `DeviceTransportType.lWM2M` → `LWM2M`, `DeviceCredentialsType.x509CERTIFICATE` → `X509_CERTIFICATE`,

@@ -47,4 +47,14 @@ export 'package:thingsboard_client/src/api.dart';
 typedef ThingsboardPeClient = generated.ThingsboardClient;
 EOF
 
+# 4.4.x declared a handwritten Direction in sort_order.dart; it is now the
+# generated Direction (same ASC/DESC constants) that SortOrder takes.
+cat > lib/src/model/page/sort_order.dart <<'EOF'
+@Deprecated('Use package:thingsboard_client/thingsboard_client.dart instead')
+library;
+
+export 'package:thingsboard_client/src/model/direction.dart' show Direction;
+export 'package:thingsboard_client/src/model/page/sort_order.dart';
+EOF
+
 echo "generated $(find lib/src -name '*.dart' | wc -l) stubs"
