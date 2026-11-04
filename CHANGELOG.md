@@ -13,6 +13,10 @@
   `DeviceTransportType.lWM2M` → `LWM2M`, `DeviceCredentialsType.x509CERTIFICATE` → `X509_CERTIFICATE`,
   `ThingsboardErrorCode.n10` → `number10`. The full list is in the "Migrating from `thingsboard_pe_client` 4.4.x"
   entry of the [thingsboard_client 5.0.0 CHANGELOG](https://pub.dev/packages/thingsboard_client/changelog#500).
+- **BREAKING:** `DeviceApiControllerApi` and `ThingsboardClient.getDeviceApiControllerApi()` are removed, and a
+  deep import of `src/api/device_api_controller_api.dart` no longer works. The device-token HTTP endpoints
+  (`/api/v1/**`) are not part of the ThingsBoard client API spec; devices should use the MQTT, CoAP or HTTP device
+  transport directly. See the [thingsboard_client 5.0.0 CHANGELOG](https://pub.dev/packages/thingsboard_client/changelog#500).
 - **BREAKING:** `SolutionControllerApi` (`getSolutionControllerApi()`) and the solution template models
   (`ComplexOperation`, `SolutionInstallResponse`, `SolutionTemplateLevel`, `TenantSolutionTemplateDetails`,
   `TenantSolutionTemplateInfo`, `TenantSolutionTemplateInstructions`) are removed. They were generated from a
