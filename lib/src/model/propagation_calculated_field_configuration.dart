@@ -1,0 +1,4 @@
+@Deprecated('Use package:thingsboard_client/thingsboard_client.dart instead')
+library;
+
+export 'package:thingsboard_client/src/model/propagation_calculated_field_configuration.dart';

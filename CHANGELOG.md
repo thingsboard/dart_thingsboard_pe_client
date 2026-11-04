@@ -1,12 +1,23 @@
 ## 5.0.0
-- **BREAKING:** `thingsboard_pe_client` is deprecated and discontinued; it is replaced by
+- **Deprecated:** `thingsboard_pe_client` is discontinued and replaced by
   [`thingsboard_client`](https://pub.dev/packages/thingsboard_client) (ThingsBoard CE and PE are now one product).
-- The package no longer contains any implementation: it only re-exports `package:thingsboard_client/thingsboard_client.dart`
-  (`thingsboard_client: ^5.0.0`); both `thingsboard_pe_client.dart` and `thingsboard_client.dart` libraries are marked `@Deprecated`.
-- The 5.0 API of `thingsboard_client` is generated from the ThingsBoard OpenAPI spec and differs from 4.x;
-  see the [thingsboard_client CHANGELOG](https://pub.dev/packages/thingsboard_client/changelog) for details.
-- Deep imports (`package:thingsboard_pe_client/src/...`) are no longer available.
-- Minimum Dart SDK is now 3.10.0.
+- The package no longer contains any implementation: it only re-exports `thingsboard_client: ^5.0.0`.
+  `thingsboard_pe_client.dart`, `thingsboard_client.dart` and every `src/...` library are marked `@Deprecated`,
+  so existing code compiles with deprecation diagnostics.
+- The API is the same OpenAPI-generated API as in 4.4.x (`get*ControllerApi()`, built_value models), and the
+  4.4.x enum constant names (e.g. `SignUpFieldId.aDDRESS2`, `EntityType.oAUTH2CLIENT`) are kept.
+- Deep imports (`package:thingsboard_pe_client/src/...`) keep working through deprecated stubs that re-export
+  the same files of `thingsboard_client`. `ThingsboardPeClient` (from `src/api.dart`) is a deprecated alias of the
+  generated `ThingsboardClient`. The stubs are generated once by `tool/gen_stubs.sh` and cover every 4.4.x file.
+- **BREAKING** (model fixes from the OpenAPI spec, no compatible alias possible):
+  - `AliasEntityId.entityType` is now `String` (was `EntityType`) and `AliasEntityId.id` is now `String?`.
+  - `RefreshTokenRequest.refreshToken` is now `String?` (was `JsonObject?`).
+  - `ColumnSettings.type` is removed.
+  - `Lwm2mControllerApi.saveLwm2mDeviceWithCredentials` now takes `requestBody` as `BuiltMap<String, JsonObject?>`.
+- Minimum Dart SDK stays at 3.2.0.
+- Note for users upgrading from 4.2.x or earlier: 4.4.0 already replaced the handwritten API
+  (`getUserService()`, `getDeviceService()`, ...) with the generated one, and that release was breaking.
+  This release does not restore the 4.2.x API.
 - Migration: see the [README](https://github.com/thingsboard/dart_thingsboard_pe_client#migration).
 
 ## 4.2.1
