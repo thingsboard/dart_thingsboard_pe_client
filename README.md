@@ -5,11 +5,13 @@
 ([GitHub](https://github.com/thingsboard/dart_thingsboard_client)).
 
 Version 5.0.0 of this package contains no code of its own: it only re-exports `thingsboard_client: ^5.0.0`, so
-existing code written for `thingsboard_pe_client` 4.4.x keeps compiling while your IDE shows deprecation diagnostics.
+most code written for `thingsboard_pe_client` 4.4.x keeps compiling while your IDE shows deprecation diagnostics.
 This includes deep imports (`package:thingsboard_pe_client/src/...`), which are served by deprecated stub libraries.
 
-> The API is the same OpenAPI-generated API as in 4.4.x. A few model fields changed type (for example
-> `AliasEntityId.entityType` is now `String`); see the [CHANGELOG](CHANGELOG.md). Code written for 4.2.x or
+> The API is the same OpenAPI-generated API as in 4.4.x, but 65 enum constants are renamed (for example
+> `SignUpFieldId.aDDRESS2` → `ADDRESS2`, `EntityType.oAUTH2CLIENT` → `OAUTH2_CLIENT`) and a few model fields
+> changed type (for example `AliasEntityId.entityType` is now `String`); see the [CHANGELOG](CHANGELOG.md) and the
+> [thingsboard_client CHANGELOG](https://pub.dev/packages/thingsboard_client/changelog#500) for the full list. Code written for 4.2.x or
 > earlier (`getUserService()`, ...) was already broken by 4.4.0 and must be migrated to the generated API.
 
 ## Migration

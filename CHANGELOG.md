@@ -4,11 +4,15 @@
 - The package no longer contains any implementation: it only re-exports `thingsboard_client: ^5.0.0`.
   `thingsboard_pe_client.dart`, `thingsboard_client.dart` and every `src/...` library are marked `@Deprecated`,
   so existing code compiles with deprecation diagnostics.
-- The API is the same OpenAPI-generated API as in 4.4.x (`get*ControllerApi()`, built_value models), and the
-  4.4.x enum constant names (e.g. `SignUpFieldId.aDDRESS2`, `EntityType.oAUTH2CLIENT`) are kept.
+- The API is the same OpenAPI-generated API as in 4.4.x (`get*ControllerApi()`, built_value models).
 - Deep imports (`package:thingsboard_pe_client/src/...`) keep working through deprecated stubs that re-export
   the same files of `thingsboard_client`. `ThingsboardPeClient` (from `src/api.dart`) is a deprecated alias of the
   generated `ThingsboardClient`. The stubs are generated once by `tool/gen_stubs.sh` and cover every 4.4.x file.
+- **BREAKING:** 65 constants in 18 enums are renamed to the plain generator names (the values sent over the
+  wire are unchanged), e.g. `SignUpFieldId.aDDRESS2` → `ADDRESS2`, `EntityType.oAUTH2CLIENT` → `OAUTH2_CLIENT`,
+  `DeviceTransportType.lWM2M` → `LWM2M`, `DeviceCredentialsType.x509CERTIFICATE` → `X509_CERTIFICATE`,
+  `ThingsboardErrorCode.n10` → `number10`. The full list is in the "Migrating from `thingsboard_pe_client` 4.4.x"
+  entry of the [thingsboard_client 5.0.0 CHANGELOG](https://pub.dev/packages/thingsboard_client/changelog#500).
 - **BREAKING** (model fixes from the OpenAPI spec, no compatible alias possible):
   - `AliasEntityId.entityType` is now `String` (was `EntityType`) and `AliasEntityId.id` is now `String?`.
   - `RefreshTokenRequest.refreshToken` is now `String?` (was `JsonObject?`).
