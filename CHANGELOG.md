@@ -13,6 +13,10 @@
   `DeviceTransportType.lWM2M` → `LWM2M`, `DeviceCredentialsType.x509CERTIFICATE` → `X509_CERTIFICATE`,
   `ThingsboardErrorCode.n10` → `number10`. The full list is in the "Migrating from `thingsboard_pe_client` 4.4.x"
   entry of the [thingsboard_client 5.0.0 CHANGELOG](https://pub.dev/packages/thingsboard_client/changelog#500).
+- **BREAKING:** `SolutionControllerApi` (`getSolutionControllerApi()`) and the solution template models
+  (`ComplexOperation`, `SolutionInstallResponse`, `SolutionTemplateLevel`, `TenantSolutionTemplateDetails`,
+  `TenantSolutionTemplateInfo`, `TenantSolutionTemplateInstructions`) are removed. They were generated from a
+  4.4.0 snapshot spec and are not part of the ThingsBoard 4.4.0 release; deep imports of these files no longer work.
 - **BREAKING** (model fixes from the OpenAPI spec, no compatible alias possible):
   - `AliasEntityId.entityType` is now `String` (was `EntityType`) and `AliasEntityId.id` is now `String?`.
   - `RefreshTokenRequest.refreshToken` is now `String?` (was `JsonObject?`).
