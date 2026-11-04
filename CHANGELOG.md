@@ -13,6 +13,18 @@
   `DeviceTransportType.lWM2M` → `LWM2M`, `DeviceCredentialsType.x509CERTIFICATE` → `X509_CERTIFICATE`,
   `ThingsboardErrorCode.n10` → `number10`. The full list is in the "Migrating from `thingsboard_pe_client` 4.4.x"
   entry of the [thingsboard_client 5.0.0 CHANGELOG](https://pub.dev/packages/thingsboard_client/changelog#500).
+- **BREAKING:** `Authority` is now a single type, the generated built_value class; the handwritten `enum Authority`
+  is removed (`src/model/authority_enum.dart` re-exports the generated class together with `authorityFromString` and
+  `toShortString`). `AuthUser.authority` is now `Authority?` and is `null` for an anonymous user (was
+  `Authority.ANONYMOUS`). `authorityFromString` returns `null` for an unknown name instead of throwing. A `switch`
+  over `Authority` now needs a `default` branch.
+- Login works with the main library alone: `package:thingsboard_client/thingsboard_client.dart` now exports the
+  handwritten `LoginRequest`, `LoginResponse` and `RefreshTokenRequest` accepted by `ThingsboardClient.login()`.
+  The generated classes with the same names are available only through `src/model/login_request.dart`,
+  `login_response.dart` and `refresh_token_request.dart`.
+- New public library `package:thingsboard_client/telemetry.dart` with the WebSocket telemetry API
+  (`TelemetrySubscriber`, commands, `EntityDataQuery`, `EntityId`, ...). Import it with a prefix. It is not
+  re-exported by this package.
 - **BREAKING:** `DeviceApiControllerApi` and `ThingsboardClient.getDeviceApiControllerApi()` are removed, and a
   deep import of `src/api/device_api_controller_api.dart` no longer works. The device-token HTTP endpoints
   (`/api/v1/**`) are not part of the ThingsBoard client API spec; devices should use the MQTT, CoAP or HTTP device
