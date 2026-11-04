@@ -14,7 +14,7 @@
   - `RefreshTokenRequest.refreshToken` is now `String?` (was `JsonObject?`).
   - `ColumnSettings.type` is removed.
   - `Lwm2mControllerApi.saveLwm2mDeviceWithCredentials` now takes `requestBody` as `BuiltMap<String, JsonObject?>`.
-- Minimum Dart SDK stays at 3.2.0.
+- **BREAKING:** minimum Dart SDK is now 3.10.0 (Flutter 3.38+); older SDKs are dropped for security reasons.
 - Note for users upgrading from 4.2.x or earlier: 4.4.0 already replaced the handwritten API
   (`getUserService()`, `getDeviceService()`, ...) with the generated one, and that release was breaking.
   This release does not restore the 4.2.x API.

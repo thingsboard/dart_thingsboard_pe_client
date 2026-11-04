@@ -6,7 +6,7 @@ repository: https://github.com/thingsboard/dart_thingsboard_pe_client.git
 issue_tracker: https://github.com/thingsboard/dart_thingsboard_pe_client/issues
 
 environment:
-  sdk: '>=3.2.0 <4.0.0'
+  sdk: '>=3.10.0 <4.0.0'
 
 dependencies:
   thingsboard_client: ^5.0.0
