@@ -1,3 +1,14 @@
+## 5.0.0
+- **BREAKING:** `thingsboard_pe_client` is deprecated and discontinued; it is replaced by
+  [`thingsboard_client`](https://pub.dev/packages/thingsboard_client) (ThingsBoard CE and PE are now one product).
+- The package no longer contains any implementation: it only re-exports `package:thingsboard_client/thingsboard_client.dart`
+  (`thingsboard_client: ^5.0.0`); both `thingsboard_pe_client.dart` and `thingsboard_client.dart` libraries are marked `@Deprecated`.
+- The 5.0 API of `thingsboard_client` is generated from the ThingsBoard OpenAPI spec and differs from 4.x;
+  see the [thingsboard_client CHANGELOG](https://pub.dev/packages/thingsboard_client/changelog) for details.
+- Deep imports (`package:thingsboard_pe_client/src/...`) are no longer available.
+- Minimum Dart SDK is now 3.10.0.
+- Migration: see the [README](https://github.com/thingsboard/dart_thingsboard_pe_client#migration).
+
 ## 4.2.1
 - Fixed `AlarmType.fromJson` cast error when filtering alarms by type
 

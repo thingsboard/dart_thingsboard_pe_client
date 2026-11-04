@@ -22,3 +22,4 @@ WARP.md
 *.log
 # FVM Version Cache
 .fvm/
+.DS_Store
