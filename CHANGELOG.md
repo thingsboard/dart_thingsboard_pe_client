@@ -53,10 +53,12 @@
   (use `ThingsboardClient.isJwtTokenValid()`), and `KeyInterceptConfig` (no longer exported by the main library).
 - Fixed: `LocalFileStorage.getItem` returns `defaultValue` for an absent key, and `containsKey` waits for the file
   to load, so a key stored by a previous instance is found.
-- **BREAKING:** 65 constants in 18 enums are renamed to the plain generator names (wire values are unchanged), e.g.
+- **BREAKING:** 68 constants in 19 enums are renamed to the plain generator names (wire values are unchanged), e.g.
   `SignUpFieldId.aDDRESS2` → `ADDRESS2`, `EntityType.oAUTH2CLIENT` → `OAUTH2_CLIENT`,
   `DeviceTransportType.lWM2M` → `LWM2M`, `DeviceCredentialsType.x509CERTIFICATE` → `X509_CERTIFICATE`,
-  `ThingsboardErrorCode.n10` → `number10`.
+  `ThingsboardErrorCode.n10` → `number10`, and `TelemetryObserveStrategy`
+  `sINGLELeftParenthesis0RightParenthesisColonOneResourceEqualsOneSingleObserveRequest` → `SINGLE`
+  (likewise `COMPOSITE_ALL`, `COMPOSITE_BY_OBJECT`).
 - **BREAKING:** `DeviceApiControllerApi` and `ThingsboardClient.getDeviceApiControllerApi()` are removed. The
   device-token HTTP endpoints (`/api/v1/**`) are not part of the ThingsBoard client API spec; devices should use the
   MQTT, CoAP or HTTP device transport directly.
@@ -74,6 +76,27 @@
   (`getUserService()`, `getDeviceService()`, ...) with the generated one, and that release was breaking.
   This release does not restore the 4.2.x API.
 - Migration: see the [README](https://github.com/thingsboard/dart_thingsboard_pe_client#migration).
+
+## 4.4.1
+
+- `Palette.type` and `PaletteSettings.primaryPalette` / `accentPalette` are nullable. The server returns `{type: null}` for a palette left on "Default", which made `getWhiteLabelParams()` and `getLoginWhiteLabelParams()` fail to deserialize (PROD-8931).
+- Telemetry WebSocket: `reset()` also clears the reconnect state, so the first subscription after a logout is published when the socket opens. Unsubscribing during a reconnect backoff no longer sends stale commands to the new socket or lets the subscriber count go negative, which closed a socket that still had live subscribers after the idle timeout (PROD-8863).
+- A connect timeout or connection error is reported as `Unable to connect`, like a refused connection, on both io and web. The best-effort server version check in `init()` no longer reports its failures through `onError`, so an offline start does not show a connection error.
+
+## 4.4.0
+
+- Initial release targeting ThingsBoard Professional Edition 4.4.0 server.
+- **BREAKING** (not marked as such when published): replaces the handwritten 4.2.x API (`getUserService()`,
+  `getDeviceService()`, ...) with the generated API classes (`getUserControllerApi()`, ...).
+- Published from the [thingsboard-dart-client](https://github.com/thingsboard/thingsboard-dart-client) repository.
+- Auto-generated from OpenAPI spec using openapi-generator-cli 7.20.0 (dart-dio template).
+- Handwritten runtime facade: JWT authentication with auto-refresh, Completer-gated token refresh, WebSocket telemetry subscriptions, typed ThingsboardError with retry logic.
+- 81 API service classes, 949+ model types.
+- Supports Flutter mobile (iOS/Android) and Flutter Web. Requires Dart SDK >=3.2.0.
+- Token refresh keeps the stored session on transport failures (no network, timeout, 5xx); only an HTTP 401 from the refresh endpoint clears it.
+- `init()` restores the stale session when the refresh cannot reach the server, so the next authenticated request retries the refresh instead of the user being logged out. The telemetry WebSocket likewise reconnects instead of logging out when its token refresh cannot reach the server.
+- Default 20s connect timeout on every request and a 15s send/receive timeout on the token-refresh call.
+- `ThingsboardError.isUnauthorized` identifies a rejected-credentials error regardless of how it was transported.
 
 ## 4.2.1
 - Fixed `AlarmType.fromJson` cast error when filtering alarms by type

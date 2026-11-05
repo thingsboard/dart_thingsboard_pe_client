@@ -12,7 +12,7 @@ deep imports (`package:thingsboard_pe_client/src/...`) of files that still exist
 > `RefreshTokenRequest`) now use the generated built_value models, so their syntax changed (for example
 > `DeviceId(uuid)` → `DeviceId((b) => b..id = uuid)`, `LoginRequest((b) => b..username = u..password = p)`).
 > `PushNotification*` is replaced by the generated `Notification`. `Authority` is a single generated type and
-> `AuthUser.authority` is nullable. 65 enum constants are renamed (e.g. `SignUpFieldId.aDDRESS2` → `ADDRESS2`), a
+> `AuthUser.authority` is nullable. 68 enum constants are renamed (e.g. `SignUpFieldId.aDDRESS2` → `ADDRESS2`), a
 > few model fields changed type (e.g. `AliasEntityId.entityType` is now `String`), and `DeviceApiControllerApi` and
 > `SolutionControllerApi` are removed. Deep imports of removed files (`src/model/id/*`,
 > `src/model/telemetry/query/**`, `src/model/login_models.dart`, ...) no longer work. See the
@@ -34,8 +34,13 @@ deep imports (`package:thingsboard_pe_client/src/...`) of files that still exist
 2. Rewrite the imports:
 
    ```sh
-   grep -rl "package:thingsboard_pe_client/" lib test | xargs sed -i 's#package:thingsboard_pe_client/thingsboard_pe_client.dart#package:thingsboard_client/thingsboard_client.dart#g; s#package:thingsboard_pe_client/#package:thingsboard_client/#g'
+   grep -rl "package:thingsboard_pe_client/" lib test 2>/dev/null | while read -r f; do
+     perl -pi -e 's#package:thingsboard_pe_client/thingsboard_pe_client\.dart#package:thingsboard_client/thingsboard_client.dart#g; s#package:thingsboard_pe_client/#package:thingsboard_client/#g' "$f"
+   done
    ```
+
+   The command works on Linux and macOS (`perl` is preinstalled on both). It also renames
+   `package:thingsboard_pe_client/thingsboard_client.dart`, the old main library of 4.2.x and earlier.
 
 3. Fetch dependencies and check the result:
 
