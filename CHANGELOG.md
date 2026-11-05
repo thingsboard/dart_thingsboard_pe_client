@@ -1,20 +1,17 @@
 ## 5.0.0
 - **Deprecated:** `thingsboard_pe_client` is discontinued and replaced by
   [`thingsboard_client`](https://pub.dev/packages/thingsboard_client) (ThingsBoard CE and PE are now one product).
-- The package no longer contains any implementation: it only re-exports `thingsboard_client: ^5.0.0`.
-  `thingsboard_pe_client.dart`, `thingsboard_client.dart` and every `src/...` library are marked `@Deprecated`.
+- The package no longer contains any implementation: its main library `thingsboard_pe_client.dart` (and the
+  4.2.x main library `thingsboard_client.dart`) only re-export `package:thingsboard_client/thingsboard_client.dart`
+  (`thingsboard_client: ^5.0.0`) and are marked `@Deprecated`.
 - The REST API is the same OpenAPI-generated API as in 4.4.x (`get*ControllerApi()`, built_value models), apart
   from the breaking changes below. The full migration guide is the "Migrating from `thingsboard_pe_client` 4.4.x"
   entry and the telemetry WebSocket, login and `Authority` entries of the
   [thingsboard_client 5.0.0 CHANGELOG](https://pub.dev/packages/thingsboard_client/changelog#500).
-- Deep imports (`package:thingsboard_pe_client/src/...`) keep working through deprecated stubs for every 4.4.x
-  library that still exists in `thingsboard_client`. `ThingsboardPeClient` (from `src/api.dart`) is a deprecated
-  alias of the generated `ThingsboardClient`. The stubs are generated once by `tool/gen_stubs.sh`.
-- **BREAKING:** deep imports of 4.4.x files removed from `thingsboard_client` no longer work: the handwritten
-  telemetry models (`src/model/id/*`, `src/model/telemetry/query/**`, `src/model/telemetry/alarm_models.dart`,
-  `base_data.dart`, `has_name.dart`, `has_tenant_id.dart`, `ts_value.dart`, `push_notification_models.dart`),
-  `src/model/login_models.dart`, `src/api/device_api_controller_api.dart`, `src/api/solution_controller_api.dart`
-  and the solution template models. Import `package:thingsboard_client/thingsboard_client.dart` instead.
+- **BREAKING:** deep imports (`package:thingsboard_pe_client/src/...`) no longer work: `lib/src` was never public
+  API, and this package has none. Import `package:thingsboard_client/thingsboard_client.dart` instead, which
+  exports the replacement types. The raw generated client `ThingsboardPeClient` (from `src/api.dart`) is the
+  generated `ThingsboardClient` of `thingsboard_client`, hidden from its main library as before.
 - **BREAKING:** the telemetry WebSocket API (`TelemetrySubscriber`, commands, queries, updates) is exported by the
   main library and works on the generated built_value models instead of ~90 handwritten duplicates:
   - `DeviceId(uuid)` → `DeviceId((b) => b..id = uuid)`;
@@ -35,8 +32,7 @@
   `RefreshTokenRequest(token)` → `RefreshTokenRequest((b) => b..refreshToken = token)`;
   `LoginResponse.scope` is `Authority?` and `LoginResponse.refreshToken` is nullable. The JSON on the wire is unchanged.
 - **BREAKING:** `Authority` is a single type, the generated built_value class; the handwritten `enum Authority` is
-  removed (`src/model/authority_enum.dart` re-exports the generated class with `authorityFromString` and
-  `toShortString`). `AuthUser.authority` is `Authority?` and is `null` for an anonymous user (was
+  removed; `authorityFromString` and `toShortString` work on the generated class. `AuthUser.authority` is `Authority?` and is `null` for an anonymous user (was
   `Authority.ANONYMOUS`); `authorityFromString` returns `null` for an unknown name instead of throwing; a `switch`
   over `Authority` needs a `default` branch.
 - **BREAKING:** `ThingsboardError.errorCode` (the facade `ThingsBoardErrorCode`) now matches the server:
@@ -44,10 +40,8 @@
   `setupIncomplete` (47) are new; before, codes 40, 41 and 47 decoded as `general`. `tenantTrialExpired` (12) is
   removed, the server never sends it.
 - **BREAKING:** `SortOrder` takes the generated `Direction` exported by the main library
-  (`SortOrder('name', Direction.ASC)`). The handwritten `Direction` enum (`src/model/page/sort_order.dart`) and
-  `Direction.toShortString()` are removed (use `Direction.name`); `PageLink.toQueryParameters()` output is unchanged.
-  The `src/model/page/sort_order.dart` stub re-exports the generated `Direction`, so code that imports `Direction`
-  from there keeps compiling.
+  (`SortOrder('name', Direction.ASC)`). The handwritten `Direction` enum and `Direction.toShortString()` are
+  removed (use `Direction.name`); `PageLink.toQueryParameters()` output is unchanged.
 - **BREAKING:** removed unused API: `nullIfNotFound` and `isSuccessful` (catch the `DioException` instead and
   inspect `(e.error as ThingsboardError).errorCode`), `AuthUser.fromToken`, the top-level `isJwtTokenValid(String?)`
   (use `ThingsboardClient.isJwtTokenValid()`), and `KeyInterceptConfig` (no longer exported by the main library).

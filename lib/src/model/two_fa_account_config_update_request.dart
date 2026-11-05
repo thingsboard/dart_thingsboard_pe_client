@@ -1,4 +1,0 @@
-@Deprecated('Use package:thingsboard_client/thingsboard_client.dart instead')
-library;
-
-export 'package:thingsboard_client/src/model/two_fa_account_config_update_request.dart';

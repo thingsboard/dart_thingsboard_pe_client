@@ -1,4 +1,0 @@
-@Deprecated('Use package:thingsboard_client/thingsboard_client.dart instead')
-library;
-
-export 'package:thingsboard_client/src/model/complex_version_create_request.dart';
