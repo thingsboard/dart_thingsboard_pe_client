@@ -4,72 +4,19 @@
 - The package no longer contains any implementation: its main library `thingsboard_pe_client.dart` (and the
   4.2.x main library `thingsboard_client.dart`) only re-export `package:thingsboard_client/thingsboard_client.dart`
   (`thingsboard_client: ^5.0.0`) and are marked `@Deprecated`.
-- The REST API is the same OpenAPI-generated API as in 4.4.x (`get*ControllerApi()`, built_value models), apart
-  from the breaking changes below. The full migration guide is the "Migrating from `thingsboard_pe_client` 4.4.x"
-  entry and the telemetry WebSocket, login and `Authority` entries of the
-  [thingsboard_client 5.0.0 CHANGELOG](https://pub.dev/packages/thingsboard_client/changelog#500).
-- **BREAKING:** deep imports (`package:thingsboard_pe_client/src/...`) no longer work: `lib/src` was never public
-  API, and this package has none. Import `package:thingsboard_client/thingsboard_client.dart` instead, which
-  exports the replacement types. The raw generated client `ThingsboardPeClient` (from `src/api.dart`) is the
-  generated `ThingsboardClient` of `thingsboard_client`, hidden from its main library as before.
-- **BREAKING:** the telemetry WebSocket API (`TelemetrySubscriber`, commands, queries, updates) is exported by the
-  main library and works on the generated built_value models instead of ~90 handwritten duplicates:
-  - `DeviceId(uuid)` → `DeviceId((b) => b..id = uuid)`;
-    `EntityDataQuery(entityFilter: f, pageLink: p)` → `EntityDataQuery((b) => b..entityFilter = f..pageLink = p.toBuilder())`;
-    discriminators (`type`, `entityType`, ...) are set automatically and are not passed any more.
-  - `AttributeData.value` is a `JsonObject`.
-  - `EntityDataUpdate` / `AlarmDataUpdate` are immutable: `withTsOffset(int)` returns a shifted copy.
-  - Notifications: `NotificationsUpdate` holds the generated `Notification` with typed `*NotificationInfo`
-    subtypes. `PushNotification`, `PushNotificationInfo`, `PushNotificationType`, `PushNotificationStatus` and their
-    helpers are removed: use `Notification`, `NotificationType` and `NotificationStatus`.
-  - The `KvEntry` family, `RestJsonConverter`, the facade `AlarmQuery` / `AlarmQueryV2` / `AlarmCommentsQuery`,
-    `BaseData`, `HasName`, `HasTenantId` and `PushNotificationQuery` are removed; the handwritten `DataType` and
-    `AlarmInfo` are replaced by the generated REST models of the same names.
-  - Each update is parsed by its command's parser: a custom `WebsocketCmd` subclass must override `updateParser`.
-- **BREAKING:** `LoginRequest`, `RefreshTokenRequest` and `LoginResponse` are the generated built_value models,
-  exported by the main library: `LoginRequest(userName: u, password: p)` →
-  `LoginRequest((b) => b..username = u..password = p)` (`userName` → `username`),
-  `RefreshTokenRequest(token)` → `RefreshTokenRequest((b) => b..refreshToken = token)`;
-  `LoginResponse.scope` is `Authority?` and `LoginResponse.refreshToken` is nullable. The JSON on the wire is unchanged.
-- **BREAKING:** `Authority` is a single type, the generated built_value class; the handwritten `enum Authority` is
-  removed; `authorityFromString` and `toShortString` work on the generated class. `AuthUser.authority` is `Authority?` and is `null` for an anonymous user (was
-  `Authority.ANONYMOUS`); `authorityFromString` returns `null` for an unknown name instead of throwing; a `switch`
-  over `Authority` needs a `default` branch.
-- **BREAKING:** `ThingsboardError.errorCode` (the facade `ThingsBoardErrorCode`) now matches the server:
-  `subscriptionViolation` is 40 (it was 35, so it was never returned), and `entitiesLimitExceeded` (41) and
-  `setupIncomplete` (47) are new; before, codes 40, 41 and 47 decoded as `general`. `tenantTrialExpired` (12) is
-  removed, the server never sends it.
-- **BREAKING:** `SortOrder` takes the generated `Direction` exported by the main library
-  (`SortOrder('name', Direction.ASC)`). The handwritten `Direction` enum and `Direction.toShortString()` are
-  removed (use `Direction.name`); `PageLink.toQueryParameters()` output is unchanged.
-- **BREAKING:** removed unused API: `nullIfNotFound` and `isSuccessful` (catch the `DioException` instead and
-  inspect `(e.error as ThingsboardError).errorCode`), `AuthUser.fromToken`, the top-level `isJwtTokenValid(String?)`
-  (use `ThingsboardClient.isJwtTokenValid()`), and `KeyInterceptConfig` (no longer exported by the main library).
-- Fixed: `LocalFileStorage.getItem` returns `defaultValue` for an absent key, and `containsKey` waits for the file
-  to load, so a key stored by a previous instance is found.
-- **BREAKING:** 68 constants in 19 enums are renamed to the plain generator names (wire values are unchanged), e.g.
-  `SignUpFieldId.aDDRESS2` → `ADDRESS2`, `EntityType.oAUTH2CLIENT` → `OAUTH2_CLIENT`,
-  `DeviceTransportType.lWM2M` → `LWM2M`, `DeviceCredentialsType.x509CERTIFICATE` → `X509_CERTIFICATE`,
-  `ThingsboardErrorCode.n10` → `number10`, and `TelemetryObserveStrategy`
-  `sINGLELeftParenthesis0RightParenthesisColonOneResourceEqualsOneSingleObserveRequest` → `SINGLE`
-  (likewise `COMPOSITE_ALL`, `COMPOSITE_BY_OBJECT`).
-- **BREAKING:** `DeviceApiControllerApi` and `ThingsboardClient.getDeviceApiControllerApi()` are removed. The
-  device-token HTTP endpoints (`/api/v1/**`) are not part of the ThingsBoard client API spec; devices should use the
-  MQTT, CoAP or HTTP device transport directly.
-- **BREAKING:** `SolutionControllerApi` (`getSolutionControllerApi()`) and the solution template models
-  (`ComplexOperation`, `SolutionInstallResponse`, `SolutionTemplateLevel`, `TenantSolutionTemplateDetails`,
-  `TenantSolutionTemplateInfo`, `TenantSolutionTemplateInstructions`) are removed. They came from a 4.4.0 snapshot
-  spec and are not part of the ThingsBoard 4.4.0 release.
-- **BREAKING** (model fixes from the OpenAPI spec):
-  - `AliasEntityId.entityType` is now `String` (was `EntityType`) and `AliasEntityId.id` is now `String?`.
-  - `RefreshTokenRequest.refreshToken` is now `String?` (was `JsonObject?`).
-  - `ColumnSettings.type` is removed.
-  - `Lwm2mControllerApi.saveLwm2mDeviceWithCredentials` now takes `requestBody` as `BuiltMap<String, JsonObject?>`.
-- **BREAKING:** minimum Dart SDK is now 3.10.0 (Flutter 3.38+); older SDKs are dropped for security reasons.
+- Migration guide: [Migrating from `thingsboard_pe_client` 4.4.x](https://github.com/thingsboard/dart_thingsboard_client/blob/master/MIGRATION.md#migrating-from-thingsboard_pe_client-44x) in `MIGRATION.md` of
+  `thingsboard_client`. Main breaking changes relative to 4.4.x:
+  - deep imports (`package:thingsboard_pe_client/src/...`) no longer work; only the main library is re-exported;
+  - the telemetry WebSocket API works on the generated built_value models (`DeviceId((b) => b..id = uuid)`,
+    immutable updates, `Notification` instead of `PushNotification*`);
+  - `LoginRequest`, `LoginResponse` and `RefreshTokenRequest` are the generated built_value models;
+  - `Authority` is a single generated type, and `AuthUser.authority` is `null` for an anonymous user;
+  - 68 enum constants in 19 enums are renamed (`EntityType.oAUTH2CLIENT` → `OAUTH2_CLIENT`, ...);
+  - `DeviceApiControllerApi` and `SolutionControllerApi` are removed;
+  - minimum Dart SDK 3.10.0 (Flutter 3.38+).
 - Note for users upgrading from 4.2.x or earlier: 4.4.0 already replaced the handwritten API
-  (`getUserService()`, `getDeviceService()`, ...) with the generated one, and that release was breaking.
-  This release does not restore the 4.2.x API.
-- Migration: see the [README](https://github.com/thingsboard/dart_thingsboard_pe_client#migration).
+  (`getUserService()`, `getDeviceService()`, ...) with the generated one, and that release was breaking. See
+  [Migrating from `thingsboard_client` 4.x](https://github.com/thingsboard/dart_thingsboard_client/blob/master/MIGRATION.md#migrating-from-thingsboard_client-4x-421).
 
 ## 4.4.1
 
