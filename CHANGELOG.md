@@ -1,27 +1,36 @@
 ## 5.0.0
+
 - **Deprecated:** `thingsboard_pe_client` is discontinued and replaced by
   [`thingsboard_client`](https://pub.dev/packages/thingsboard_client) (ThingsBoard CE and PE are now one product).
 - The package no longer contains any implementation: its main library `thingsboard_pe_client.dart` (and the
   4.2.x main library `thingsboard_client.dart`) only re-export `package:thingsboard_client/thingsboard_client.dart`
   (`thingsboard_client: ^5.0.0`) and are marked `@Deprecated`.
+- Requires Dart SDK 3.10.0 or later (Flutter 3.38 or later) and ThingsBoard 4.4.0 or later.
 - Migration guide: [Migrating from `thingsboard_pe_client` 4.4.x](https://github.com/thingsboard/dart_thingsboard_client/blob/master/MIGRATION.md#migrating-from-thingsboard_pe_client-44x) in `MIGRATION.md` of
   `thingsboard_client`. Main breaking changes relative to 4.4.x:
   - deep imports (`package:thingsboard_pe_client/src/...`) no longer work; only the main library is re-exported;
-  - the telemetry WebSocket API works on the generated built_value models (`DeviceId((b) => b..id = uuid)`,
+  - the telemetry WebSocket API uses the generated built_value models (`DeviceId((b) => b..id = uuid)`,
     immutable updates, `Notification` instead of `PushNotification*`);
   - `LoginRequest`, `LoginResponse` and `RefreshTokenRequest` are the generated built_value models;
   - `Authority` is a single generated type, and `AuthUser.authority` is `null` for an anonymous user;
   - 68 enum constants in 19 enums are renamed (`EntityType.oAUTH2CLIENT` → `OAUTH2_CLIENT`, ...);
-  - `DeviceApiControllerApi` and `SolutionControllerApi` are removed;
-  - minimum Dart SDK 3.10.0 (Flutter 3.38+).
+  - `FontWeight` and `FontStyle` are renamed to `TbFontWeight` and `TbFontStyle` (they shadowed the Flutter types);
+  - corrected types: `claimDevice` returns `ClaimResult`, `getPersistedRpcByDevice` a `PageDataRpc` and
+    `exportIntegrationPackage` the ZIP archive as `Uint8List` (all three were `String`); `assignAlarm` and
+    `unassignAlarm` return `AlarmInfo`; `pageSize` and `page` are `int` in 28 operations, and so is the `limit` of
+    `getTimeseriesHistory`;
+  - 21 response fields that the server can send as `null` are nullable;
+  - the `provider` of the AI chat model configs (`OpenAiChatModelConfig`, ...) is the `AiProvider` enum instead of a
+    `String`;
+  - `DeviceApiControllerApi` and `SolutionControllerApi` are removed.
 - Note for users upgrading from 4.2.x or earlier: 4.4.0 already replaced the handwritten API
   (`getUserService()`, `getDeviceService()`, ...) with the generated one, and that release was breaking. See
   [Migrating from `thingsboard_client` 4.x](https://github.com/thingsboard/dart_thingsboard_client/blob/master/MIGRATION.md#migrating-from-thingsboard_client-4x-421).
 
 ## 4.4.1
 
-- `Palette.type` and `PaletteSettings.primaryPalette` / `accentPalette` are nullable. The server returns `{type: null}` for a palette left on "Default", which made `getWhiteLabelParams()` and `getLoginWhiteLabelParams()` fail to deserialize (PROD-8931).
-- Telemetry WebSocket: `reset()` also clears the reconnect state, so the first subscription after a logout is published when the socket opens. Unsubscribing during a reconnect backoff no longer sends stale commands to the new socket or lets the subscriber count go negative, which closed a socket that still had live subscribers after the idle timeout (PROD-8863).
+- `Palette.type` and `PaletteSettings.primaryPalette` / `accentPalette` are nullable. The server returns `{type: null}` for a palette left on "Default", which made `getWhiteLabelParams()` and `getLoginWhiteLabelParams()` fail to deserialize.
+- Telemetry WebSocket: `reset()` also clears the reconnect state, so the first subscription after a logout is published when the socket opens. Unsubscribing during a reconnect backoff no longer sends stale commands to the new socket or lets the subscriber count go negative, which closed a socket that still had live subscribers after the idle timeout.
 - A connect timeout or connection error is reported as `Unable to connect`, like a refused connection, on both io and web. The best-effort server version check in `init()` no longer reports its failures through `onError`, so an offline start does not show a connection error.
 
 ## 4.4.0
