@@ -1,36 +1,57 @@
-ThingsBoard PE API client library for Dart developers. Provides model objects and services to communicate with ThingsBoard PE platform using RESTful APIs and WebSocket protocol.
-Current client version is compatible with ThingsBoard PE starting from version 3.6.3PE.
+# thingsboard_pe_client (discontinued)
 
-## Usage
+**This package is deprecated and no longer maintained.** ThingsBoard CE and PE are now a single product, and
+`thingsboard_pe_client` has been replaced by [`thingsboard_client`](https://pub.dev/packages/thingsboard_client)
+([GitHub](https://github.com/thingsboard/dart_thingsboard_client)).
 
-A simple usage example:
+Version 5.0.0 of this package contains no code of its own: its main library only re-exports
+`package:thingsboard_client/thingsboard_client.dart` (`thingsboard_client: ^5.0.0`) and is marked `@Deprecated`.
+Code that imports it gets `thingsboard_client` 5.0.0, so it compiles only where it does not use the APIs changed in
+5.0, and shows a deprecation diagnostic. Deep imports (`package:thingsboard_pe_client/src/...`) no longer resolve.
 
-```dart
-import 'package:thingsboard_pe_client/thingsboard_client.dart';
+Requires Dart SDK 3.10.0 or later (Flutter 3.38 or later) and ThingsBoard 4.4.0 or later.
 
-main() async {
-    try {
-      var tbClient = ThingsboardClient('https://thingsboard.cloud');
-      await tbClient.login(LoginRequest('tenant@thingsboard.org', 'tenant'));
+Main breaking changes relative to 4.4.x:
 
-      print('isAuthenticated=${tbClient.isAuthenticated()}');
+- the telemetry WebSocket API, the login models and `Authority` use the generated built_value models, and
+  `PushNotification*` is replaced by `Notification`;
+- 68 enum constants in 19 enums are renamed (`EntityType.oAUTH2CLIENT` → `OAUTH2_CLIENT`, ...), and `FontWeight` and
+  `FontStyle` are renamed to `TbFontWeight` and `TbFontStyle`;
+- corrected types: `claimDevice`, `getPersistedRpcByDevice` and `exportIntegrationPackage` return typed results,
+  `assignAlarm` and `unassignAlarm` return `AlarmInfo`, and `pageSize`/`page` are `int` in 28 operations;
+- 21 response fields that the server can send as `null` are nullable;
+- the `provider` of the AI chat model configs is the `AiProvider` enum instead of a `String`;
+- `DeviceApiControllerApi` and `SolutionControllerApi` are removed.
 
-      print('authUser: ${tbClient.getAuthUser()}');
+The full guide is [Migrating from `thingsboard_pe_client` 4.4.x](https://github.com/thingsboard/dart_thingsboard_client/blob/master/MIGRATION.md#migrating-from-thingsboard_pe_client-44x).
 
-      var currentUserDetails = await tbClient.getUserService().getUser();
-      print('currentUserDetails: $currentUserDetails');
+## Migration
 
-      await tbClient.logout();
+1. In `pubspec.yaml`, replace the dependency:
 
-    } catch (e, s) {
-        print('Error: $e');
-        print('Stack: $s');
-    }
-}
-```
+   ```yaml
+   dependencies:
+     thingsboard_client: ^5.0.0   # was: thingsboard_pe_client: ^4.x
+   ```
 
-## Features and bugs
+2. Rewrite the imports:
 
-Please file feature requests and bugs at the [issue tracker][tracker].
+   ```sh
+   grep -rl "package:thingsboard_pe_client/" lib test 2>/dev/null | while read -r f; do
+     perl -pi -e 's#package:thingsboard_pe_client/thingsboard_pe_client\.dart#package:thingsboard_client/thingsboard_client.dart#g; s#package:thingsboard_pe_client/#package:thingsboard_client/#g' "$f"
+   done
+   ```
 
-[tracker]: https://github.com/thingsboard/dart_thingsboard_pe_client/issues
+   The command works on Linux and macOS (`perl` is preinstalled on both); on Windows, run it in WSL or Git Bash. It
+   also renames `package:thingsboard_pe_client/thingsboard_client.dart`, the old main library of 4.2.x and earlier,
+   and rewrites deep imports (`package:thingsboard_pe_client/src/...`) to the same paths in `thingsboard_client`.
+   Prefer the main library `package:thingsboard_client/thingsboard_client.dart`: `src/` is not public API, and some
+   4.4.x files no longer exist.
+
+3. Fetch dependencies and check the result:
+
+   ```sh
+   flutter pub get && flutter analyze
+   ```
+
+Please file issues at the [thingsboard_client issue tracker](https://github.com/thingsboard/dart_thingsboard_client/issues).
